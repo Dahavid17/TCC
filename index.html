@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buzz Code — Intro</title>
+  <link rel="icon" type="image/png" href="img/favicon.png" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #09090d;
+      /* Cor oficial do background do seu index */
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #skip {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background: rgba(10, 10, 14, 0.72);
+      /* --glass do seu CSS */
+      border: 1px solid rgba(163, 4, 211, 0.35);
+      /* --borda roxa sutil */
+      color: #ffffff;
+      padding: 10px 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: bold;
+      backdrop-filter: blur(18px);
+      transition: 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(163, 4, 211, 0.15);
+    }
+
+    #skip:hover {
+      background: rgba(52, 211, 4, 0.12);
+      border-color: #34d304;
+      /* --verde */
+      color: #34d304;
+      box-shadow: 0 0 25px rgba(52, 211, 4, 0.35);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+  <a href="home.html" id="skip">Pular intro →</a>
+
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+
+    // ── LOGO IMAGE ────────────────────────────────────────
+    const logoImg = new Image();
+    logoImg.src = 'img/2.png'; // Arquivo da logo na mesma pasta
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ── TIMING ────────────────────────────────────────────
+    const T = {
+      ringsIn: 0.3,
+      ringsFullSpeed: 1.2,
+      logoIn: 2.2,
+      tagIn: 3.1,
+      hold: 4.5,
+      fadeOut: 5.5,
+      end: 6.8
+    };
+
+    let t = 0;
+    let last = null;
+
+    // ── HELPERS ───────────────────────────────────────────
+    function ease(x) { return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2; }
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+    function progress(start, end) {
+      return ease(clamp((t - start) / (end - start), 0, 1));
+    }
+
+    // ── ORBITAL RINGS — Paleta Tech (Roxo Neon & Verde) ───
+    const rings = [
+      { tilt: 0, speed: 0.55, color: '#a304d3', rs: 1.00, thick: 4.5, delay: 0.00 }, // Roxo
+      { tilt: 60, speed: -0.85, color: '#34d304', rs: 0.82, thick: 3.5, delay: 0.12 }, // Verde
+      { tilt: -55, speed: 0.70, color: '#c000ff', rs: 0.64, thick: 3.0, delay: 0.24 }, // Roxo Neon
+      { tilt: 30, speed: -1.05, color: '#34d304', rs: 0.46, thick: 2.5, delay: 0.36 }, // Verde
+    ];
+
+    function drawRing(cx, cy, rx, tiltDeg, rotAngle, color, alpha, lw) {
+      const scaleY = Math.abs(Math.cos(tiltDeg * Math.PI / 180)) || 0.05;
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(rotAngle);
+      ctx.scale(1, scaleY);
+      ctx.globalAlpha = alpha;
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = color;
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lw;
+      ctx.beginPath();
+      ctx.arc(0, 0, rx, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // ── HEXAGON PATH ──────────────────────────────────────
+    function hexPath(cx, cy, r) {
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const a = (Math.PI / 3) * i - Math.PI / 6;
+        const x = cx + r * Math.cos(a);
+        const y = cy + r * Math.sin(a);
+        i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+    }
+
+    // Linhas de circuito internas (Estilo Placa Mãe Neon)
+    function drawCircuit(cx, cy, r, alpha) {
+      if (alpha <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      const lw = r * 0.045;
+      const nodeR = r * 0.075;
+
+      const lines = [
+        { y: -r * 0.22, x1: -r * 0.55, x2: -r * 0.10, nx: -r * 0.10, color: '#c000ff' }, // Roxo Neon
+        { y: -r * 0.22, x1: -r * 0.10, x2: r * 0.22, nx: r * 0.22, color: '#ffffff' }, // Branco Tech
+        { y: r * 0.08, x1: -r * 0.62, x2: -r * 0.22, nx: -r * 0.22, color: '#a304d3' }, // Roxo
+        { y: r * 0.08, x1: -r * 0.22, x2: r * 0.30, nx: r * 0.30, color: '#34d304' }, // Verde
+      ];
+
+      lines.forEach(l => {
+        const grad = ctx.createLinearGradient(cx + l.x1, cy + l.y, cx + l.nx, cy + l.y);
+        grad.addColorStop(0, l.color + '44');
+        grad.addColorStop(1, l.color);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = lw;
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = l.color;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(cx + l.x1, cy + l.y);
+        ctx.lineTo(cx + l.nx, cy + l.y);
+        ctx.stroke();
+
+        ctx.fillStyle = l.color;
+        ctx.shadowColor = l.color;
+        ctx.shadowBlur = 18;
+        ctx.beginPath();
+        ctx.arc(cx + l.nx, cy + l.y, nodeR, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#09090d';
+        ctx.lineWidth = lw * 0.6;
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.arc(cx + l.nx, cy + l.y, nodeR * 0.5, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      // Trilhas estéticas diagonais de fundo
+      ctx.strokeStyle = 'rgba(163, 4, 211, 0.25)';
+      ctx.lineWidth = lw * 0.8;
+      ctx.shadowBlur = 5;
+      ctx.shadowColor = '#a304d3';
+      const diags = [
+        [[-r * 0.55, r * 0.38], [-r * 0.10, r * 0.38]],
+        [[-r * 0.62, r * 0.55], [r * 0.30, r * 0.55]],
+      ];
+      diags.forEach(d => {
+        ctx.beginPath();
+        ctx.moveTo(cx + d[0][0], cy + d[0][1]);
+        ctx.lineTo(cx + d[1][0], cy + d[1][1]);
+        ctx.stroke();
+      });
+
+      ctx.restore();
+    }
+
+    function drawHexLogo(cx, cy, size, alpha) {
+      if (alpha <= 0) return;
+      if (!logoImg.complete || logoImg.naturalWidth === 0) return;
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+
+      // Mantém proporção original da imagem
+      const imgW = logoImg.naturalWidth;
+      const imgH = logoImg.naturalHeight;
+      const aspect = imgW / imgH;
+
+      const drawH = size * 2.2;
+      const drawW = drawH * aspect;
+
+      // Brilho neon roxo
+      ctx.shadowBlur = 55;
+      ctx.shadowColor = '#c000ff';
+      ctx.drawImage(logoImg, cx - drawW / 2, cy - drawH / 2, drawW, drawH);
+
+      // Segunda passagem glow verde
+      ctx.shadowBlur = 30;
+      ctx.shadowColor = '#34d304';
+      ctx.drawImage(logoImg, cx - drawW / 2, cy - drawH / 2, drawW, drawH);
+
+      // Imagem final nítida
+      ctx.shadowBlur = 0;
+      ctx.drawImage(logoImg, cx - drawW / 2, cy - drawH / 2, drawW, drawH);
+
+      ctx.restore();
+    }
+
+    // ── PARTICLES ─────────────────────────────────────────
+    const particles = Array.from({ length: 90 }, () => ({
+      x: Math.random() * 2 - 1,
+      y: Math.random() * 2 - 1,
+      vx: (Math.random() - 0.5) * 0.001,
+      vy: (Math.random() - 0.5) * 0.001,
+      size: Math.random() * 1.6 + 0.5,
+      color: Math.random() < 0.6 ? '#c000ff' : '#34d304', // Partículas Roxas e Verdes
+      alpha: Math.random() * 0.6 + 0.2
+    }));
+
+    // ── DRAW LOOP ─────────────────────────────────────────
+    function draw(ts) {
+      if (!last) last = ts;
+      const dt = Math.min((ts - last) / 1000, 0.05);
+      last = ts;
+      t += dt;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Fundo do index simulado (Gradiente Espacial Sutil)
+      const bg = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.8);
+      bg.addColorStop(0, `rgba(25, 4, 60, ${0.28 * clamp(t * 0.4, 0, 1)})`); // Expansão do roxo escuro sutil do seu CSS
+      bg.addColorStop(0.7, `rgba(52, 211, 4, ${0.03 * clamp(t * 0.4, 0, 1)})`); // Nebulosa verde sutil lateral
+      bg.addColorStop(1, '#09090d');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Partículas Digitais
+      const pA = progress(0.2, 1.4);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (Math.abs(p.x) > 1.05) p.vx *= -1;
+        if (Math.abs(p.y) > 1.05) p.vy *= -1;
+        const px = (p.x + 1) / 2 * W;
+        const py = (p.y + 1) / 2 * H;
+        ctx.globalAlpha = p.alpha * pA;
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.arc(px, py, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.shadowBlur = 0;
+
+      const cx = W / 2, cy = H / 2;
+      const baseR = Math.min(W, H) * 0.36;
+
+      // Anéis Orbitais Reconfigurados
+      rings.forEach((ring, i) => {
+        const inP = progress(T.ringsIn + ring.delay, T.ringsFullSpeed + ring.delay);
+        if (inP <= 0) return;
+
+        const spinStart = T.ringsFullSpeed + ring.delay;
+        const spinAngle = ring.speed * Math.max(0, t - spinStart) + (ring.tilt * Math.PI / 180) * 0.4;
+
+        const r = baseR * ring.rs * (0.5 + 0.5 * inP);
+        const alpha = inP * 0.85;
+        const lw = ring.thick * inP;
+
+        drawRing(cx, cy, r, ring.tilt, spinAngle, ring.color, alpha, lw);
+      });
+
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+
+      // Brilho de energia do centro
+      const glowP = progress(T.ringsIn, T.logoIn);
+      if (glowP > 0) {
+        const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 0.3);
+        gr.addColorStop(0, `rgba(192, 0, 255, ${0.32 * glowP})`); // Brilho roxo neon central
+        gr.addColorStop(0.6, `rgba(52, 211, 4, ${0.1 * glowP})`); // Dissipação verde
+        gr.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = gr;
+        ctx.beginPath();
+        ctx.arc(cx, cy, baseR * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Impacto do Logo Hexagonal
+      const logoP = progress(T.logoIn, T.logoIn + 0.7);
+      if (logoP > 0) {
+        const logoSize = baseR * 0.52 * (0.5 + 0.5 * logoP);
+        drawHexLogo(cx, cy, logoSize, logoP);
+      }
+
+      // ── TEXTO DINÂMICO ("BUZZ CODE") — SEM SOBREPOSIÇÃO ──
+      const textP = progress(T.tagIn, T.tagIn + 0.65);
+      if (textP > 0) {
+        ctx.save();
+        ctx.globalAlpha = textP;
+
+        const fs = Math.min(W, H) * 0.052;
+        const textY = cy + baseR * 0.56;
+
+        ctx.font = `900 ${fs}px Arial`;
+        ctx.textBaseline = 'middle';
+
+        // Cálculo milimétrico de espaçamento
+        const buzzWidth = ctx.measureText('BUZZ').width;
+        const spaceWidth = ctx.measureText(' ').width;
+        const codeWidth = ctx.measureText('CODE').width;
+        const totalWidth = buzzWidth + spaceWidth + codeWidth;
+
+        const startX = cx - totalWidth / 2;
+
+        // "BUZZ" — Branco com brilho Roxo Neon
+        ctx.textAlign = 'left';
+        ctx.shadowBlur = 35;
+        ctx.shadowColor = '#c000ff';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText('BUZZ', startX, textY);
+
+        // "CODE" — Verde Neon (--verde)
+        ctx.shadowColor = 'rgba(52, 211, 4, 0.6)';
+        ctx.fillStyle = '#34d304';
+        ctx.fillText('CODE', startX + buzzWidth + spaceWidth, textY);
+
+        // Subtítulo Corporativo Suave
+        ctx.textAlign = 'center';
+        ctx.font = `bold ${Math.min(W, H) * 0.015}px Arial`;
+        ctx.fillStyle = '#bdbdbd'; /* --texto-suave */
+        ctx.shadowBlur = 0;
+        ctx.letterSpacing = "2px"; // Adiciona espaçamento moderno se o navegador suportar
+        ctx.fillText('DESENVOLVIMENTO WEB', cx, cy + baseR * 0.72);
+
+        ctx.restore();
+      }
+
+      // ── FADE OUT PARA O CORES DO INDEX ───────────────────
+      if (t >= T.fadeOut) {
+        const fo = clamp((t - T.fadeOut) / (T.end - T.fadeOut), 0, 1);
+        ctx.fillStyle = `rgba(9, 9, 13, ${fo})`; // Transiciona suavemente para o preto puro do index
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      if (t >= T.end) {
+        window.location.href = 'home.html';
+        return;
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    requestAnimationFrame(draw);
+  </script>
+</body>
+
+</html>

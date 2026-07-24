@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acesse sua conta no MarketPlace Rural — plataforma que conecta produtores rurais e compradores.">
+  <title>Login — MarketPlace Rural</title>
+  <link rel="icon" type="image/png" href="img/favicon-32x32.png">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="login-marketplace.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <main class="login-page">
+    <section class="login-visual">
+      <a href="marketplace.html" class="brand">
+        <i class="bi bi-flower1"></i>
+        <span>MarketPlace Rural</span>
+      </a>
+
+      <div class="visual-content">
+        <span class="tag">Marketplace Rural</span>
+        <h1>Conectando produtores e compradores em uma plataforma moderna.</h1>
+        <p>Venda, compre e negocie produtos do campo com mais organização e praticidade.</p>
+      </div>
+    </section>
+
+    <section class="login-area">
+      <div class="login-box">
+        <div class="login-header">
+          <span class="icon-box">
+            <i class="bi bi-person-circle"></i>
+          </span>
+
+          <h2>Acesse sua conta</h2>
+          <p>Entre para continuar no painel do MarketPlace Rural.</p>
+        </div>
+
+        <!-- CORRIGIDO: seleção de perfil agora via addEventListener no JS -->
+        <div class="perfil-selector">
+          <button class="perfil-btn ativo" type="button">
+            <i class="bi bi-person-badge"></i>
+            Produtor
+          </button>
+
+          <button class="perfil-btn" type="button">
+            <i class="bi bi-shop"></i>
+            Comprador
+          </button>
+        </div>
+
+        <!-- CORRIGIDO: action removido, validação via JS com preventDefault -->
+        <form id="formLogin" novalidate>
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <div class="input-box">
+              <i class="bi bi-envelope"></i>
+              <input type="email" id="email" placeholder="seu@email.com" autocomplete="email">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="senha">Senha</label>
+            <div class="input-box">
+              <i class="bi bi-lock"></i>
+              <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password">
+              <!-- CORRIGIDO: botão agora tem handler real no login-marketplace.js -->
+              <button type="button" class="show-pass" id="showPass" aria-label="Mostrar senha">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-options">
+            <label class="remember">
+              <input type="checkbox" id="lembrar">
+              <span>Lembrar acesso</span>
+            </label>
+
+            <!-- CORRIGIDO: href="#" → button para ações sem URL -->
+            <button type="button" class="link-btn" onclick="alert('Funcionalidade disponível em breve.')">
+              Esqueci minha senha
+            </button>
+          </div>
+
+          <button class="btn-login" type="submit">
+            Entrar na plataforma
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>ou</span>
+        </div>
+
+        <a href="cadastro.html" class="btn-cadastro">
+          Criar conta gratuita
+        </a>
+
+        <p class="terms">
+          Ao continuar, você concorda com os
+          <a href="javascript:void(0)" onclick="alert('Termos disponíveis em breve.')">Termos de Uso</a> e a
+          <a href="javascript:void(0)" onclick="alert('Política disponível em breve.')">Política de Privacidade</a>.
+        </p>
+      </div>
+
+      <a href="marketplace.html" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para o projeto
+      </a>
+    </section>
+  </main>
+
+  <button id="temaBtn" aria-label="Alternar tema claro/escuro">
+    <i class="bi bi-moon-stars-fill"></i>
+  </button>
+
+  <!-- CORRIGIDO: era marketplace.js; agora arquivo dedicado -->
+  <script src="login-marketplace.js"></script>
+</body>
+</html>

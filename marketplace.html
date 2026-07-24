@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MarketPlace Rural — plataforma que conecta produtores rurais, mercados e compradores para negociações diretas e transparentes.">
+  <title>MarketPlace Rural — Conectando o Campo ao Mercado</title>
+  <link rel="icon" type="image/png" href="img/favicon-32x32.png">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="marketplace.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <header class="header">
+    <a href="#" class="logo">
+      <i class="bi bi-flower1"></i>
+      <span>MarketPlace Rural</span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">
+      <i class="bi bi-list"></i>
+    </button>
+
+    <nav id="menu">
+      <a href="#sobre">Sobre</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#publico">Público</a>
+      <a href="login-marketplace.html" class="btn-login">Entrar</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <span class="tag">Marketplace Rural Inteligente</span>
+
+      <h1>Venda e compre produtos do campo com mais praticidade.</h1>
+
+      <p>
+        Uma plataforma criada para aproximar produtores rurais, mercados,
+        restaurantes e compradores em um ambiente moderno, simples e seguro.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="login-marketplace.html" class="btn-primary">Acessar plataforma</a>
+        <a href="#sobre" class="btn-secondary">Conhecer projeto</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <!-- CORRIGIDO: width/height definidos para evitar CLS; loading=lazy -->
+      <img
+        src="img/ChatGPT Image 12 de jun. de 2026, 15_09_23.png"
+        alt="Plantação rural ao pôr do sol"
+        width="700"
+        height="540"
+        loading="lazy"
+      >
+    </div>
+  </section>
+
+  <main>
+    <section id="sobre" class="section about">
+      <div>
+        <span class="section-tag">Sobre o projeto</span>
+        <h2>Uma ponte digital entre o campo e o mercado.</h2>
+      </div>
+
+      <p>
+        O MarketPlace Rural permite que produtores rurais divulguem seus produtos,
+        recebam pedidos e negociem diretamente com compradores. A proposta é
+        reduzir intermediários, valorizar o produtor e tornar o processo de compra
+        mais transparente.
+      </p>
+    </section>
+
+    <section id="recursos" class="section">
+      <span class="section-tag">Funcionalidades</span>
+      <h2>Recursos da plataforma</h2>
+
+      <div class="cards-grid">
+        <div class="card">
+          <i class="bi bi-person-workspace"></i>
+          <h3>Painel do produtor</h3>
+          <p>Cadastro de produtos, controle de estoque, preços e pedidos.</p>
+        </div>
+
+        <div class="card">
+          <i class="bi bi-basket"></i>
+          <h3>Vitrine de produtos</h3>
+          <p>Produtos organizados por categoria, região e disponibilidade.</p>
+        </div>
+
+        <div class="card">
+          <i class="bi bi-chat-left-text"></i>
+          <h3>Negociação direta</h3>
+          <p>Comunicação entre produtor e comprador sem intermediários.</p>
+        </div>
+
+        <div class="card">
+          <i class="bi bi-truck"></i>
+          <h3>Gestão de pedidos</h3>
+          <p>Acompanhamento dos pedidos desde a compra até a entrega.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="produtos" class="section">
+      <span class="section-tag">Demonstração</span>
+      <h2>Produtos em destaque</h2>
+
+      <div class="products-grid">
+        <div class="product-card">
+          <img
+            src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&w=700&q=80"
+            alt="Frutas selecionadas — maçãs frescas"
+            width="700"
+            height="250"
+            loading="lazy"
+          >
+          <div>
+            <h3>Frutas selecionadas</h3>
+            <p>Direto de produtores locais.</p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=700&q=80"
+            alt="Hortaliças frescas — verduras variadas"
+            width="700"
+            height="250"
+            loading="lazy"
+          >
+          <div>
+            <h3>Hortaliças frescas</h3>
+            <p>Produtos frescos para mercados e restaurantes.</p>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img
+            src="https://images.unsplash.com/photo-1536657464919-892534f60d6e?auto=format&fit=crop&w=700&q=80"
+            alt="Grãos e cereais em sacas"
+            width="700"
+            height="250"
+            loading="lazy"
+          >
+          <div>
+            <h3>Grãos e cereais</h3>
+            <p>Compra em volume com negociação direta.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="publico" class="section publico">
+      <div>
+        <span class="section-tag">Público-alvo</span>
+        <h2>Feito para quem vive o campo e o comércio.</h2>
+      </div>
+
+      <div class="tags">
+        <span>Produtores rurais</span>
+        <span>Restaurantes</span>
+        <span>Mercados</span>
+        <span>Distribuidoras</span>
+        <span>Consumidores finais</span>
+        <span>Indústrias alimentícias</span>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2>Transforme a forma de vender no campo.</h2>
+      <p>Acesse a plataforma e conheça a proposta do marketplace rural.</p>
+      <a href="login-marketplace.html">Entrar na plataforma</a>
+    </section>
+  </main>
+
+  <footer>
+    <a href="home.html" class="voltar-home">
+      <i class="bi bi-arrow-left"></i>
+      Voltar para Home
+    </a>
+
+    <p>&copy; 2026 MarketPlace Rural.</p>
+  </footer>
+
+  <button id="temaBtn" aria-label="Alternar tema claro/escuro">
+    <i class="bi bi-moon-stars-fill"></i>
+  </button>
+
+  <script src="marketplace.js"></script>
+</body>
+</html>
