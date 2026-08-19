@@ -66,9 +66,6 @@ body {
   letter-spacing: .5px;
 }
 
-.logo-area h3::first-letter {
-  color: var(--verde);
-}
 
 /* BOTÃO HAMBURGUER */
 .menu-toggle {
@@ -1156,3 +1153,4 @@ section,
     transform: translateY(0) scale(1);
   }
 }
+

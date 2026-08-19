@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   form?.addEventListener("submit", (e) => {
-    e.preventDefault(); // CORRIGIDO: impede reload
+    // CORRIGIDO: impede reload
 
     let valido = true;
 
@@ -132,38 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ── LOGIN COM LOCALSTORAGE ──────────────────────────── */
     // Busca usuários cadastrados
-    const usuarios = JSON.parse(localStorage.getItem("marketplace:usuarios") || "[]");
-    const user = usuarios.find(
-      u => u.email === email.value.trim() && u.senha === senha.value
-    );
-
-    // Feedback visual de carregamento
-    const btnLogin = form.querySelector(".btn-login");
-    const textoOriginal = btnLogin.textContent;
-    btnLogin.textContent = "Verificando...";
-    btnLogin.disabled = true;
-
-    setTimeout(() => {
-      if (user) {
-        // Salva sessão
-        sessionStorage.setItem("marketplace:usuario", JSON.stringify({
-          nome:  user.nome,
-          email: user.email,
-          tipo:  user.tipo
-        }));
-        setMsg(msgGeral, `Bem-vindo(a), ${user.nome}! Redirecionando...`, "ok");
-        setTimeout(() => window.location.href = "marketplace.html", 1200);
-      } else if (usuarios.length === 0) {
-        // Nenhum usuário cadastrado ainda — orienta criar conta
-        setMsg(msgGeral, "Nenhuma conta encontrada. Crie uma conta primeiro.", "erro");
-        btnLogin.textContent = textoOriginal;
-        btnLogin.disabled = false;
-      } else {
-        setMsg(msgGeral, "E-mail ou senha incorretos.", "erro");
-        btnLogin.textContent = textoOriginal;
-        btnLogin.disabled = false;
-      }
-    }, 700);
-  });
+ if(!valido){
+    setMsg(msgGeral,"Preencha os campos corretamente.","erro");
+    e.preventDefault();
+}
 
 });
