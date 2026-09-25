@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="img/favicon.png" width="120">
 
 # 🌾 Marketplace Rural
 
