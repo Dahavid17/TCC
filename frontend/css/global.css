@@ -697,7 +697,7 @@ body.claro #integrantes .eq-intro h2 {
 body.claro #integrantes .eq-intro p {
   color: #555555 !important;
 }
-  
+
 /* CARDS DAS FOTOS (BORDAS QUADRADAS) */
 #integrantes .eq-card:not(.eq-intro) {
   width: 50vw;
@@ -1103,4 +1103,82 @@ body.claro .proj-card strong {
     height: 48px;
     font-size: 19px;
   }
+}
+
+/* =========================================================
+   CAPA DE ABERTURA FULLSCREEN -> DOCKED HEADER
+   ========================================================= */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Cortina de fundo (Usa transform-origin para encolher sem causar lag) */
+.logo-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--fundo, #0d0d11);
+  z-index: 1000;
+  pointer-events: none;
+  transform-origin: top center;
+  will-change: transform;
+}
+
+body.claro .logo-cover {
+  background: #ffffff !important;
+}
+
+/* Logo sobreposta */
+.header .logo-area {
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  will-change: transform;
+}
+
+/* Espaçador para a animação inicial não engolir o site */
+.espacador-animacao {
+  height: 80vh; /* Distância exata que o usuário precisa rolar para a animação acabar */
+  width: 100%;
+  pointer-events: none;
+}
+
+/* =========================================================
+   NITIDEZ DA LOGO E MENU OCULTO NA ABERTURA
+   ========================================================= */
+
+/* Oculta o menu durante a tela de abertura */
+.header nav, 
+.header .menu-toggle {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-out;
+}
+
+/* Otimização de nitidez para a logo durante a ampliação (Evita borrão) */
+.header .logo-area {
+  position: relative;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  will-change: transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.header .logo-area img {
+  image-rendering: -webkit-optimize-contrast;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
