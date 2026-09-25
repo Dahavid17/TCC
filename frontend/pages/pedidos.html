@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pedidos | MarketPlace Rural</title>
+
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/favicon-32x32.png">
+
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/pedidos.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="pagina-marketplace.html" class="logo">
+
+            <i class="bi bi-flower1"></i>
+            <span>MarketPlace Rural</span>
+
+        </a>
+
+        <form class="search-form" id="formPesquisaPedidos">
+
+            <div class="search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="search"
+                    id="pesquisaPedido"
+                    name="pesquisa"
+                    placeholder="Pesquisar pedidos..."
+                    autocomplete="off">
+
+            </div>
+
+        </form>
+
+        <div class="top-actions">
+
+            <button type="button" class="icon-btn" id="btnNotificacoes">
+
+                <i class="bi bi-bell"></i>
+
+            </button>
+
+            <button type="button" class="icon-btn" id="btnMensagens">
+
+                <i class="bi bi-chat-dots"></i>
+
+            </button>
+
+            <div class="perfil">
+
+                <button type="button" id="btnPerfil">
+
+                    <div class="avatar" id="avatarUsuario">U</div>
+
+                    <div>
+
+                        <span id="nomeUsuario">Usuário</span>
+
+                        <small id="tipoUsuario">Produtor</small>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <nav>
+
+            <a href="pagina-marketplace.html">
+                <i class="bi bi-house"></i>
+                <span>Início</span>
+            </a>
+
+            <a href="meus-produtos.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Meus Produtos</span>
+            </a>
+
+            <a href="pedidos.html" class="ativo">
+                <i class="bi bi-cart-check"></i>
+                <span>Pedidos</span>
+            </a>
+
+            <a href="negociacoes.html">
+                <i class="bi bi-chat-left-text"></i>
+                <span>Negociações</span>
+            </a>
+
+            <a href="estoque.html">
+                <i class="bi bi-clipboard-data"></i>
+                <span>Estoque</span>
+            </a>
+
+            <a href="favoritos.html">
+                <i class="bi bi-heart"></i>
+                <span>Favoritos</span>
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="bi bi-gear"></i>
+                <span>Configurações</span>
+            </a>
+
+            <a href="../../backend/auth/logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="conteudo">
+
+        <!-- CABEÇALHO -->
+
+        <section class="page-header">
+
+            <div>
+
+                <h1>Pedidos</h1>
+
+                <p>Acompanhe todos os pedidos realizados e recebidos.</p>
+
+            </div>
+
+        </section>
+
+        <!-- CARDS -->
+
+        <section class="cards-resumo">
+
+            <div class="resumo-card">
+
+                <i class="bi bi-cart-check"></i>
+
+                <strong id="totalPedidos">0</strong>
+
+                <span>Total</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-hourglass-split"></i>
+
+                <strong id="pedidosNegociacao">0</strong>
+
+                <span>Em negociação</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-box-seam"></i>
+
+                <strong id="pedidosPreparacao">0</strong>
+
+                <span>Em preparo</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-truck"></i>
+
+                <strong id="pedidosEntregues">0</strong>
+
+                <span>Entregues</span>
+
+            </div>
+
+        </section>
+
+        <!-- FILTROS -->
+
+        <section class="filtros">
+
+            <select id="filtroStatus" name="status">
+
+                <option value="">Todos os status</option>
+
+                <option value="recebido">Recebido</option>
+                <option value="negociacao">Em negociação</option>
+                <option value="preparo">Em preparo</option>
+                <option value="entregue">Entregue</option>
+                <option value="cancelado">Cancelado</option>
+
+            </select>
+
+            <select id="filtroPeriodo" name="periodo">
+
+                <option value="">Todo período</option>
+
+                <option value="hoje">Hoje</option>
+                <option value="semana">Últimos 7 dias</option>
+                <option value="mes">Últimos 30 dias</option>
+
+            </select>
+
+        </section>
+
+        <!-- TABELA -->
+
+        <section class="tabela-wrapper">
+
+            <table class="tabela-pedidos">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Pedido</th>
+                        <th>Cliente</th>
+                        <th>Produtos</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="listaPedidos">
+
+                    <!-- JS/BACKEND -->
+
+                </tbody>
+
+            </table>
+
+            <!-- Estado vazio -->
+
+            <div class="empty-state hidden" id="semPedidos">
+
+                <i class="bi bi-cart-x"></i>
+
+                <h2>Nenhum pedido encontrado</h2>
+
+                <p>Os pedidos aparecerão aqui quando houver movimentação.</p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL -->
+
+    <div class="modal" id="modalPedido">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2>Detalhes do Pedido</h2>
+
+                <button type="button" id="fecharModalPedido">
+
+                    <i class="bi bi-x-lg"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="info-grid">
+
+                    <div>
+                        <small>Pedido</small>
+                        <strong id="modalNumeroPedido">#0000</strong>
+                    </div>
+
+                    <div>
+                        <small>Cliente</small>
+                        <strong id="modalCliente">---</strong>
+                    </div>
+
+                    <div>
+                        <small>Data</small>
+                        <strong id="modalData">--/--/----</strong>
+                    </div>
+
+                    <div>
+                        <small>Status</small>
+                        <strong id="modalStatus">---</strong>
+                    </div>
+
+                </div>
+
+                <h3>Produtos</h3>
+
+                <div id="modalProdutos">
+
+                    <!-- BACKEND -->
+
+                </div>
+
+                <div class="total-pedido">
+
+                    <span>Total</span>
+
+                    <strong id="modalTotal">R$ 0,00</strong>
+
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button" id="btnFecharPedido">
+
+                    Fechar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTÃO TEMA -->
+
+    <button type="button" id="temaBtn" aria-label="Alternar tema">
+
+        <i class="bi bi-moon-stars-fill"></i>
+
+    </button>
+
+    <script src="../js/pedidos.js"></script>
+
+</body>
+
+</html>

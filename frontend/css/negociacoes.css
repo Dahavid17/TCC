@@ -1,0 +1,640 @@
+/* =============================================================
+   NEGOCIACOES.CSS
+   MarketPlace Rural
+   ============================================================= */
+
+/* ================= BASE ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--areia);
+    color:var(--texto);
+    font-family:var(--fonte-corpo);
+    transition:.25s;
+}
+
+/* ================= HEADER ================= */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:72px;
+    background:var(--branco);
+    border-bottom:1px solid var(--borda);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--verde);
+    font-size:20px;
+    font-weight:800;
+}
+
+.logo i{
+    font-size:28px;
+}
+
+.search-form{
+    flex:1;
+    max-width:520px;
+    margin:0 35px;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#F8F4EC;
+    border:1px solid var(--borda);
+    border-radius:999px;
+    padding:12px 18px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    background:transparent;
+    outline:none;
+    color:var(--texto);
+}
+
+/* ================= TOPO ================= */
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#F8F4EC;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.icon-btn:hover,
+.icon-btn.ativo{
+    background:rgba(49,87,44,.12);
+}
+
+.icon-btn i{
+    color:var(--verde);
+}
+
+.perfil button{
+    border:none;
+    background:none;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--verde);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.avatar.grande{
+    width:54px;
+    height:54px;
+    font-size:22px;
+}
+
+#nomeUsuario{
+    display:block;
+}
+
+#tipoUsuario{
+    color:var(--suave);
+    font-size:12px;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+    position:fixed;
+    top:72px;
+    left:0;
+    width:230px;
+    height:calc(100vh - 72px);
+    background:var(--branco);
+    border-right:1px solid var(--borda);
+    padding:26px 18px;
+}
+
+.sidebar nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:14px;
+    text-decoration:none;
+    color:var(--texto);
+    transition:.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.ativo{
+    background:rgba(49,87,44,.12);
+    color:var(--verde);
+    font-weight:700;
+}
+
+/* ================= CONTEÚDO ================= */
+
+.conteudo{
+    margin-left:230px;
+    padding:96px 34px 34px;
+}
+
+.page-header{
+    margin-bottom:28px;
+}
+
+.page-header h1{
+    color:var(--verde);
+    font-family:var(--fonte-display);
+    margin-bottom:6px;
+}
+
+.page-header p{
+    color:var(--suave);
+}
+
+/* ================= CARDS ================= */
+
+.cards-resumo{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.resumo-card{
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:24px;
+    padding:24px;
+    text-align:center;
+}
+
+.resumo-card i{
+    font-size:28px;
+    color:var(--verde);
+}
+
+.resumo-card strong{
+    display:block;
+    font-size:30px;
+    margin:10px 0;
+}
+
+/* ================= CHAT ================= */
+
+.chat-container{
+    display:grid;
+    grid-template-columns:320px 1fr;
+    gap:20px;
+    height:calc(100vh - 250px);
+}
+
+.lista-conversas,
+.chat-box{
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:24px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+}
+
+.lista-header{
+    padding:22px;
+    border-bottom:1px solid var(--borda);
+}
+
+#listaConversas{
+    flex:1;
+    overflow-y:auto;
+}
+
+/* ITEM CONVERSA */
+
+.conversa-item{
+    width:100%;
+    border:none;
+    background:none;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    cursor:pointer;
+    text-align:left;
+    transition:.2s;
+}
+
+.conversa-item:hover,
+.conversa-item.ativa{
+    background:rgba(49,87,44,.08);
+}
+
+.conversa-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.conversa-info small{
+    color:var(--suave);
+}
+
+/* CHAT */
+
+.chat-header{
+    padding:18px 22px;
+    border-bottom:1px solid var(--borda);
+}
+
+.chat-usuario{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.chat-usuario h3{
+    margin-bottom:4px;
+}
+
+.chat-usuario small{
+    color:var(--suave);
+}
+
+.chat-mensagens{
+    flex:1;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    overflow-y:auto;
+    background:#FAF8F3;
+}
+
+/* MENSAGENS */
+
+.mensagem{
+    max-width:72%;
+    padding:12px 16px;
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.mensagem p{
+    line-height:1.5;
+}
+
+.mensagem span{
+    font-size:11px;
+    opacity:.7;
+    align-self:flex-end;
+}
+
+.mensagem.recebida{
+    background:white;
+    align-self:flex-start;
+    border-bottom-left-radius:6px;
+}
+
+.mensagem.enviada{
+    background:var(--verde);
+    color:white;
+    align-self:flex-end;
+    border-bottom-right-radius:6px;
+}
+
+/* CHAT VAZIO */
+
+.empty-chat{
+    margin:auto;
+    text-align:center;
+}
+
+.empty-chat i{
+    font-size:60px;
+    color:var(--verde);
+    margin-bottom:18px;
+}
+
+.empty-chat h2{
+    color:var(--verde);
+    margin-bottom:10px;
+}
+
+.empty-chat p{
+    color:var(--suave);
+}
+
+/* INPUT CHAT */
+
+.chat-input{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:18px;
+    border-top:1px solid var(--borda);
+}
+
+.chat-input input{
+    flex:1;
+    padding:13px 16px;
+    border:1px solid var(--borda);
+    border-radius:999px;
+    outline:none;
+}
+
+.chat-input button{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+#btnAnexo{
+    background:#F2F2F2;
+}
+
+#btnEnviar{
+    background:var(--verde);
+    color:white;
+}
+
+/* ================= EMPTY ================= */
+
+.hidden{
+    display:none;
+}
+
+.empty-state{
+    padding:40px 20px;
+    text-align:center;
+}
+
+.empty-state i{
+    font-size:50px;
+    color:var(--verde);
+    margin-bottom:12px;
+}
+
+.empty-state p{
+    color:var(--suave);
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:3000;
+}
+
+.modal.ativo{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:560px;
+    background:var(--branco);
+    border-radius:24px;
+    padding:24px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.modal-header button{
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.campo input,
+.campo textarea{
+    padding:12px;
+    border-radius:12px;
+    border:1px solid var(--borda);
+    font-family:inherit;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+}
+
+.modal-actions button{
+    border:none;
+    border-radius:12px;
+    padding:12px 22px;
+    cursor:pointer;
+}
+
+#cancelarProposta{
+    background:#ECECEC;
+}
+
+#enviarProposta{
+    background:var(--verde);
+    color:white;
+}
+
+/* ================= BOTÃO TEMA ================= */
+
+#temaBtn{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:50%;
+    background:var(--verde);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:var(--sombra);
+}
+
+/* ================= MODO ESCURO ================= */
+
+body.dark{
+    background:#101411;
+    color:white;
+}
+
+body.dark .topbar,
+body.dark .sidebar,
+body.dark .resumo-card,
+body.dark .lista-conversas,
+body.dark .chat-box,
+body.dark .modal-box{
+    background:#18201A;
+    border-color:#2A382C;
+}
+
+body.dark .search-box{
+    background:#101411;
+}
+
+body.dark .search-box input,
+body.dark .chat-input input,
+body.dark .campo input,
+body.dark .campo textarea{
+    background:#101411;
+    color:white;
+    border-color:#2A382C;
+}
+
+body.dark .chat-mensagens{
+    background:#101411;
+}
+
+body.dark .mensagem.recebida{
+    background:#18201A;
+    border:1px solid #2A382C;
+}
+
+body.dark .conversa-item:hover,
+body.dark .conversa-item.ativa{
+    background:rgba(144,169,85,.15);
+}
+
+body.dark .sidebar a{
+    color:#E5E7EB;
+}
+
+body.dark .sidebar a:hover,
+body.dark .sidebar a.ativo{
+    background:rgba(144,169,85,.15);
+    color:var(--verde-claro);
+}
+
+body.dark .conversa-info small,
+body.dark #tipoUsuario,
+body.dark .page-header p,
+body.dark .chat-usuario small{
+    color:#B5C0B7;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media(max-width:1000px){
+
+    .cards-resumo{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:900px){
+
+    .chat-container{
+        grid-template-columns:1fr;
+        height:auto;
+    }
+
+    .lista-conversas{
+        max-height:260px;
+    }
+
+}
+
+@media(max-width:780px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .conteudo{
+        margin-left:0;
+        padding:120px 20px 30px;
+    }
+
+    .topbar{
+        flex-wrap:wrap;
+        height:auto;
+        padding:18px;
+        gap:15px;
+    }
+
+    .search-form{
+        order:3;
+        width:100%;
+        margin:0;
+    }
+
+}
+
+@media(max-width:560px){
+
+    .cards-resumo{
+        grid-template-columns:1fr;
+    }
+
+    .mensagem{
+        max-width:88%;
+    }
+
+}

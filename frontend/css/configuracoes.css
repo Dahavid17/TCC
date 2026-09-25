@@ -1,0 +1,566 @@
+/* =============================================================
+   CONFIGURACOES.CSS
+   MarketPlace Rural
+   ============================================================= */
+
+/* ---------- BASE ---------- */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:var(--areia);
+    color:var(--texto);
+    font-family:var(--fonte-corpo);
+    transition:.25s;
+}
+
+/* ---------- HEADER ---------- */
+
+.topbar{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:72px;
+    background:var(--branco);
+    border-bottom:1px solid var(--borda);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 28px;
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:var(--verde);
+    font-weight:800;
+    font-size:20px;
+}
+
+.logo i{
+    font-size:28px;
+}
+
+.search-form{
+    flex:1;
+    max-width:500px;
+    margin:0 30px;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#F8F4EC;
+    border:1px solid var(--borda);
+    border-radius:999px;
+    padding:12px 18px;
+}
+
+.search-box input{
+    width:100%;
+    border:none;
+    background:transparent;
+    outline:none;
+}
+
+/* ---------- TOPO ---------- */
+
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.icon-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#F8F4EC;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.icon-btn:hover{
+    background:rgba(49,87,44,.12);
+}
+
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--verde);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.perfil button{
+    border:none;
+    background:none;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+.sidebar{
+    position:fixed;
+    top:72px;
+    left:0;
+    width:230px;
+    height:calc(100vh - 72px);
+    background:var(--branco);
+    border-right:1px solid var(--borda);
+    padding:22px 16px;
+}
+
+.sidebar nav{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px;
+    border-radius:14px;
+    text-decoration:none;
+    color:var(--texto);
+    transition:.2s;
+}
+
+.sidebar a.ativo,
+.sidebar a:hover{
+    background:rgba(49,87,44,.10);
+    color:var(--verde);
+}
+
+/* ---------- CONTEÚDO ---------- */
+
+.conteudo{
+    margin-left:230px;
+    padding:100px 32px 32px;
+}
+
+.page-header{
+    margin-bottom:26px;
+}
+
+.page-header h1{
+    color:var(--verde);
+    font-family:var(--fonte-display);
+}
+
+.page-header p{
+    margin-top:6px;
+    color:var(--suave);
+}
+
+/* ---------- LAYOUT ---------- */
+
+.config-layout{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    gap:24px;
+}
+
+/* MENU INTERNO */
+
+.config-menu{
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:22px;
+    padding:14px;
+    height:fit-content;
+    position:sticky;
+    top:90px;
+}
+
+.menu-item{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    border:none;
+    background:none;
+    border-radius:14px;
+    cursor:pointer;
+    color:var(--texto);
+    font-size:15px;
+    transition:.2s;
+}
+
+.menu-item:hover,
+.menu-item.ativo{
+    background:#EEF5E8;
+    color:var(--verde);
+    font-weight:600;
+}
+
+/* CONTEÚDO DAS ABAS */
+
+.config-content{
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:26px;
+    padding:32px;
+}
+
+.tab{
+    display:none;
+}
+
+.tab.ativo{
+    display:block;
+}
+
+/* PERFIL */
+
+.perfil-topo{
+    display:flex;
+    align-items:center;
+    gap:24px;
+    margin-bottom:30px;
+}
+
+.avatar.gigante{
+    width:90px;
+    height:90px;
+    font-size:34px;
+}
+
+#tituloNome{
+    color:var(--verde);
+}
+
+#tituloTipo{
+    color:var(--suave);
+    margin:6px 0 12px;
+}
+
+#trocarFoto{
+    border:none;
+    background:#EEF5E8;
+    color:var(--verde);
+    padding:10px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+/* FORMULÁRIOS */
+
+.grid-form{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.campo label{
+    font-weight:600;
+}
+
+.campo input{
+    padding:13px;
+    border:1px solid var(--borda);
+    border-radius:12px;
+    background:var(--branco);
+    color:var(--texto);
+}
+
+.campo input:focus{
+    outline:none;
+    border-color:var(--verde);
+}
+
+.btn-principal{
+    margin-top:8px;
+    border:none;
+    background:var(--verde);
+    color:white;
+    padding:14px 24px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+/* PREFERÊNCIAS */
+
+.switch-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    border:1px solid var(--borda);
+    border-radius:18px;
+    margin-bottom:16px;
+}
+
+.switch-card p{
+    color:var(--suave);
+    font-size:14px;
+    margin-top:4px;
+}
+
+/* ZONA DE PERIGO */
+
+.descricao{
+    color:var(--suave);
+    margin:10px 0 20px;
+}
+
+.danger-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    border:1px solid var(--borda);
+    border-radius:18px;
+    margin-bottom:16px;
+}
+
+.danger-box button{
+    border:none;
+    border-radius:12px;
+    padding:12px 20px;
+    cursor:pointer;
+    font-weight:700;
+    background:#EEF5E8;
+    color:var(--verde);
+}
+
+.danger-box.excluir{
+    border-color:#F3CACA;
+}
+
+.danger-box.excluir button{
+    background:#D13A3A;
+    color:white;
+}
+
+/* ---------- MODAL ---------- */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:3000;
+}
+
+.modal.ativo{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:460px;
+    background:var(--branco);
+    border-radius:24px;
+    overflow:hidden;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px;
+    border-bottom:1px solid var(--borda);
+}
+
+.modal-header button{
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+.modal-body{
+    padding:28px;
+    text-align:center;
+}
+
+.alerta{
+    font-size:52px;
+    color:#D13A3A;
+    margin-bottom:18px;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    padding:22px;
+    border-top:1px solid var(--borda);
+}
+
+.modal-actions button{
+    border:none;
+    border-radius:12px;
+    padding:12px 22px;
+    cursor:pointer;
+}
+
+#cancelarExcluir{
+    background:#ECECEC;
+}
+
+.btn-danger{
+    background:#D13A3A;
+    color:white;
+}
+
+/* ---------- BOTÃO TEMA ---------- */
+
+#temaBtn{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    width:50px;
+    height:50px;
+    border:none;
+    border-radius:50%;
+    background:var(--verde);
+    color:white;
+    cursor:pointer;
+    box-shadow:var(--sombra);
+}
+
+/* ---------- MODO ESCURO ---------- */
+
+body.dark{
+    background:#101411;
+    color:white;
+}
+
+body.dark .topbar,
+body.dark .sidebar,
+body.dark .config-menu,
+body.dark .config-content,
+body.dark .modal-box{
+    background:#18201A;
+    border-color:#2A382C;
+}
+
+body.dark .search-box{
+    background:#101411;
+}
+
+body.dark .search-box input,
+body.dark .campo input{
+    background:#101411;
+    color:white;
+    border-color:#2A382C;
+}
+
+body.dark .sidebar a{
+    color:#E5E7EB;
+}
+
+body.dark .sidebar a:hover,
+body.dark .sidebar a.ativo{
+    background:#263626;
+    color:var(--verde-claro);
+}
+
+body.dark .menu-item:hover,
+body.dark .menu-item.ativo{
+    background:#263626;
+    color:var(--verde-claro);
+}
+
+body.dark .switch-card,
+body.dark .danger-box{
+    border-color:#2A382C;
+}
+
+body.dark #tituloTipo,
+body.dark .page-header p,
+body.dark .switch-card p,
+body.dark .descricao{
+    color:#B5C0B7;
+}
+
+/* ---------- RESPONSIVO ---------- */
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .conteudo{
+        margin-left:0;
+        padding:120px 20px 30px;
+    }
+
+    .config-layout{
+        grid-template-columns:1fr;
+    }
+
+    .config-menu{
+        display:flex;
+        overflow:auto;
+        gap:10px;
+        position:static;
+    }
+
+    .menu-item{
+        min-width:160px;
+        justify-content:center;
+    }
+
+    .grid-form{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .perfil-topo{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .danger-box{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+    }
+
+    .danger-box button{
+        width:100%;
+    }
+
+    .modal-actions{
+        flex-direction:column;
+    }
+
+}

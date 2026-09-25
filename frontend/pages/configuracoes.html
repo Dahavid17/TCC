@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Configurações | MarketPlace Rural</title>
+
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/favicon-32x32.png">
+
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/configuracoes.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="pagina-marketplace.html" class="logo">
+
+            <i class="bi bi-flower1"></i>
+
+            <span>MarketPlace Rural</span>
+
+        </a>
+
+        <form class="search-form">
+
+            <div class="search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input type="search" placeholder="Pesquisar..." disabled>
+
+            </div>
+
+        </form>
+
+        <div class="top-actions">
+
+            <button type="button" class="icon-btn" id="btnNotificacoes">
+
+                <i class="bi bi-bell"></i>
+
+            </button>
+
+            <button type="button" class="icon-btn" id="btnMensagens">
+
+                <i class="bi bi-chat-dots"></i>
+
+            </button>
+
+            <div class="perfil">
+
+                <button type="button" id="btnPerfil">
+
+                    <div class="avatar" id="avatarUsuario">U</div>
+
+                    <div>
+
+                        <span id="nomeUsuario">Usuário</span>
+
+                        <small id="tipoUsuario">Produtor</small>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- MENU LATERAL -->
+
+    <aside class="sidebar">
+
+        <nav>
+
+            <a href="pagina-marketplace.html">
+
+                <i class="bi bi-house"></i>
+
+                <span>Início</span>
+
+            </a>
+
+            <a href="meus-produtos.html">
+
+                <i class="bi bi-box-seam"></i>
+
+                <span>Meus Produtos</span>
+
+            </a>
+
+            <a href="pedidos.html">
+
+                <i class="bi bi-cart-check"></i>
+
+                <span>Pedidos</span>
+
+            </a>
+
+            <a href="negociacoes.html">
+
+                <i class="bi bi-chat-left-text"></i>
+
+                <span>Negociações</span>
+
+            </a>
+
+            <a href="estoque.html">
+
+                <i class="bi bi-clipboard-data"></i>
+
+                <span>Estoque</span>
+
+            </a>
+
+            <a href="favoritos.html">
+
+                <i class="bi bi-heart"></i>
+
+                <span>Favoritos</span>
+
+            </a>
+
+            <a href="configuracoes.html" class="ativo">
+
+                <i class="bi bi-gear"></i>
+
+                <span>Configurações</span>
+
+            </a>
+
+            <a href="../../backend/auth/logout.php">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>Sair</span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="conteudo">
+
+        <section class="page-header">
+
+            <div>
+
+                <h1>Configurações</h1>
+
+                <p>Gerencie sua conta e preferências.</p>
+
+            </div>
+
+        </section>
+
+        <section class="config-layout">
+
+            <!-- MENU INTERNO -->
+
+            <aside class="config-menu">
+
+                <button class="menu-item ativo" data-tab="perfil" type="button">
+
+                    <i class="bi bi-person-circle"></i>
+                    Perfil
+
+                </button>
+
+                <button class="menu-item" data-tab="seguranca" type="button">
+
+                    <i class="bi bi-shield-lock"></i>
+                    Segurança
+
+                </button>
+
+                <button class="menu-item" data-tab="preferencias" type="button">
+
+                    <i class="bi bi-sliders"></i>
+                    Preferências
+
+                </button>
+
+                <button class="menu-item" data-tab="conta" type="button">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Conta
+
+                </button>
+
+            </aside>
+
+            <!-- CONTEÚDO DAS ABAS -->
+
+            <section class="config-content">
+
+                <!-- PERFIL -->
+
+                <div class="tab ativo" id="perfil">
+
+                    <div class="perfil-topo">
+
+                        <div class="avatar gigante" id="avatarPerfil">U</div>
+
+                        <div>
+
+                            <h2 id="tituloNome">Usuário</h2>
+
+                            <p id="tituloTipo">Produtor</p>
+
+                            <button type="button" id="trocarFoto">
+
+                                Alterar foto
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <form id="formPerfil" method="post" autocomplete="on">
+
+                        <input type="hidden"
+                            id="usuarioId"
+                            name="usuario_id">
+
+                        <div class="grid-form">
+
+                            <div class="campo">
+
+                                <label for="nomePerfil">Nome</label>
+
+                                <input type="text"
+                                    id="nomePerfil"
+                                    name="nome"
+                                    required>
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label for="emailPerfil">E-mail</label>
+
+                                <input type="email"
+                                    id="emailPerfil"
+                                    name="email"
+                                    required>
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label for="telefonePerfil">Telefone</label>
+
+                                <input type="tel"
+                                    id="telefonePerfil"
+                                    name="telefone">
+
+                            </div>
+
+                            <div class="campo">
+
+                                <label for="cidadePerfil">Cidade</label>
+
+                                <input type="text"
+                                    id="cidadePerfil"
+                                    name="cidade">
+
+                            </div>
+
+                        </div>
+
+                        <button type="submit"
+                            id="btnSalvarPerfil"
+                            class="btn-principal">
+
+                            Salvar alterações
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- SEGURANÇA -->
+
+                <div class="tab" id="seguranca">
+
+                    <h2>Alterar senha</h2>
+
+                    <form id="formSenha" method="post">
+
+                        <div class="campo">
+
+                            <label for="senhaAtual">Senha atual</label>
+
+                            <input type="password"
+                                id="senhaAtual"
+                                name="senha_atual"
+                                required>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="novaSenha">Nova senha</label>
+
+                            <input type="password"
+                                id="novaSenha"
+                                name="nova_senha"
+                                required>
+
+                        </div>
+
+                        <div class="campo">
+
+                            <label for="confirmarSenha">Confirmar senha</label>
+
+                            <input type="password"
+                                id="confirmarSenha"
+                                name="confirmar_senha"
+                                required>
+
+                        </div>
+
+                        <button type="submit"
+                            id="btnSalvarSenha"
+                            class="btn-principal">
+
+                            Atualizar senha
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- PREFERÊNCIAS -->
+
+                <div class="tab" id="preferencias">
+
+                    <h2>Preferências</h2>
+
+                    <form id="formPreferencias" method="post">
+
+                        <div class="switch-card">
+
+                            <div>
+
+                                <strong>Notificações</strong>
+
+                                <p>Receber notificações do sistema.</p>
+
+                            </div>
+
+                            <checkbox id="notificacoes" name="notificacoes" defaultChecked />
+
+                        </div>
+
+                        <div class="switch-card">
+
+                            <div>
+
+                                <strong>E-mails</strong>
+
+                                <p>Receber novidades por e-mail.</p>
+
+                            </div>
+
+                            <checkbox id="emails" name="emails" defaultChecked />
+
+                        </div>
+
+                        <div class="switch-card">
+
+                            <div>
+
+                                <strong>Modo escuro automático</strong>
+
+                                <p>Ativar automaticamente.</p>
+
+                            </div>
+
+                            <checkbox id="temaAutomatico" name="tema_automatico" />
+
+                        </div>
+
+                        <button type="submit"
+                            id="btnSalvarPreferencias"
+                            class="btn-principal">
+
+                            Salvar preferências
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- CONTA -->
+
+                <div class="tab" id="conta">
+
+                    <h2>Zona de perigo</h2>
+
+                    <p class="descricao">
+
+                        Essas ações afetam permanentemente sua conta.
+
+                    </p>
+
+                    <div class="danger-box">
+
+                        <div>
+
+                            <strong>Encerrar sessão</strong>
+
+                            <p>Sair da sua conta.</p>
+
+                        </div>
+
+                        <button type="button" id="btnLogout">
+
+                            Sair
+
+                        </button>
+
+                    </div>
+
+                    <div class="danger-box excluir">
+
+                        <div>
+
+                            <strong>Excluir conta</strong>
+
+                            <p>Essa ação não poderá ser desfeita.</p>
+
+                        </div>
+
+                        <button type="button" id="btnExcluirConta">
+
+                            Excluir
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL EXCLUIR CONTA -->
+
+    <div class="modal" id="modalExcluirConta">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2>Excluir conta</h2>
+
+                <button type="button" id="fecharModalExcluir">
+
+                    <i class="bi bi-x-lg"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <i class="bi bi-exclamation-triangle-fill alerta"></i>
+
+                <p>
+
+                    Tem certeza que deseja excluir sua conta?
+                    Esta ação não poderá ser desfeita.
+
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button" id="cancelarExcluir">
+
+                    Cancelar
+
+                </button>
+
+                <button type="button"
+                    id="confirmarExcluir"
+                    class="btn-danger">
+
+                    Excluir conta
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTÃO TEMA -->
+
+    <button id="temaBtn" type="button" aria-label="Alternar tema">
+
+        <i class="bi bi-moon-stars-fill"></i>
+
+    </button>
+
+    <script src="../js/configuracoes.js"></script>
+
+</body>
+
+</html>

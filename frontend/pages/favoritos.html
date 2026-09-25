@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Favoritos | MarketPlace Rural</title>
+
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/favicon-32x32.png">
+
+    <link rel="stylesheet" href="../css/tokens.css">
+    <link rel="stylesheet" href="../css/favoritos.css">
+
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="pagina-marketplace.html" class="logo">
+
+            <i class="bi bi-flower1"></i>
+
+            <span>MarketPlace Rural</span>
+
+        </a>
+
+        <form class="search-form" id="formPesquisaFavoritos">
+
+            <div class="search-box">
+
+                <i class="bi bi-search"></i>
+
+                <input type="search"
+                    id="pesquisaFavorito"
+                    name="pesquisa"
+                    placeholder="Pesquisar favoritos..."
+                    autocomplete="off">
+
+            </div>
+
+        </form>
+
+        <div class="top-actions">
+
+            <button type="button" class="icon-btn" id="btnNotificacoes">
+
+                <i class="bi bi-bell"></i>
+
+            </button>
+
+            <button type="button" class="icon-btn" id="btnMensagens">
+
+                <i class="bi bi-chat-dots"></i>
+
+            </button>
+
+            <div class="perfil">
+
+                <button type="button" id="btnPerfil">
+
+                    <div class="avatar" id="avatarUsuario">U</div>
+
+                    <div>
+
+                        <span id="nomeUsuario">Usuário</span>
+
+                        <small id="tipoUsuario">Comprador</small>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <nav>
+
+            <a href="pagina-marketplace.html">
+                <i class="bi bi-house"></i>
+                <span>Início</span>
+            </a>
+
+            <a href="meus-produtos.html">
+                <i class="bi bi-box-seam"></i>
+                <span>Meus Produtos</span>
+            </a>
+
+            <a href="pedidos.html">
+                <i class="bi bi-cart-check"></i>
+                <span>Pedidos</span>
+            </a>
+
+            <a href="negociacoes.html">
+                <i class="bi bi-chat-left-text"></i>
+                <span>Negociações</span>
+            </a>
+
+            <a href="estoque.html">
+                <i class="bi bi-clipboard-data"></i>
+                <span>Estoque</span>
+            </a>
+
+            <a href="favoritos.html" class="ativo">
+                <i class="bi bi-heart-fill"></i>
+                <span>Favoritos</span>
+            </a>
+
+            <a href="configuracoes.html">
+                <i class="bi bi-gear"></i>
+                <span>Configurações</span>
+            </a>
+
+            <a href="../../backend/auth/logout.php">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sair</span>
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <!-- CONTEÚDO -->
+
+    <main class="conteudo">
+
+        <section class="page-header">
+
+            <div>
+
+                <h1>Meus Favoritos</h1>
+
+                <p>Produtos salvos para acompanhar depois.</p>
+
+            </div>
+
+            <button type="button" id="btnLimparFavoritos">
+
+                <i class="bi bi-trash"></i>
+
+                Limpar Favoritos
+
+            </button>
+
+        </section>
+
+        <!-- CARDS -->
+
+        <section class="cards-resumo">
+
+            <div class="resumo-card">
+
+                <i class="bi bi-heart-fill"></i>
+
+                <strong id="totalFavoritos">0</strong>
+
+                <span>Favoritos</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-shop"></i>
+
+                <strong id="produtoresFavoritos">0</strong>
+
+                <span>Produtores</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-tags"></i>
+
+                <strong id="categoriasFavoritas">0</strong>
+
+                <span>Categorias</span>
+
+            </div>
+
+            <div class="resumo-card">
+
+                <i class="bi bi-bag-check"></i>
+
+                <strong id="disponiveisFavoritos">0</strong>
+
+                <span>Disponíveis</span>
+
+            </div>
+
+        </section>
+
+        <!-- FILTROS -->
+
+        <section class="filtros">
+
+            <select id="filtroCategoria" name="categoria">
+
+                <option value="">Todas categorias</option>
+
+                <option value="hortalicas">Hortaliças</option>
+                <option value="frutas">Frutas</option>
+                <option value="graos">Grãos</option>
+                <option value="laticinios">Laticínios</option>
+                <option value="carnes">Carnes</option>
+                <option value="flores">Flores</option>
+
+            </select>
+
+            <select id="filtroDisponibilidade" name="disponibilidade">
+
+                <option value="">Todos</option>
+
+                <option value="disponivel">Disponível</option>
+                <option value="indisponivel">Indisponível</option>
+
+            </select>
+
+        </section>
+
+        <!-- GRID -->
+
+        <section class="grid-produtos" id="listaFavoritos">
+
+            <!-- Os cards serão carregados pelo JS -->
+
+        </section>
+
+        <!-- EMPTY -->
+
+        <section class="empty-state hidden" id="semFavoritos">
+
+            <i class="bi bi-heart"></i>
+
+            <h2>Nenhum favorito ainda</h2>
+
+            <p>Os produtos que você favoritar aparecerão aqui.</p>
+
+            <a href="pagina-marketplace.html" class="btn-explorar">
+
+                Explorar produtos
+
+            </a>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL -->
+
+    <div class="modal" id="modalFavorito">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2>Detalhes do Produto</h2>
+
+                <button type="button" id="fecharModalFavorito">
+
+                    <i class="bi bi-x-lg"></i>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <img id="modalImagem"
+                    src="../../assets/img/produtos/produto-placeholder.jpg"
+                    alt="Produto">
+
+                <span class="categoria" id="modalCategoria">Categoria</span>
+
+                <h3 id="modalNome">Produto</h3>
+
+                <p id="modalProdutor">Produtor</p>
+
+                <strong id="modalPreco">R$ 0,00</strong>
+
+                <p id="modalDescricao">
+                    Descrição do produto.
+                </p>
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button" id="removerFavorito">
+
+                    Remover
+
+                </button>
+
+                <button type="button" id="irNegociacao">
+
+                    Negociar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTÃO TEMA -->
+
+    <button id="temaBtn" type="button" aria-label="Alternar tema">
+
+        <i class="bi bi-moon-stars-fill"></i>
+
+    </button>
+
+    <script src="../js/favoritos.js"></script>
+
+</body>
+
+</html>

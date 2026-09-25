@@ -1,0 +1,878 @@
+/* =============================================================
+   PAGINA-MARKETPLACE.CSS
+   Painel principal — MarketPlace Rural
+   ============================================================= */
+
+/* =============================================================
+   BASE
+   ============================================================= */
+
+body {
+    margin: 0;
+
+    background: var(--areia);
+
+    color: var(--texto);
+
+    font-family: var(--fonte-corpo);
+}
+
+/* =============================================================
+   HEADER
+   ============================================================= */
+
+.topbar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 72px;
+
+    background: var(--branco);
+
+    border-bottom: 1px solid var(--borda);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    z-index: 1000;
+
+}
+
+.logo {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    text-decoration: none;
+
+    color: var(--verde);
+
+    font-size: 20px;
+    font-weight: 800;
+
+}
+
+.logo i {
+
+    font-size: 28px;
+
+}
+
+/* =============================================================
+   PESQUISA
+   ============================================================= */
+
+.search-form {
+
+    flex: 1;
+
+    max-width: 520px;
+
+    margin: 0 35px;
+
+}
+
+.search-box {
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: #F8F4EC;
+
+    border: 1px solid var(--borda);
+
+    border-radius: var(--radius-pill);
+
+    padding: 12px 18px;
+
+}
+
+.search-box i {
+
+    color: var(--suave);
+
+}
+
+.search-box input {
+
+    width: 100%;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-size: 14px;
+
+    color: var(--texto);
+
+}
+
+/* =============================================================
+   MENU SUPERIOR
+   ============================================================= */
+
+.top-actions {
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+}
+
+.icon-btn {
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #F8F4EC;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.icon-btn:hover {
+
+    background: rgba(49, 87, 44, .10);
+
+}
+
+.icon-btn i {
+
+    font-size: 18px;
+
+    color: var(--verde);
+
+}
+
+.perfil button {
+
+    border: none;
+
+    background: none;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    cursor: pointer;
+
+}
+
+.avatar {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: var(--verde);
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+
+}
+
+#nomeUsuario {
+
+    display: block;
+
+    color: var(--texto);
+
+    font-size: 14px;
+
+}
+
+#tipoUsuario {
+
+    color: var(--suave);
+
+    font-size: 12px;
+
+}
+
+/* =============================================================
+   SIDEBAR
+   ============================================================= */
+
+.sidebar {
+
+    position: fixed;
+
+    top: 72px;
+    left: 0;
+
+    width: 230px;
+
+    height: calc(100vh - 72px);
+
+    background: var(--branco);
+
+    border-right: 1px solid var(--borda);
+
+    padding: 26px 18px;
+
+}
+
+.sidebar nav {
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+}
+
+.sidebar a {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 14px;
+
+    text-decoration: none;
+
+    color: var(--texto);
+
+    border-radius: var(--radius-md);
+
+    transition: .25s;
+
+}
+
+.sidebar a:hover {
+
+    background: rgba(49, 87, 44, .08);
+
+    color: var(--verde);
+
+}
+
+.sidebar a.ativo {
+
+    background: rgba(49, 87, 44, .12);
+
+    color: var(--verde);
+
+    font-weight: 700;
+
+}
+
+/* =============================================================
+   CONTEÚDO
+   ============================================================= */
+
+.conteudo {
+
+    margin-left: 230px;
+
+    padding: 96px 34px 34px;
+
+}
+
+/* =============================================================
+   HERO
+   ============================================================= */
+
+.hero {
+
+    background: linear-gradient(135deg, var(--verde), var(--verde-medio));
+
+    border-radius: 32px;
+
+    padding: 36px;
+
+    display: grid;
+    grid-template-columns: 1.2fr .8fr;
+
+    align-items: center;
+
+    gap: 30px;
+
+    color: white;
+
+    overflow: hidden;
+
+}
+
+.tag {
+
+    display: inline-block;
+
+    padding: 7px 14px;
+
+    border-radius: var(--radius-pill);
+
+    background: rgba(255, 255, 255, .15);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+}
+
+.hero h1 {
+
+    margin: 18px 0 12px;
+
+    font-family: var(--fonte-display);
+
+    font-size: 38px;
+
+}
+
+.hero p {
+
+    color: #EEF5E8;
+
+    line-height: 1.7;
+
+    margin-bottom: 26px;
+
+}
+
+.hero-botoes {
+
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+
+}
+
+.hero-botoes button {
+
+    height: 48px;
+
+    padding: 0 24px;
+
+    border: none;
+
+    border-radius: var(--radius-md);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+#btnNovoProduto {
+
+    background: white;
+
+    color: var(--verde);
+
+}
+
+#btnExplorar {
+
+    background: rgba(255, 255, 255, .12);
+
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, .2);
+
+}
+
+.hero-botoes button:hover {
+
+    transform: translateY(-2px);
+
+}
+
+.hero-imagem {
+
+    display: flex;
+    justify-content: center;
+
+}
+
+.hero-imagem img {
+
+    width: 100%;
+
+    max-width: 320px;
+
+}
+
+/* =============================================================
+   AÇÕES RÁPIDAS
+   ============================================================= */
+
+.acoes-rapidas {
+
+    margin-top: 32px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+
+}
+
+.card-acao {
+
+    background: var(--branco);
+
+    border: 1px solid var(--borda);
+
+    border-radius: 24px;
+
+    padding: 22px;
+
+    transition: .25s;
+
+}
+
+.card-acao:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--sombra);
+
+}
+
+.card-acao i {
+
+    font-size: 28px;
+
+    color: var(--verde);
+
+}
+
+.card-acao h3 {
+
+    margin: 12px 0 6px;
+
+}
+
+.card-acao p {
+
+    color: var(--suave);
+
+    font-weight: 700;
+
+}
+
+/* =============================================================
+   SEÇÕES
+   ============================================================= */
+
+.categorias,
+.produtos,
+.pedidos {
+
+    margin-top: 42px;
+
+}
+
+.section-header {
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 18px;
+
+}
+
+.section-header h2 {
+
+    font-family: var(--fonte-display);
+
+    color: var(--verde);
+
+}
+
+.section-header a {
+
+    color: var(--verde);
+
+    text-decoration: none;
+
+    font-weight: 700;
+
+}
+
+/* =============================================================
+   CATEGORIAS
+   ============================================================= */
+
+.lista-categorias {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+}
+
+.lista-categorias button {
+
+    padding: 12px 18px;
+
+    border: 1px solid var(--borda);
+
+    background: var(--branco);
+
+    border-radius: var(--radius-pill);
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.lista-categorias button:hover {
+
+    background: rgba(49, 87, 44, .08);
+
+    color: var(--verde);
+
+}
+
+/* =============================================================
+   PRODUTOS
+   ============================================================= */
+
+.grid-produtos {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+
+}
+
+.produto-card {
+
+    background: var(--branco);
+
+    border: 1px solid var(--borda);
+
+    border-radius: 24px;
+
+    overflow: hidden;
+
+    transition: .25s;
+
+}
+
+.produto-card:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--sombra);
+
+}
+
+.produto-card img {
+
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+
+}
+
+.produto-info {
+
+    padding: 18px;
+
+}
+
+.produto-info h3 {
+
+    margin: 0 0 8px;
+
+}
+
+.produto-info p {
+
+    color: var(--suave);
+
+    font-size: 13px;
+
+}
+
+.produto-info strong {
+
+    display: block;
+
+    margin: 14px 0;
+
+    color: var(--verde);
+
+    font-size: 18px;
+
+}
+
+.produto-info button {
+
+    width: 100%;
+    height: 42px;
+
+    border: none;
+
+    border-radius: var(--radius-md);
+
+    background: var(--verde);
+
+    color: white;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+}
+
+/* =============================================================
+   STATUS
+   ============================================================= */
+
+.status-grid {
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+
+}
+
+.status-card {
+
+    background: var(--branco);
+
+    border: 1px solid var(--borda);
+
+    border-radius: 24px;
+
+    padding: 24px;
+
+    text-align: center;
+
+}
+
+.status-card span {
+
+    display: block;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
+    color: var(--verde);
+
+}
+
+.status-card p {
+
+    margin-top: 8px;
+
+    color: var(--suave);
+
+}
+
+/* =============================================================
+   BOTÃO TEMA
+   ============================================================= */
+
+#temaBtn {
+
+    position: fixed;
+
+    right: 24px;
+    bottom: 24px;
+
+    width: 50px;
+    height: 50px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--verde);
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    box-shadow: var(--sombra);
+
+}
+
+/* =============================================================
+   MODO ESCURO
+   ============================================================= */
+
+body.dark {
+
+    background: #101411;
+
+    color: white;
+
+}
+
+body.dark .topbar,
+body.dark .sidebar,
+body.dark .card-acao,
+body.dark .produto-card,
+body.dark .status-card {
+
+    background: #18201A;
+
+    border-color: #2A382C;
+
+}
+
+body.dark .search-box {
+
+    background: #101411;
+
+}
+
+body.dark .search-box input {
+
+    color: white;
+
+}
+
+body.dark .sidebar a {
+
+    color: #E5E7EB;
+
+}
+
+body.dark .sidebar a:hover,
+body.dark .sidebar a.ativo {
+
+    background: rgba(144, 169, 85, .15);
+
+    color: var(--verde-claro);
+
+}
+
+body.dark .section-header h2,
+body.dark #nomeUsuario {
+
+    color: white;
+
+}
+
+body.dark .produto-info p,
+body.dark #tipoUsuario {
+
+    color: #B5C0B7;
+
+}
+
+/* =============================================================
+   RESPONSIVIDADE
+   ============================================================= */
+
+@media(max-width:1000px) {
+
+    .hero {
+
+        grid-template-columns: 1fr;
+
+        text-align: center;
+
+    }
+
+    .acoes-rapidas {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+    .status-grid {
+
+        grid-template-columns: repeat(2, 1fr);
+
+    }
+
+}
+
+@media(max-width:780px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .conteudo {
+
+        margin-left: 0;
+
+    }
+
+    .topbar {
+
+        flex-wrap: wrap;
+
+        height: auto;
+
+        padding: 18px;
+
+        gap: 15px;
+
+    }
+
+    .search-form {
+
+        order: 3;
+
+        max-width: none;
+
+        width: 100%;
+
+        margin: 0;
+
+    }
+
+}
+
+@media(max-width:560px) {
+
+    .acoes-rapidas,
+    .status-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .hero {
+
+        padding: 28px;
+
+    }
+
+    .hero h1 {
+
+        font-size: 30px;
+
+    }
+
+}
