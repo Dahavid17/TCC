@@ -1,7 +1,7 @@
 <div align="center">
 
 
-# 🌾 Marketplace Rura
+# 🌾 Marketplace Rural
 
 ### Trabalho de Conclusão de Curso • SESI/SENAI
 
