@@ -131,3 +131,62 @@ if (sectionIntegrantes && cardsContainer) {
     }
   });
 }
+
+// Animação da Logo com Nitidez Alta e Controle do Menu
+const logoArea = document.querySelector('.header .logo-area');
+const logoCover = document.querySelector('.logo-cover');
+const headerNav = document.querySelector('.header nav');
+const menuToggle = document.querySelector('.header .menu-toggle');
+
+if (logoArea && logoCover) {
+  let logoBaseX = 0, logoBaseY = 0, logoWidth = 0, logoHeight = 0;
+
+  function medirLogo() {
+    logoArea.style.transform = 'none';
+    const rect = logoArea.getBoundingClientRect();
+    logoWidth = rect.width;
+    logoHeight = rect.height;
+    logoBaseX = rect.left;
+    logoBaseY = rect.top;
+    atualizarAnimacao();
+  }
+
+  function atualizarAnimacao() {
+    const scrollY = window.scrollY;
+    const maxScroll = window.innerHeight * 0.6; // 60vh
+    let progresso = scrollY / maxScroll;
+
+    if (progresso < 0) progresso = 0;
+    if (progresso > 1) progresso = 1;
+
+    // 1. Encolhe a capa de fundo
+    logoCover.style.transform = `scaleY(${1 - progresso})`;
+
+    // 2. Aparição do Menu (Fica visível apenas nos últimos 30% do scroll)
+    const opacidadeMenu = Math.max(0, (progresso - 0.7) / 0.3);
+    
+    if (headerNav) {
+      headerNav.style.opacity = opacidadeMenu;
+      headerNav.style.pointerEvents = progresso >= 0.9 ? 'auto' : 'none';
+    }
+    if (menuToggle) {
+      menuToggle.style.opacity = opacidadeMenu;
+      menuToggle.style.pointerEvents = progresso >= 0.9 ? 'auto' : 'none';
+    }
+
+    // 3. Movimento da Logo do Centro para o Header
+    const centroX = (window.innerWidth / 2) - (logoWidth / 2) - logoBaseX;
+    const centroY = (window.innerHeight / 2) - (logoHeight / 2) - logoBaseY;
+
+    const currentX = (1 - progresso) * centroX;
+    const currentY = (1 - progresso) * centroY;
+    const escala = 1 + (1 - progresso) * 1.3;
+
+    logoArea.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(${escala})`;
+  }
+
+  window.addEventListener('scroll', atualizarAnimacao, { passive: true });
+  window.addEventListener('resize', medirLogo);
+
+  medirLogo();
+}
