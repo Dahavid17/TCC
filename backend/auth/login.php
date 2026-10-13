@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../conexao.php';
+require_once '../config/conexao.php';
 
 header('Content-Type: application/json');
 
