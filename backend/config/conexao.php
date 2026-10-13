@@ -2,7 +2,7 @@
 // Configurações do Banco de Dados na Hospedagem
 $host    = 'localhost';
 $dbname  = 'buzzcode_marketplace_rural'; // Nome do banco no cPanel
-$usuario = 'ADM';              // Usuário criado na cPanel
+$usuario = 'buzzcode_ADM';              // Usuário criado na cPanel
 $senha   = 'SF_6524139078';           // Senha que você definiu para esse usuário
 $charset = 'utf8mb4';
 
