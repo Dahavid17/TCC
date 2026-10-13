@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.sucesso) {
-                    // Login bem-sucedido, redireciona o usuário para o painel
-                    window.location.href = data.redirect;
+                    // MUDANÇA FEITA AQUI: Redireciona direto para inicio.html
+                    window.location.href = 'inicio.html';
                 } else {
-                    alert(data.mensagem); // Mostra o erro em um alert (ou você pode criar um <p> na tela como no cadastro)
+                    alert(data.mensagem); 
                     btnSubmit.disabled = false;
                     btnSubmit.textContent = 'Entrar na plataforma';
                 }
@@ -35,4 +35,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+}); 

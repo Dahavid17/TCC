@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     mensagemForm.textContent = data.mensagem + " Redirecionando para o login...";
                     // Redireciona após 2 segundos
                     setTimeout(() => {
-                        window.location.href = 'login-marketplace.html';
+                        window.location.href = 'inicio.html';
                     }, 2000);
                 } else {
                     mensagemForm.style.color = 'red';

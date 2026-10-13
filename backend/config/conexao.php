@@ -18,6 +18,8 @@ try {
     $pdo = new PDO($dsn, $usuario, $senha, $opcoes);
     // echo "Conectado com sucesso!"; // Descomente para testar e comente novamente após o teste
 } catch (PDOException $e) {
-    die("Erro ao conectar com o banco de dados: " . $e->getMessage());
+header('Content-Type: application/json');
+echo json_encode(['sucesso' => false, 'mensagem' => 'Erro ao conectar com o banco de dados.']);
+exit;
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../conexao.php'; // Ajuste o caminho da conexão se necessário
+require_once '../config/conexao.php'; // Ajuste o caminho da conexão se necessário
 
 header('Content-Type: application/json'); // Define o retorno como JSON
 
