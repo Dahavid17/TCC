@@ -9,13 +9,13 @@ document.addEventListener("DOMContentLoaded", async () => { // <-- Adicionado o 
         const response = await fetch('../../backend/auth/sessao.php');
         const data = await response.json();
 
-        if (!data.logado) {
+        if (!response.ok || !data.sucesso) {
             // Se não estiver logado, redireciona para o login
             window.location.href = 'login-marketplace.html';
             return; // Para a execução do script aqui
         }
-        
-        usuarioLogado = data; // Guarda os dados do usuário para usar abaixo
+
+        usuarioLogado = data.usuario; // Contrato: { sucesso, usuario: {...} }
     } catch (error) {
         console.error("Erro ao verificar sessão:", error);
     }
@@ -162,6 +162,12 @@ document.addEventListener("DOMContentLoaded", async () => { // <-- Adicionado o 
         const elementoNome = document.getElementById('nome-usuario');
         if (elementoNome) {
             elementoNome.textContent = primeiroNome;
+        }
+
+        const elementoTipo = document.getElementById('tipo-usuario');
+        if (elementoTipo && usuarioLogado.tipo_acesso) {
+            const tipo = usuarioLogado.tipo_acesso;
+            elementoTipo.textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
         }
 
         // Atualiza a letra do avatar (substitui o 'U' pela inicial do usuário)

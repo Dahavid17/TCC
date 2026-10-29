@@ -1,4 +1,3 @@
-
 <?php
 declare(strict_types=1);
 
@@ -25,7 +24,7 @@ try {
 
     $id = (int) $_SESSION['usuario_id'];
 
-    $sql = 'SELECT id, nome, email, telefone, cidade, tipo_acesso
+    $sql = 'SELECT id, nome, email, telefone, cidade, endereco, tipo_acesso
             FROM usuarios
             WHERE id = :id
             LIMIT 1';
@@ -49,6 +48,7 @@ try {
     $_SESSION['usuario_email'] = $usuario['email'];
     $_SESSION['usuario_tipo'] = $usuario['tipo_acesso'];
 
+    // Contrato único: { sucesso, usuario: { id, nome, email, telefone, cidade, endereco, tipo_acesso } }
     responder(200, [
         'sucesso' => true,
         'usuario' => $usuario

@@ -2,6 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCadastro = document.getElementById('formCadastro');
     const mensagemForm = document.getElementById('mensagemCadastrar'); // Pega o parágrafo de alerta
 
+    // Alternância Produtor/Comprador: atualiza o botão ativo e o input hidden
+    const tipoInput = document.getElementById('tipoConta');
+    document.querySelectorAll('.tipo-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tipo-btn').forEach((b) => b.classList.remove('ativo'));
+            btn.classList.add('ativo');
+            tipoInput.value = btn.textContent.trim().toLowerCase();
+        });
+    });
+
     if (formCadastro) {
         formCadastro.addEventListener('submit', async (e) => {
             e.preventDefault(); // Impede o redirecionamento padrão do HTML
@@ -32,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     mensagemForm.textContent = data.mensagem + " Redirecionando para o login...";
                     // Redireciona após 2 segundos
                     setTimeout(() => {
-                        window.location.href = 'inicio.html';
+                        window.location.href = 'login-marketplace.html';
                     }, 2000);
                 } else {
                     mensagemForm.style.color = 'red';
