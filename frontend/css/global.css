@@ -22,10 +22,7 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at top right, rgba(163,4,211,.25), transparent 34%),
-    radial-gradient(circle at top left, rgba(52,211,4,.10), transparent 28%),
-    #0d0d0d;
+  background: #0d0d0d;
   color: var(--texto);
   overflow-x: hidden;
 }
@@ -47,10 +44,10 @@ body {
   box-shadow: 0 12px 35px rgba(0,0,0,.35);
 }
 
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.logo-area img {
+    height: 54px;
+    object-fit: contain;
+    flex-shrink: 0; 
 }
 
 .logo-area img {
@@ -59,9 +56,10 @@ body {
 }
 
 .logo-area h3 {
-  color: #fff;
-  font-size: 20px;
-  letter-spacing: 5px;
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: 5px;
+    white-space: nowrap; 
 }
 
 /* BOTÃO HAMBURGUER */
@@ -189,7 +187,7 @@ nav a:hover {
 }
 
 .btn-principal {
-  background: linear-gradient(135deg, var(--roxo), var(--roxo-escuro));
+  background: var(--roxo);
   color: #fff;
   box-shadow: 0 0 22px rgba(163,4,211,.35);
 }
@@ -255,9 +253,7 @@ nav a:hover {
   color: inherit;
   display: block;
   cursor: pointer;
-  background:
-    linear-gradient(145deg, rgba(33,16,47,.95), rgba(8,8,8,.95)),
-    radial-gradient(circle at top right, rgba(52,211,4,.15), transparent 40%);
+  background: #171717;
   border: 1px solid rgba(163,4,211,.45);
   box-shadow: 0 0 55px rgba(163,4,211,.28), 0 18px 50px rgba(0,0,0,.45);
   position: relative;
@@ -317,7 +313,7 @@ nav a:hover {
 .progress-box span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--roxo), var(--verde));
+  background: var(--verde);
   border-radius: 999px;
 }
 
@@ -394,7 +390,7 @@ p {
 .servicos-grid div,
 .plano,
 .proj-card {
-  background: linear-gradient(145deg, #181818, #101010);
+  background: #181818;
   border: 1px solid var(--borda);
   border-radius: 22px;
   padding: 26px;
@@ -534,16 +530,12 @@ a.proj-card {
 }
 
 .proj-mockup.empresa {
-  background:
-    radial-gradient(circle, rgba(163,4,211,.25), transparent 45%),
-    linear-gradient(135deg, #21102f, #111);
+  background: #111;
   color: var(--roxo);
 }
 
 .proj-mockup.dash {
-  background:
-    radial-gradient(circle, rgba(52,211,4,.20), transparent 45%),
-    linear-gradient(135deg, #101010, #1b1027);
+  background: #111;
   color: var(--verde);
 }
 
@@ -627,11 +619,12 @@ body {
 }
 
 #integrantes .cards {
-  display: flex;
-  gap: 2.5rem;
-  padding: 0 6vw;
-  width: max-content;
-  will-change: transform;
+    display: flex;
+    gap: 2.5rem;
+    padding: 0 6vw;
+    width: max-content;
+    will-change: transform;
+    transition: transform 0.15s ease-out; /* Adiciona o efeito suave no scroll da equipa */
 }
 
 /* 1. SLIDE INTRO ("NOSSA EQUIPE") */
@@ -680,10 +673,7 @@ body.claro #integrantes .eq-intro h2 {
 
 #integrantes .eq-intro h2 span {
   display: block;
-  background: linear-gradient(135deg, #8b5cf6, #34d304);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.4));
+  color: var(--verde);
 }
 
 #integrantes .eq-intro p {
@@ -760,9 +750,7 @@ body.claro #integrantes .eq-intro p {
 /* CONTATO */
 .contatos {
   text-align: center;
-  background:
-    radial-gradient(circle at top, rgba(163,4,211,.20), transparent 35%),
-    linear-gradient(145deg, #181818, #101010);
+  background: #181818;
   border: 1px solid var(--borda);
   border-radius: 28px;
   padding: 55px 30px;
@@ -811,10 +799,7 @@ footer p {
 
 /* === MODO CLARO === */
 body.claro {
-  background:
-    radial-gradient(circle at top right, rgba(163,4,211,.12), transparent 35%),
-    radial-gradient(circle at top left, rgba(52,211,4,.08), transparent 30%),
-    #fff;
+  background: #fff;
   color: #222;
 }
 
@@ -858,7 +843,24 @@ body.claro #integrantes .card h3 {
 }
 
 body.claro .dashboard-card {
-  background: linear-gradient(145deg, #ffffff, #f1e6ff);
+  background: #ffffff;
+}
+
+/* Bordas retas em toda a interface */
+body,
+body *,
+body *::before,
+body *::after {
+  border-radius: 0 !important;
+}
+
+/* Controles de ação mantêm os cantos arredondados */
+button,
+[role="button"],
+.btn-principal,
+.btn-secundario,
+.plano a {
+  border-radius: 999px !important;
 }
 
 body.claro .dashboard-card h3,
@@ -1103,82 +1105,4 @@ body.claro .proj-card strong {
     height: 48px;
     font-size: 19px;
   }
-}
-
-/* =========================================================
-   CAPA DE ABERTURA FULLSCREEN -> DOCKED HEADER
-   ========================================================= */
-
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-/* Cortina de fundo (Usa transform-origin para encolher sem causar lag) */
-.logo-cover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--fundo, #0d0d11);
-  z-index: 1000;
-  pointer-events: none;
-  transform-origin: top center;
-  will-change: transform;
-}
-
-body.claro .logo-cover {
-  background: #ffffff !important;
-}
-
-/* Logo sobreposta */
-.header .logo-area {
-  position: relative;
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  will-change: transform;
-}
-
-/* Espaçador para a animação inicial não engolir o site */
-.espacador-animacao {
-  height: 80vh; /* Distância exata que o usuário precisa rolar para a animação acabar */
-  width: 100%;
-  pointer-events: none;
-}
-
-/* =========================================================
-   NITIDEZ DA LOGO E MENU OCULTO NA ABERTURA
-   ========================================================= */
-
-/* Oculta o menu durante a tela de abertura */
-.header nav, 
-.header .menu-toggle {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease-out;
-}
-
-/* Otimização de nitidez para a logo durante a ampliação (Evita borrão) */
-.header .logo-area {
-  position: relative;
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  will-change: transform;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-.header .logo-area img {
-  image-rendering: -webkit-optimize-contrast;
-  backface-visibility: hidden;
-  transform: translateZ(0);
 }
