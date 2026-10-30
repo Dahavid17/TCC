@@ -211,6 +211,30 @@
                 Salvar alterações
               </button>
             </form>
+
+            <div class="bloco-tipo-conta" id="blocoTipoConta">
+              <h3>Tipo de conta</h3>
+
+              <p>
+                Comprar e vender continuam liberados para qualquer conta. O tipo
+                Produtor libera a Gestão da Fazenda.
+              </p>
+
+              <div class="campo">
+                <label for="tipoContaConfig">Tipo</label>
+
+                <select id="tipoContaConfig">
+                  <option value="produtor">Produtor</option>
+                  <option value="comprador">Comprador</option>
+                </select>
+              </div>
+
+              <p id="mensagemTipo" role="status" aria-live="polite"></p>
+
+              <button type="button" id="btnSalvarTipo" class="btn-principal">
+                Alterar tipo de conta
+              </button>
+            </div>
           </div>
 
           <!-- SEGURANÇA -->
@@ -378,6 +402,7 @@
       <i class="bi bi-moon-stars-fill"></i>
     </button>
 
-    <script src="../js/configuracoes.js"></script>
+    <script src="../js/menu.js"></script>
+    <script src="../js/configuracoes.js?v=2"></script>
   </body>
 </html>

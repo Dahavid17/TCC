@@ -564,3 +564,34 @@ body.dark .descricao{
     }
 
 }
+/* Tipo de conta */
+
+.bloco-tipo-conta {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--borda);
+}
+
+.bloco-tipo-conta h3 {
+  margin: 0 0 8px;
+}
+
+.bloco-tipo-conta p {
+  margin: 0 0 16px;
+  opacity: 0.75;
+}
+
+.campo select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  background: var(--branco);
+  font: inherit;
+}
+
+body.dark .campo select {
+  background: #1f2a1c;
+  border-color: #33402f;
+  color: #fff;
+}

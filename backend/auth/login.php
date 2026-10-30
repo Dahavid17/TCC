@@ -37,6 +37,19 @@ try {
         responder(401, ['sucesso' => false, 'mensagem' => 'E-mail ou senha incorretos.']);
     }
 
+    // O perfil escolhido na tela de login precisa corresponder ao tipo da conta (admin entra por qualquer um).
+    $perfil = strtolower(trim((string) ($_POST['perfil'] ?? '')));
+
+    if (in_array($perfil, ['produtor', 'comprador'], true)
+        && $usuario['tipo_acesso'] !== 'admin'
+        && $perfil !== $usuario['tipo_acesso']) {
+        responder(403, [
+            'sucesso'     => false,
+            'mensagem'    => 'Esta conta é de ' . $usuario['tipo_acesso'] . '. Selecionamos o perfil correto; clique em Entrar novamente.',
+            'tipo_conta'  => $usuario['tipo_acesso'],
+        ]);
+    }
+
     session_regenerate_id(true);
 
     $_SESSION['usuario_id']    = (int) $usuario['id'];

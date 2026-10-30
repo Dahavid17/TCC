@@ -45,7 +45,46 @@ document.addEventListener("DOMContentLoaded", () => {
     if (avatarPerfil) avatarPerfil.textContent = inicial;
     if (tituloNome) tituloNome.textContent = nome;
     if (tituloTipo) tituloTipo.textContent = tipo;
+
+    const selectTipo = document.getElementById("tipoContaConfig");
+    const blocoTipo = document.getElementById("blocoTipoConta");
+
+    if (selectTipo && ["produtor", "comprador"].includes(usuario.tipo_acesso)) {
+      selectTipo.value = usuario.tipo_acesso;
+    }
+
+    // Contas administradoras não trocam de tipo por aqui.
+    if (blocoTipo) blocoTipo.hidden = usuario.tipo_acesso === "admin";
   }
+
+  const btnSalvarTipo = document.getElementById("btnSalvarTipo");
+
+  btnSalvarTipo?.addEventListener("click", async () => {
+    const mensagemTipo = document.getElementById("mensagemTipo");
+    const dados = new FormData();
+
+    dados.append("tipo", document.getElementById("tipoContaConfig").value);
+    btnSalvarTipo.disabled = true;
+
+    try {
+      const resposta = await fetch("../../backend/usuarios/tipo.php", {
+        method: "POST",
+        body: dados
+      });
+      const resultado = await resposta.json();
+
+      if (!resposta.ok || !resultado.sucesso) {
+        throw new Error(resultado.mensagem || "Não foi possível alterar o tipo de conta.");
+      }
+
+      // Recarrega para o menu (Gestão da Fazenda) refletir o novo tipo.
+      window.location.reload();
+    } catch (erro) {
+      mensagemTipo.textContent = erro.message;
+      mensagemTipo.className = "msg-erro";
+      btnSalvarTipo.disabled = false;
+    }
+  });
 
   async function carregarPerfil() {
     try {
