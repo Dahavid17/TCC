@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ========================================================== */
 
     let catalogo = [];
+    let favoritosIds = new Set();
     let categoriaAtiva = "";
     let mostrarTodos = false;
 
@@ -117,13 +118,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
 
-            const [dadosCatalogo, dadosMeus, dadosPedidos] = await Promise.all([
+            const [dadosCatalogo, dadosMeus, dadosPedidos, dadosFavoritos] = await Promise.all([
                 chamarApi("produtos/listar.php?escopo=catalogo"),
                 chamarApi("produtos/listar.php"),
-                chamarApi("pedidos/listar.php")
+                chamarApi("pedidos/listar.php"),
+                chamarApi("favoritos/listar.php")
             ]);
 
             catalogo = dadosCatalogo.produtos;
+            favoritosIds = new Set(dadosFavoritos.produtos.map(p => p.id));
 
             document.getElementById("totalProdutos").textContent = dadosMeus.produtos.length;
             document.getElementById("totalEstoque").textContent =
@@ -186,9 +189,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 : "../../assets/img/produtos/produto-placeholder.jpg";
 
             const meu = produto.vendedor_id === usuarioLogado.id;
+            const favorito = favoritosIds.has(produto.id);
 
             return `
                 <article class="produto-card">
+                    <button type="button" class="btn-favorito" data-favoritar="${produto.id}"
+                            aria-label="${favorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}">
+                        <i class="bi ${favorito ? "bi-heart-fill" : "bi-heart"}"></i>
+                    </button>
                     <img src="${escapeHtml(imagem)}" alt="${escapeHtml(produto.nome)}">
                     <div class="produto-info">
                         <h3>${escapeHtml(produto.nome)}</h3>
@@ -230,12 +238,59 @@ document.addEventListener("DOMContentLoaded", async () => {
         produtoCompra = null;
     }
 
+    // Grava no banco e só então atualiza o coração na tela.
+    async function alternarFavorito(id, botao) {
+
+        const adicionar = !favoritosIds.has(id);
+        const dados = new FormData();
+
+        dados.append("acao", adicionar ? "adicionar" : "remover");
+        dados.append("anuncio_id", id);
+
+        botao.disabled = true;
+
+        try {
+
+            const resposta = await fetch(API + "favoritos/atualizar.php", { method: "POST", body: dados });
+            const resultado = await resposta.json();
+
+            if (resposta.status === 401) {
+                window.location.href = "login-marketplace.html";
+                return;
+            }
+
+            if (!resposta.ok || !resultado.sucesso) {
+                throw new Error(resultado.mensagem || "Não foi possível atualizar os favoritos.");
+            }
+
+            if (adicionar) {
+                favoritosIds.add(id);
+            } else {
+                favoritosIds.delete(id);
+            }
+
+            renderizarProdutos();
+
+        } catch (error) {
+
+            alert(error.message);
+            botao.disabled = false;
+        }
+    }
+
     listaProdutos.addEventListener("click", e => {
 
         const irPara = e.target.closest("[data-ir]");
 
         if (irPara) {
             window.location.href = irPara.dataset.ir;
+            return;
+        }
+
+        const favoritar = e.target.closest("[data-favoritar]");
+
+        if (favoritar) {
+            alternarFavorito(Number(favoritar.dataset.favoritar), favoritar);
             return;
         }
 

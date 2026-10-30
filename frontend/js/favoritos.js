@@ -1,4 +1,15 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const API = "../../backend/";
+
+    const NOMES_CATEGORIA = {
+        hortalicas: "Hortaliças",
+        frutas: "Frutas",
+        graos: "Grãos",
+        laticinios: "Laticínios",
+        carnes: "Carnes",
+        flores: "Flores"
+    };
 
     /* ======================================================
        TEMA
@@ -25,73 +36,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ======================================================
-       USUÁRIO TEMPORÁRIO
+       API
     ====================================================== */
 
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {
-        nome: "Usuário",
-        tipo: "Comprador"
-    };
+    async function chamarApi(caminho, opcoes = {}) {
 
-    document.getElementById("nomeUsuario").textContent = usuario.nome;
-    document.getElementById("tipoUsuario").textContent = usuario.tipo;
-    document.getElementById("avatarUsuario").textContent =
-        usuario.nome.charAt(0).toUpperCase();
+        const resposta = await fetch(API + caminho, opcoes);
 
-    /* ======================================================
-       DADOS TEMPORÁRIOS
-       Depois virão do banco.
-    ====================================================== */
+        let dados = {};
 
-    let favoritos = JSON.parse(localStorage.getItem("marketplace:favoritos")) || [
-
-        {
-            id: 1,
-            nome: "Tomate Orgânico",
-            categoria: "hortalicas",
-            produtor: "Fazenda Santa Luzia",
-            preco: 8.90,
-            descricao: "Tomate cultivado sem agrotóxicos.",
-            imagem: "img/produto-placeholder.jpg",
-            disponivel: true
-        },
-
-        {
-            id: 2,
-            nome: "Leite Integral",
-            categoria: "laticinios",
-            produtor: "Sítio Boa Esperança",
-            preco: 5.50,
-            descricao: "Leite fresco produzido diariamente.",
-            imagem: "img/produto-placeholder.jpg",
-            disponivel: false
+        try {
+            dados = await resposta.json();
+        } catch (erro) {
+            dados = { sucesso: false, mensagem: "Resposta inválida do servidor." };
         }
 
-    ];
+        if (resposta.status === 401) {
+            window.location.href = "login-marketplace.html";
+            throw new Error("Sessão expirada");
+        }
 
+        if (!resposta.ok || !dados.sucesso) {
+            throw new Error(dados.mensagem || "Erro ao comunicar com o servidor.");
+        }
+
+        return dados;
+    }
+
+    function escapeHtml(texto) {
+
+        const div = document.createElement("div");
+        div.textContent = texto ?? "";
+
+        return div.innerHTML.replace(/"/g, "&quot;");
+    }
+
+    function urlImagem(caminho) {
+
+        return caminho
+            ? "../../" + caminho
+            : "../../assets/img/produtos/produto-placeholder.jpg";
+    }
+
+    function dinheiro(valor) {
+
+        return "R$ " + valor.toFixed(2).replace(".", ",");
+    }
+
+    function nomeCategoria(slug) {
+
+        return NOMES_CATEGORIA[slug] || slug;
+    }
+
+    /* ======================================================
+       USUÁRIO (sessão do servidor)
+    ====================================================== */
+
+    try {
+
+        const { usuario } = await chamarApi("auth/sessao.php");
+
+        const tipo = usuario.tipo_acesso || "";
+
+        document.getElementById("nomeUsuario").textContent = usuario.nome;
+        document.getElementById("tipoUsuario").textContent =
+            tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        document.getElementById("avatarUsuario").textContent =
+            usuario.nome.charAt(0).toUpperCase();
+
+    } catch (erro) {
+
+        console.error("Erro ao verificar sessão:", erro);
+        return;
+    }
+
+    /* ======================================================
+       ESTADO E ELEMENTOS
+    ====================================================== */
+
+    let favoritos = [];
     let favoritoAtual = null;
 
     const listaFavoritos = document.getElementById("listaFavoritos");
     const semFavoritos = document.getElementById("semFavoritos");
+    const modal = document.getElementById("modalFavorito");
 
     /* ======================================================
-       DASHBOARD
+       CARDS
     ====================================================== */
 
     function atualizarCards() {
 
-        document.getElementById("totalFavoritos").textContent =
-            favoritos.length;
-
-        const produtores = [...new Set(favoritos.map(f => f.produtor))];
+        document.getElementById("totalFavoritos").textContent = favoritos.length;
 
         document.getElementById("produtoresFavoritos").textContent =
-            produtores.length;
-
-        const categorias = [...new Set(favoritos.map(f => f.categoria))];
+            new Set(favoritos.map(f => f.vendedor_id)).size;
 
         document.getElementById("categoriasFavoritas").textContent =
-            categorias.length;
+            new Set(favoritos.map(f => f.categoria)).size;
 
         document.getElementById("disponiveisFavoritos").textContent =
             favoritos.filter(f => f.disponivel).length;
@@ -102,110 +144,125 @@ document.addEventListener("DOMContentLoaded", () => {
        RENDER
     ====================================================== */
 
-    function render(lista = favoritos) {
+    function render(lista) {
 
-        listaFavoritos.innerHTML = "";
+        atualizarCards();
 
         if (lista.length === 0) {
 
+            listaFavoritos.innerHTML = "";
             semFavoritos.classList.remove("hidden");
-
-            atualizarCards();
 
             return;
         }
 
         semFavoritos.classList.add("hidden");
 
-        lista.forEach(produto => {
+        listaFavoritos.innerHTML = lista.map(produto => `
+            <article class="produto-card">
 
-            listaFavoritos.innerHTML += `
-                <article class="produto-card">
+                <img src="${escapeHtml(urlImagem(produto.imagem))}"
+                     alt="${escapeHtml(produto.nome)}">
 
-                    <img src="${produto.imagem}" alt="${produto.nome}">
+                <div class="produto-info">
 
-                    <div class="produto-info">
+                    <span class="categoria">${escapeHtml(nomeCategoria(produto.categoria))}</span>
 
-                        <span class="categoria">${produto.categoria}</span>
+                    <h3>${escapeHtml(produto.nome)}</h3>
 
-                        <h3>${produto.nome}</h3>
+                    <p>${escapeHtml(produto.vendedor_nome)}</p>
 
-                        <p>${produto.produtor}</p>
+                    <strong>${dinheiro(produto.preco)}</strong>
 
-                        <strong>R$ ${produto.preco.toFixed(2)}</strong>
+                    <div class="produto-meta">
 
-                        <div class="produto-meta">
-
-                            <span class="status ${produto.disponivel ? "disponivel" : "indisponivel"}">
-
-                                ${produto.disponivel ? "Disponível" : "Indisponível"}
-
-                            </span>
-
-                        </div>
-
-                        <div class="produto-acoes">
-
-                            <button
-                                class="btn-ver"
-                                data-id="${produto.id}"
-                                type="button">
-
-                                <i class="bi bi-eye"></i>
-
-                            </button>
-
-                            <button
-                                class="btn-remover"
-                                data-id="${produto.id}"
-                                type="button">
-
-                                <i class="bi bi-heart-fill"></i>
-
-                            </button>
-
-                        </div>
+                        <span class="status ${produto.disponivel ? "disponivel" : "indisponivel"}">
+                            ${produto.disponivel ? "Disponível" : "Indisponível"}
+                        </span>
 
                     </div>
 
-                </article>
-            `;
+                    <div class="produto-acoes">
 
-        });
+                        <button class="btn-ver" data-id="${produto.id}" type="button">
+                            <i class="bi bi-eye"></i>
+                        </button>
 
-        atualizarCards();
+                        <button class="btn-remover" data-id="${produto.id}" type="button">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+        `).join("");
 
     }
 
-    render();
+    // Pesquisa e filtros funcionam juntos.
+    function aplicarFiltros() {
+
+        const termo = document.getElementById("pesquisaFavorito").value.trim().toLowerCase();
+        const categoria = document.getElementById("filtroCategoria").value;
+        const disponibilidade = document.getElementById("filtroDisponibilidade").value;
+
+        let lista = favoritos.filter(f =>
+            f.nome.toLowerCase().includes(termo) ||
+            f.vendedor_nome.toLowerCase().includes(termo)
+        );
+
+        if (categoria) {
+            lista = lista.filter(f => f.categoria === categoria);
+        }
+
+        if (disponibilidade === "disponivel") {
+            lista = lista.filter(f => f.disponivel);
+        }
+
+        if (disponibilidade === "indisponivel") {
+            lista = lista.filter(f => !f.disponivel);
+        }
+
+        render(lista);
+
+    }
+
+    async function carregarFavoritos() {
+
+        try {
+
+            favoritos = (await chamarApi("favoritos/listar.php")).produtos;
+
+        } catch (erro) {
+
+            favoritos = [];
+            alert(erro.message);
+        }
+
+        aplicarFiltros();
+    }
+
+    await carregarFavoritos();
 
     /* ======================================================
        MODAL
     ====================================================== */
 
-    const modal = document.getElementById("modalFavorito");
-
     function abrirModal(id) {
 
-        favoritoAtual = favoritos.find(f => f.id == id);
+        favoritoAtual = favoritos.find(f => f.id === Number(id));
 
-        document.getElementById("modalImagem").src =
-            favoritoAtual.imagem;
+        if (!favoritoAtual) return;
 
-        document.getElementById("modalCategoria").textContent =
-            favoritoAtual.categoria;
-
-        document.getElementById("modalNome").textContent =
-            favoritoAtual.nome;
-
-        document.getElementById("modalProdutor").textContent =
-            favoritoAtual.produtor;
-
-        document.getElementById("modalPreco").textContent =
-            `R$ ${favoritoAtual.preco.toFixed(2)}`;
-
+        document.getElementById("modalImagem").src = urlImagem(favoritoAtual.imagem);
+        document.getElementById("modalCategoria").textContent = nomeCategoria(favoritoAtual.categoria);
+        document.getElementById("modalNome").textContent = favoritoAtual.nome;
+        document.getElementById("modalProdutor").textContent = favoritoAtual.vendedor_nome;
+        document.getElementById("modalPreco").textContent = dinheiro(favoritoAtual.preco);
         document.getElementById("modalDescricao").textContent =
-            favoritoAtual.descricao;
+            favoritoAtual.descricao || "Sem descrição.";
 
         modal.classList.add("ativo");
 
@@ -223,9 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener("click", e => {
 
         if (e.target === modal) {
-
             fecharModal();
-
         }
 
     });
@@ -236,93 +291,73 @@ document.addEventListener("DOMContentLoaded", () => {
         const btnRemover = e.target.closest(".btn-remover");
 
         if (btnVer) {
-
             abrirModal(btnVer.dataset.id);
-
         }
 
         if (btnRemover) {
-
             removerFavorito(Number(btnRemover.dataset.id));
-
         }
 
     });
 
     /* ======================================================
-       REMOVER
+       REMOVER E LIMPAR (gravam no banco)
     ====================================================== */
+
+    async function atualizarFavoritos(dados) {
+
+        try {
+
+            await chamarApi("favoritos/atualizar.php", { method: "POST", body: dados });
+
+            fecharModal();
+
+            await carregarFavoritos();
+
+        } catch (erro) {
+
+            alert(erro.message);
+        }
+    }
 
     function removerFavorito(id) {
 
-        favoritos = favoritos.filter(f => f.id !== id);
+        const dados = new FormData();
+        dados.append("acao", "remover");
+        dados.append("anuncio_id", id);
 
-        localStorage.setItem(
-            "marketplace:favoritos",
-            JSON.stringify(favoritos)
-        );
-
-        render();
-
-        fecharModal();
-
+        return atualizarFavoritos(dados);
     }
 
     document.getElementById("removerFavorito")
         .addEventListener("click", () => {
 
-            if (!favoritoAtual) return;
-
-            removerFavorito(favoritoAtual.id);
+            if (favoritoAtual) {
+                removerFavorito(favoritoAtual.id);
+            }
 
         });
-
-    /* ======================================================
-       LIMPAR TODOS
-    ====================================================== */
 
     document.getElementById("btnLimparFavoritos")
         .addEventListener("click", () => {
 
             if (!favoritos.length) return;
 
-            if (!confirm("Deseja remover todos os favoritos?"))
-                return;
+            if (!confirm("Deseja remover todos os favoritos?")) return;
 
-            favoritos = [];
+            const dados = new FormData();
+            dados.append("acao", "limpar");
 
-            localStorage.setItem(
-                "marketplace:favoritos",
-                JSON.stringify(favoritos)
-            );
-
-            render();
+            atualizarFavoritos(dados);
 
         });
 
     /* ======================================================
-       PESQUISA
+       PESQUISA E FILTROS
     ====================================================== */
 
     document.getElementById("pesquisaFavorito")
-        .addEventListener("input", e => {
-
-            const termo = e.target.value.toLowerCase();
-
-            render(
-
-                favoritos.filter(f =>
-                    f.nome.toLowerCase().includes(termo) ||
-                    f.produtor.toLowerCase().includes(termo)
-                )
-
-            );
-
-        });
-
-    /* ======================================================
-       FILTROS
-    ====================================================== */
+        .addEventListener("input", aplicarFiltros);
 
     document.getElementById("filtroCategoria")
         .addEventListener("change", aplicarFiltros);
@@ -330,48 +365,13 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("filtroDisponibilidade")
         .addEventListener("change", aplicarFiltros);
 
-    function aplicarFiltros() {
-
-        let lista = [...favoritos];
-
-        const categoria =
-            document.getElementById("filtroCategoria").value;
-
-        const disponibilidade =
-            document.getElementById("filtroDisponibilidade").value;
-
-        if (categoria) {
-
-            lista = lista.filter(f => f.categoria === categoria);
-
-        }
-
-        if (disponibilidade === "disponivel") {
-
-            lista = lista.filter(f => f.disponivel);
-
-        }
-
-        if (disponibilidade === "indisponivel") {
-
-            lista = lista.filter(f => !f.disponivel);
-
-        }
-
-        render(lista);
-
-    }
-
     /* ======================================================
-       NEGOCIAÇÃO
+       NEGOCIAÇÃO (demonstração)
     ====================================================== */
 
     document.getElementById("irNegociacao")
         .addEventListener("click", () => {
 
-            if (!favoritoAtual) return;
-
-            // Futuramente enviará o ID do produto.
             window.location.href = "negociacoes.html";
 
         });

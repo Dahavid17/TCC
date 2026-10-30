@@ -657,6 +657,40 @@ body.dark .modal-box {
 
 }
 
+.produto-card {
+
+    position: relative;
+
+}
+
+.btn-favorito {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 12px;
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .92);
+
+    color: #c0392b;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+
+}
+
 .estado-vazio {
 
     grid-column: 1 / -1;
