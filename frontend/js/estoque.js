@@ -170,21 +170,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             return `
                 <tr>
 
-                    <td>${escapeHtml(item.nome)}</td>
+                    <td data-label="Produto">${escapeHtml(item.nome)}</td>
 
-                    <td>${escapeHtml(NOMES_CATEGORIA[item.categoria] || item.categoria)}</td>
+                    <td data-label="Categoria">${escapeHtml(NOMES_CATEGORIA[item.categoria] || item.categoria)}</td>
 
-                    <td>${item.estoque}</td>
+                    <td data-label="Quantidade">${item.estoque}</td>
 
-                    <td>
+                    <td data-label="Status">
                         <span class="badge ${status.classe}">
                             ${status.texto}
                         </span>
                     </td>
 
-                    <td>${dataBr(item.atualizado)}</td>
+                    <td data-label="Atualizado">${dataBr(item.atualizado)}</td>
 
-                    <td>
+                    <td data-label="">
                         <button class="btn-editar" data-id="${item.id}" type="button">
                             <i class="bi bi-pencil"></i>
                         </button>

@@ -167,26 +167,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         listaPedidos.innerHTML = lista.map(pedido => `
             <tr>
 
-                <td>#${pedido.id}</td>
+                <td data-label="Pedido">#${pedido.id}</td>
 
-                <td>
+                <td data-label="Cliente">
                     ${escapeHtml(pedido.contraparte)}
                     <small>(${pedido.papel === "vendedor" ? "venda" : "compra"})</small>
                 </td>
 
-                <td>${pedido.itens.length} item(s)</td>
+                <td data-label="Produtos">${pedido.itens.length} item(s)</td>
 
-                <td>${dinheiro(pedido.total)}</td>
+                <td data-label="Valor">${dinheiro(pedido.total)}</td>
 
-                <td>
+                <td data-label="Status">
                     <span class="badge ${escapeHtml(pedido.status)}">
                         ${textoStatus(pedido.status)}
                     </span>
                 </td>
 
-                <td>${dataBr(pedido.data)}</td>
+                <td data-label="Data">${dataBr(pedido.data)}</td>
 
-                <td>
+                <td data-label="">
                     <button class="btn-detalhes" data-id="${pedido.id}" type="button">
                         <i class="bi bi-eye"></i>
                     </button>
