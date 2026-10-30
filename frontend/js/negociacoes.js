@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
     /* ======================================================
        TEMA
@@ -30,15 +30,31 @@ document.addEventListener("DOMContentLoaded", () => {
        USUÁRIO (TEMPORÁRIO)
     ====================================================== */
 
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {
-        nome: "Usuário",
-        tipo: "Produtor"
-    };
+    // Nome e tipo vêm da sessão do servidor; sem sessão, volta ao login.
+    try {
 
-    document.getElementById("nomeUsuario").textContent = usuario.nome;
-    document.getElementById("tipoUsuario").textContent = usuario.tipo;
-    document.getElementById("avatarUsuario").textContent =
-        usuario.nome.charAt(0).toUpperCase();
+        const resposta = await fetch("../../backend/auth/sessao.php");
+        const dados = await resposta.json();
+
+        if (!resposta.ok || !dados.sucesso) {
+            window.location.href = "login-marketplace.html";
+            return;
+        }
+
+        const { usuario } = dados;
+        const tipo = usuario.tipo_acesso || "";
+
+        document.getElementById("nomeUsuario").textContent = usuario.nome;
+        document.getElementById("tipoUsuario").textContent =
+            tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        document.getElementById("avatarUsuario").textContent =
+            usuario.nome.charAt(0).toUpperCase();
+
+    } catch (erro) {
+
+        console.error("Erro ao verificar sessão:", erro);
+        return;
+    }
 
     /* ======================================================
        DADOS TEMPORÁRIOS
