@@ -15,7 +15,7 @@
 
     <!-- HEADER -->
     <header class="topbar">
-        <a href="pagina-marketplace.html" class="logo">
+        <a href="inicio.html" class="logo">
             <i class="bi bi-flower1"></i>
             <span>MarketPlace Rural</span>
         </a>
@@ -79,8 +79,7 @@
                 <i class="bi bi-gear"></i>
                 <span>Configurações</span>
             </a>
-            <!-- Ajustado para o script de logout futuro ou página de login -->
-            <a href="login-marketplace.html">
+            <a href="../../backend/auth/logout.php">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sair</span>
             </a>
@@ -158,39 +157,7 @@
                 <a href="#">Ver mais</a>
             </div>
             <div class="grid-produtos" id="listaProdutos">
-                
-                <!-- Exemplos de produtos "Reais" adicionados para compor o visual -->
-                <article class="produto-card">
-                    <!-- Use um placeholder de imagem agrícola se a sua não estiver disponível -->
-                    <img src="https://images.unsplash.com/photo-1592924357228-91a4daadcfea?auto=format&fit=crop&q=80&w=300&h=200" alt="Tomates Orgânicos">
-                    <div class="produto-info">
-                        <h3>Tomate Carmem Orgânico</h3>
-                        <p>Fazenda Santa Luzia - SP</p>
-                        <strong>R$ 8,90 / kg</strong>
-                        <button class="btn-comprar">Negociar</button>
-                    </div>
-                </article>
-
-                <article class="produto-card">
-                    <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=300&h=200" alt="Milho Verde">
-                    <div class="produto-info">
-                        <h3>Milho Verde Espiga</h3>
-                        <p>Sítio do Sol - MG</p>
-                        <strong>R$ 25,00 / saca</strong>
-                        <button class="btn-comprar">Negociar</button>
-                    </div>
-                </article>
-
-                <article class="produto-card">
-                    <img src="https://images.unsplash.com/photo-1587486913049-53fc88980cfc?auto=format&fit=crop&q=80&w=300&h=200" alt="Ovos Caipiras">
-                    <div class="produto-info">
-                        <h3>Ovos Caipiras Grandes</h3>
-                        <p>Granja Esperança - PR</p>
-                        <strong>R$ 18,50 / dúzia</strong>
-                        <button class="btn-comprar">Negociar</button>
-                    </div>
-                </article>
-
+                <!-- Os produtos são inseridos pelo inicio.js a partir do banco -->
             </div>
         </section>
 
@@ -222,11 +189,26 @@
 
     </main>
 
+    <!-- MODAL DE COMPRA -->
+    <div class="modal" id="modalCompra">
+        <div class="modal-box">
+            <h2 id="compraNome">Produto</h2>
+            <p id="compraInfo"></p>
+            <label for="compraQuantidade">Quantidade</label>
+            <input type="number" id="compraQuantidade" min="1" value="1">
+            <p class="compra-total">Total: <strong id="compraTotal">R$ 0,00</strong></p>
+            <div class="modal-acoes">
+                <button type="button" id="compraCancelar">Cancelar</button>
+                <button type="button" id="compraConfirmar">Fazer pedido</button>
+            </div>
+        </div>
+    </div>
+
     <button id="temaBtn" aria-label="Alternar tema">
         <i class="bi bi-moon-stars-fill"></i>
     </button>
 
     <!-- Corrigido para apontar para o arquivo inicio.js atualizado -->
-    <script src="../js/inicio.js?v=2"></script>
+    <script src="../js/inicio.js?v=4"></script>
 </body>
 </html>

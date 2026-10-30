@@ -1,4 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const API = "../../backend/";
+    const LIMITE_BAIXO_ESTOQUE = 10;
+
+    const NOMES_CATEGORIA = {
+        hortalicas: "Hortaliças",
+        frutas: "Frutas",
+        graos: "Grãos",
+        laticinios: "Laticínios",
+        carnes: "Carnes",
+        flores: "Flores"
+    };
 
     /* ======================================================
        TEMA
@@ -24,187 +36,225 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ======================================================
-       USUÁRIO TEMPORÁRIO
+       API
     ====================================================== */
 
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {
-        nome: "Usuário",
-        tipo: "Produtor"
-    };
+    async function chamarApi(caminho, opcoes = {}) {
 
-    document.getElementById("nomeUsuario").textContent = usuario.nome;
-    document.getElementById("tipoUsuario").textContent = usuario.tipo;
-    document.getElementById("avatarUsuario").textContent =
-        usuario.nome.charAt(0).toUpperCase();
+        const resposta = await fetch(API + caminho, opcoes);
 
-    /* ======================================================
-       DADOS TEMPORÁRIOS
-       Depois virão do banco de dados.
-    ====================================================== */
+        let dados = {};
 
-    let estoque = JSON.parse(localStorage.getItem("marketplace:estoque")) || [
-
-        {
-            id: 1,
-            produto: "Tomate Orgânico",
-            categoria: "hortalicas",
-            quantidade: 50,
-            atualizado: "11/09/2026"
-        },
-
-        {
-            id: 2,
-            produto: "Alface Americana",
-            categoria: "hortalicas",
-            quantidade: 8,
-            atualizado: "10/09/2026"
-        },
-
-        {
-            id: 3,
-            produto: "Leite Integral",
-            categoria: "laticinios",
-            quantidade: 0,
-            atualizado: "09/09/2026"
+        try {
+            dados = await resposta.json();
+        } catch (erro) {
+            dados = { sucesso: false, mensagem: "Resposta inválida do servidor." };
         }
 
-    ];
+        if (resposta.status === 401) {
+            window.location.href = "login-marketplace.html";
+            throw new Error("Sessão expirada");
+        }
 
+        if (!resposta.ok || !dados.sucesso) {
+            throw new Error(dados.mensagem || "Erro ao comunicar com o servidor.");
+        }
+
+        return dados;
+    }
+
+    function escapeHtml(texto) {
+
+        const div = document.createElement("div");
+        div.textContent = texto ?? "";
+
+        return div.innerHTML.replace(/"/g, "&quot;");
+    }
+
+    function dataBr(iso) {
+
+        if (!iso) return "—";
+
+        const [ano, mes, dia] = iso.split("-");
+
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    /* ======================================================
+       USUÁRIO (sessão do servidor)
+    ====================================================== */
+
+    try {
+
+        const { usuario } = await chamarApi("auth/sessao.php");
+
+        const tipo = usuario.tipo_acesso || "";
+
+        document.getElementById("nomeUsuario").textContent = usuario.nome;
+        document.getElementById("tipoUsuario").textContent =
+            tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        document.getElementById("avatarUsuario").textContent =
+            usuario.nome.charAt(0).toUpperCase();
+
+    } catch (erro) {
+
+        console.error("Erro ao verificar sessão:", erro);
+        return;
+    }
+
+    /* ======================================================
+       ESTADO E ELEMENTOS
+    ====================================================== */
+
+    let estoque = [];
     let produtoAtual = null;
 
     const listaEstoque = document.getElementById("listaEstoque");
     const semProdutos = document.getElementById("semProdutos");
+    const modal = document.getElementById("modalEstoque");
+    const btnSalvar = document.getElementById("salvarEstoque");
 
     /* ======================================================
-       STATUS
+       STATUS E CARDS
     ====================================================== */
 
     function obterStatus(qtd) {
 
         if (qtd === 0) {
-            return {
-                texto: "Sem estoque",
-                classe: "esgotado"
-            };
+            return { texto: "Sem estoque", classe: "esgotado" };
         }
 
-        if (qtd <= 10) {
-            return {
-                texto: "Baixo estoque",
-                classe: "baixo"
-            };
+        if (qtd <= LIMITE_BAIXO_ESTOQUE) {
+            return { texto: "Baixo estoque", classe: "baixo" };
         }
 
-        return {
-            texto: "Normal",
-            classe: "normal"
-        };
+        return { texto: "Normal", classe: "normal" };
     }
-
-    /* ======================================================
-       DASHBOARD
-    ====================================================== */
 
     function atualizarCards() {
 
-        document.getElementById("totalItens").textContent =
-            estoque.length;
+        document.getElementById("totalItens").textContent = estoque.length;
 
         document.getElementById("estoqueNormal").textContent =
-            estoque.filter(p => p.quantidade > 10).length;
+            estoque.filter(p => p.estoque > LIMITE_BAIXO_ESTOQUE).length;
 
         document.getElementById("baixoEstoque").textContent =
-            estoque.filter(p => p.quantidade > 0 && p.quantidade <= 10).length;
+            estoque.filter(p => p.estoque > 0 && p.estoque <= LIMITE_BAIXO_ESTOQUE).length;
 
         document.getElementById("semEstoque").textContent =
-            estoque.filter(p => p.quantidade === 0).length;
-
+            estoque.filter(p => p.estoque === 0).length;
     }
 
     /* ======================================================
        RENDER
     ====================================================== */
 
-    function render(lista = estoque) {
+    function render(lista) {
 
-        listaEstoque.innerHTML = "";
+        atualizarCards();
 
         if (lista.length === 0) {
 
+            listaEstoque.innerHTML = "";
             semProdutos.classList.remove("hidden");
-
-            atualizarCards();
 
             return;
         }
 
         semProdutos.classList.add("hidden");
 
-        lista.forEach(item => {
+        listaEstoque.innerHTML = lista.map(item => {
 
-            const status = obterStatus(item.quantidade);
+            const status = obterStatus(item.estoque);
 
-            listaEstoque.innerHTML += `
+            return `
                 <tr>
 
-                    <td>${item.produto}</td>
+                    <td>${escapeHtml(item.nome)}</td>
 
-                    <td>${item.categoria}</td>
+                    <td>${escapeHtml(NOMES_CATEGORIA[item.categoria] || item.categoria)}</td>
 
-                    <td>${item.quantidade}</td>
+                    <td>${item.estoque}</td>
 
                     <td>
-
                         <span class="badge ${status.classe}">
                             ${status.texto}
                         </span>
-
                     </td>
 
-                    <td>${item.atualizado}</td>
+                    <td>${dataBr(item.atualizado)}</td>
 
                     <td>
-
-                        <button
-                            class="btn-editar"
-                            data-id="${item.id}"
-                            type="button">
-
+                        <button class="btn-editar" data-id="${item.id}" type="button">
                             <i class="bi bi-pencil"></i>
-
                         </button>
-
                     </td>
 
                 </tr>
             `;
 
-        });
-
-        atualizarCards();
-
+        }).join("");
     }
 
-    render();
+    // Pesquisa e filtros funcionam juntos.
+    function aplicarFiltros() {
+
+        const termo = document.getElementById("pesquisaEstoque").value.trim().toLowerCase();
+        const categoria = document.getElementById("filtroCategoria").value;
+        const status = document.getElementById("filtroStatus").value;
+
+        let lista = estoque.filter(p => p.nome.toLowerCase().includes(termo));
+
+        if (categoria) {
+            lista = lista.filter(p => p.categoria === categoria);
+        }
+
+        if (status === "normal") {
+            lista = lista.filter(p => p.estoque > LIMITE_BAIXO_ESTOQUE);
+        }
+
+        if (status === "baixo") {
+            lista = lista.filter(p => p.estoque > 0 && p.estoque <= LIMITE_BAIXO_ESTOQUE);
+        }
+
+        if (status === "esgotado") {
+            lista = lista.filter(p => p.estoque === 0);
+        }
+
+        render(lista);
+    }
+
+    async function carregarEstoque() {
+
+        try {
+
+            estoque = (await chamarApi("produtos/estoque.php")).itens;
+
+        } catch (erro) {
+
+            estoque = [];
+            alert(erro.message);
+        }
+
+        aplicarFiltros();
+    }
+
+    await carregarEstoque();
 
     /* ======================================================
        MODAL
     ====================================================== */
 
-    const modal = document.getElementById("modalEstoque");
-
     function abrirModal(id) {
 
-        produtoAtual = estoque.find(p => p.id == id);
+        produtoAtual = estoque.find(p => p.id === Number(id));
 
-        document.getElementById("nomeProdutoModal").value =
-            produtoAtual.produto;
+        if (!produtoAtual) return;
 
-        document.getElementById("quantidadeEstoque").value =
-            produtoAtual.quantidade;
+        document.getElementById("nomeProdutoModal").value = produtoAtual.nome;
+        document.getElementById("quantidadeEstoque").value = produtoAtual.estoque;
 
         modal.classList.add("ativo");
-
     }
 
     function fecharModal() {
@@ -213,6 +263,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("formEstoque").reset();
 
+        produtoAtual = null;
     }
 
     document.getElementById("fecharModalEstoque")
@@ -224,73 +275,60 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener("click", e => {
 
         if (e.target === modal) {
-
             fecharModal();
-
         }
-
     });
 
     listaEstoque.addEventListener("click", e => {
 
         const btn = e.target.closest(".btn-editar");
 
-        if (!btn) return;
-
-        abrirModal(btn.dataset.id);
-
+        if (btn) {
+            abrirModal(btn.dataset.id);
+        }
     });
 
     /* ======================================================
-       SALVAR ALTERAÇÃO
+       SALVAR ALTERAÇÃO (grava no banco)
     ====================================================== */
 
     document.getElementById("formEstoque")
-        .addEventListener("submit", e => {
+        .addEventListener("submit", async e => {
 
             e.preventDefault();
 
             if (!produtoAtual) return;
 
-            produtoAtual.quantidade =
-                Number(document.getElementById("quantidadeEstoque").value);
+            const dados = new FormData();
+            dados.append("id", produtoAtual.id);
+            dados.append("quantidade", document.getElementById("quantidadeEstoque").value);
 
-            produtoAtual.atualizado =
-                new Date().toLocaleDateString("pt-BR");
+            btnSalvar.disabled = true;
 
-            localStorage.setItem(
-                "marketplace:estoque",
-                JSON.stringify(estoque)
-            );
+            try {
 
-            render();
+                await chamarApi("produtos/estoque.php", { method: "POST", body: dados });
 
-            fecharModal();
+                fecharModal();
 
+                await carregarEstoque();
+
+            } catch (erro) {
+
+                alert(erro.message);
+
+            } finally {
+
+                btnSalvar.disabled = false;
+            }
         });
 
     /* ======================================================
-       PESQUISA
+       PESQUISA, FILTROS E ATUALIZAR
     ====================================================== */
 
     document.getElementById("pesquisaEstoque")
-        .addEventListener("input", e => {
-
-            const termo = e.target.value.toLowerCase();
-
-            render(
-
-                estoque.filter(p =>
-                    p.produto.toLowerCase().includes(termo)
-                )
-
-            );
-
-        });
-
-    /* ======================================================
-       FILTROS
-    ====================================================== */
+        .addEventListener("input", aplicarFiltros);
 
     document.getElementById("filtroCategoria")
         .addEventListener("change", aplicarFiltros);
@@ -298,56 +336,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("filtroStatus")
         .addEventListener("change", aplicarFiltros);
 
-    function aplicarFiltros() {
-
-        let lista = [...estoque];
-
-        const categoria =
-            document.getElementById("filtroCategoria").value;
-
-        const status =
-            document.getElementById("filtroStatus").value;
-
-        if (categoria) {
-
-            lista = lista.filter(p => p.categoria === categoria);
-
-        }
-
-        if (status === "normal") {
-
-            lista = lista.filter(p => p.quantidade > 10);
-
-        }
-
-        if (status === "baixo") {
-
-            lista = lista.filter(p =>
-                p.quantidade > 0 && p.quantidade <= 10
-            );
-
-        }
-
-        if (status === "esgotado") {
-
-            lista = lista.filter(p => p.quantidade === 0);
-
-        }
-
-        render(lista);
-
-    }
-
-    /* ======================================================
-       BOTÃO ATUALIZAR
-    ====================================================== */
-
     document.getElementById("btnAtualizarEstoque")
-        .addEventListener("click", () => {
-
-            render();
-
-        });
+        .addEventListener("click", carregarEstoque);
 
     /* ======================================================
        NAVEGAÇÃO
@@ -357,7 +347,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .addEventListener("click", () => {
 
             window.location.href = "negociacoes.html";
-
         });
 
 });

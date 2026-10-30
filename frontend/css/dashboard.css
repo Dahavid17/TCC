@@ -545,6 +545,130 @@ body {
 
 }
 
+.lista-categorias button.ativa {
+
+    background: var(--verde);
+
+    border-color: var(--verde);
+
+    color: #fff;
+
+}
+
+.modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, .45);
+
+    z-index: 3000;
+
+}
+
+.modal.ativo {
+
+    display: flex;
+
+}
+
+.modal-box {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 24px;
+
+    background: var(--branco);
+
+    border-radius: var(--radius-lg);
+
+}
+
+.modal-box input {
+
+    width: 100%;
+
+    margin: 8px 0 16px;
+
+    padding: 12px;
+
+    border: 1px solid var(--borda);
+
+    border-radius: var(--radius-sm);
+
+    font: inherit;
+
+}
+
+.modal-acoes {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 16px;
+
+}
+
+.modal-acoes button {
+
+    padding: 12px 20px;
+
+    border: 1px solid var(--borda);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--branco);
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+}
+
+.modal-acoes button:last-child {
+
+    background: var(--verde);
+
+    border-color: var(--verde);
+
+    color: #fff;
+
+}
+
+body.dark .modal-box {
+
+    background: #1f2a1c;
+
+    color: #fff;
+
+}
+
+.estado-vazio {
+
+    grid-column: 1 / -1;
+
+    padding: 32px 0;
+
+    text-align: center;
+
+    opacity: .7;
+
+}
+
 .lista-categorias button:hover {
 
     background: rgba(49, 87, 44, .08);

@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const API = "../../backend/";
 
     /* =========================================================
        TEMA
@@ -25,107 +27,104 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* =========================================================
-       USUÁRIO (TEMPORÁRIO)
+       API
     ========================================================= */
 
-    const usuario = JSON.parse(localStorage.getItem("usuarioLogado")) || {
-        nome: "Usuário",
-        tipo: "Produtor"
-    };
+    async function chamarApi(caminho, opcoes = {}) {
 
-    document.getElementById("nomeUsuario").textContent = usuario.nome;
-    document.getElementById("tipoUsuario").textContent = usuario.tipo;
-    document.getElementById("avatarUsuario").textContent =
-        usuario.nome.charAt(0).toUpperCase();
+        const resposta = await fetch(API + caminho, opcoes);
 
-    /* =========================================================
-       DADOS (TEMPORÁRIO)
-       Depois será substituído pelo back-end.
-    ========================================================= */
+        let dados = {};
 
-    let pedidos = JSON.parse(localStorage.getItem("marketplace:pedidos")) || [
-
-        {
-            id: 1001,
-            cliente: "Padaria Central",
-            produtos: [
-                { nome: "Tomate Orgânico", quantidade: 20 }
-            ],
-            valor: 178.00,
-            status: "preparo",
-            data: "2026-09-11"
-        },
-
-        {
-            id: 1002,
-            cliente: "Mercado São José",
-            produtos: [
-                { nome: "Alface Americana", quantidade: 50 }
-            ],
-            valor: 95.00,
-            status: "entregue",
-            data: "2026-09-09"
+        try {
+            dados = await resposta.json();
+        } catch (erro) {
+            dados = { sucesso: false, mensagem: "Resposta inválida do servidor." };
         }
 
-    ];
+        if (resposta.status === 401) {
+            window.location.href = "login-marketplace.html";
+            throw new Error("Sessão expirada");
+        }
+
+        if (!resposta.ok || !dados.sucesso) {
+            throw new Error(dados.mensagem || "Erro ao comunicar com o servidor.");
+        }
+
+        return dados;
+    }
+
+    function escapeHtml(texto) {
+
+        const div = document.createElement("div");
+        div.textContent = texto ?? "";
+
+        return div.innerHTML.replace(/"/g, "&quot;");
+    }
+
+    function dinheiro(valor) {
+
+        return "R$ " + valor.toFixed(2).replace(".", ",");
+    }
+
+    function dataBr(iso) {
+
+        const [ano, mes, dia] = iso.split("-");
+
+        return `${dia}/${mes}/${ano}`;
+    }
+
+    /* =========================================================
+       USUÁRIO (sessão do servidor)
+    ========================================================= */
+
+    try {
+
+        const { usuario } = await chamarApi("auth/sessao.php");
+
+        const tipo = usuario.tipo_acesso || "";
+
+        document.getElementById("nomeUsuario").textContent = usuario.nome;
+        document.getElementById("tipoUsuario").textContent =
+            tipo.charAt(0).toUpperCase() + tipo.slice(1);
+        document.getElementById("avatarUsuario").textContent =
+            usuario.nome.charAt(0).toUpperCase();
+
+    } catch (erro) {
+
+        console.error("Erro ao verificar sessão:", erro);
+        return;
+    }
+
+    /* =========================================================
+       ELEMENTOS E ESTADO
+    ========================================================= */
 
     const listaPedidos = document.getElementById("listaPedidos");
     const semPedidos = document.getElementById("semPedidos");
+    const modal = document.getElementById("modalPedido");
+    const acoesStatus = document.getElementById("acoesStatus");
+    const selectNovoStatus = document.getElementById("novoStatus");
+    const btnAtualizarStatus = document.getElementById("btnAtualizarStatus");
+
+    let pedidos = [];
+    let pedidoAberto = null;
 
     /* =========================================================
        STATUS
     ========================================================= */
 
-    function classeStatus(status) {
-
-        switch (status) {
-
-            case "recebido":
-                return "recebido";
-
-            case "negociacao":
-                return "negociacao";
-
-            case "preparo":
-                return "preparo";
-
-            case "entregue":
-                return "entregue";
-
-            case "cancelado":
-                return "cancelado";
-
-            default:
-                return "";
-
-        }
-
-    }
+    const TEXTOS_STATUS = {
+        recebido: "Recebido",
+        negociacao: "Em negociação",
+        preparo: "Em preparo",
+        entregue: "Entregue",
+        cancelado: "Cancelado"
+    };
 
     function textoStatus(status) {
 
-        switch (status) {
-
-            case "recebido":
-                return "Recebido";
-
-            case "negociacao":
-                return "Em negociação";
-
-            case "preparo":
-                return "Em preparo";
-
-            case "entregue":
-                return "Entregue";
-
-            case "cancelado":
-                return "Cancelado";
-
-            default:
-                return status;
-
-        }
-
+        return TEXTOS_STATUS[status] || status;
     }
 
     /* =========================================================
@@ -134,8 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function atualizarCards() {
 
-        document.getElementById("totalPedidos").textContent =
-            pedidos.length;
+        document.getElementById("totalPedidos").textContent = pedidos.length;
 
         document.getElementById("pedidosNegociacao").textContent =
             pedidos.filter(p => p.status === "negociacao").length;
@@ -152,79 +150,110 @@ document.addEventListener("DOMContentLoaded", () => {
        RENDER
     ========================================================= */
 
-    function render(lista = pedidos) {
+    function render(lista) {
 
-        listaPedidos.innerHTML = "";
+        atualizarCards();
 
         if (lista.length === 0) {
 
+            listaPedidos.innerHTML = "";
             semPedidos.classList.remove("hidden");
-
-            atualizarCards();
 
             return;
         }
 
         semPedidos.classList.add("hidden");
 
-        lista.forEach(pedido => {
+        listaPedidos.innerHTML = lista.map(pedido => `
+            <tr>
 
-            listaPedidos.innerHTML += `
-                <tr>
+                <td>#${pedido.id}</td>
 
-                    <td>#${pedido.id}</td>
+                <td>
+                    ${escapeHtml(pedido.contraparte)}
+                    <small>(${pedido.papel === "vendedor" ? "venda" : "compra"})</small>
+                </td>
 
-                    <td>${pedido.cliente}</td>
+                <td>${pedido.itens.length} item(s)</td>
 
-                    <td>${pedido.produtos.length} item(s)</td>
+                <td>${dinheiro(pedido.total)}</td>
 
-                    <td>R$ ${pedido.valor.toFixed(2)}</td>
+                <td>
+                    <span class="badge ${escapeHtml(pedido.status)}">
+                        ${textoStatus(pedido.status)}
+                    </span>
+                </td>
 
-                    <td>
+                <td>${dataBr(pedido.data)}</td>
 
-                        <span class="badge ${classeStatus(pedido.status)}">
+                <td>
+                    <button class="btn-detalhes" data-id="${pedido.id}" type="button">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </td>
 
-                            ${textoStatus(pedido.status)}
-
-                        </span>
-
-                    </td>
-
-                    <td>${pedido.data}</td>
-
-                    <td>
-
-                        <button
-                            class="btn-detalhes"
-                            data-id="${pedido.id}"
-                            type="button">
-
-                            <i class="bi bi-eye"></i>
-
-                        </button>
-
-                    </td>
-
-                </tr>
-            `;
-
-        });
-
-        atualizarCards();
+            </tr>
+        `).join("");
 
     }
 
-    render();
+    // Pesquisa e filtros funcionam juntos.
+    function aplicarFiltros() {
+
+        const termo = document.getElementById("pesquisaPedido").value.trim().toLowerCase();
+        const status = document.getElementById("filtroStatus").value;
+        const periodo = document.getElementById("filtroPeriodo").value;
+
+        const limites = { hoje: 1, semana: 7, mes: 30 };
+
+        const lista = pedidos.filter(p => {
+
+            if (termo &&
+                !p.contraparte.toLowerCase().includes(termo) &&
+                !String(p.id).includes(termo)) {
+                return false;
+            }
+
+            if (status && p.status !== status) {
+                return false;
+            }
+
+            if (periodo) {
+                const dias = (Date.now() - new Date(p.data + "T00:00:00")) / 86400000;
+                return dias <= limites[periodo];
+            }
+
+            return true;
+        });
+
+        render(lista);
+    }
+
+    async function carregarPedidos() {
+
+        try {
+
+            pedidos = (await chamarApi("pedidos/listar.php")).pedidos;
+
+        } catch (erro) {
+
+            pedidos = [];
+            alert(erro.message);
+        }
+
+        aplicarFiltros();
+    }
+
+    await carregarPedidos();
 
     /* =========================================================
        MODAL
     ========================================================= */
 
-    const modal = document.getElementById("modalPedido");
-
     function fecharModal() {
 
         modal.classList.remove("ativo");
+        pedidoAberto = null;
 
     }
 
@@ -237,9 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener("click", e => {
 
         if (e.target === modal) {
-
             fecharModal();
-
         }
 
     });
@@ -250,119 +277,91 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!botao) return;
 
-        const pedido =
-            pedidos.find(p => p.id == botao.dataset.id);
+        const pedido = pedidos.find(p => p.id === Number(botao.dataset.id));
 
-        document.getElementById("modalNumeroPedido").textContent =
-            "#" + pedido.id;
+        if (!pedido) return;
 
-        document.getElementById("modalCliente").textContent =
-            pedido.cliente;
+        pedidoAberto = pedido;
 
-        document.getElementById("modalData").textContent =
-            pedido.data;
+        document.getElementById("modalNumeroPedido").textContent = "#" + pedido.id;
+        document.getElementById("modalCliente").textContent = pedido.contraparte;
+        document.getElementById("modalData").textContent = dataBr(pedido.data);
+        document.getElementById("modalStatus").textContent = textoStatus(pedido.status);
 
-        document.getElementById("modalStatus").textContent =
-            textoStatus(pedido.status);
+        document.getElementById("modalProdutos").innerHTML = pedido.itens.map(item => `
+            <div class="item-produto">
+                <span>${escapeHtml(item.nome)}</span>
+                <strong>${item.quantidade} un. × ${dinheiro(item.preco_unitario)}</strong>
+            </div>
+        `).join("");
 
-        const produtos = document.getElementById("modalProdutos");
+        document.getElementById("modalTotal").textContent = dinheiro(pedido.total);
 
-        produtos.innerHTML = "";
+        // Só mostra a troca de status quando o usuário tem uma transição permitida.
+        if (pedido.transicoes.length > 0) {
 
-        pedido.produtos.forEach(item => {
+            selectNovoStatus.innerHTML = pedido.transicoes
+                .map(s => `<option value="${s}">${textoStatus(s)}</option>`)
+                .join("");
 
-            produtos.innerHTML += `
-                <div class="item-produto">
+            acoesStatus.classList.remove("hidden");
 
-                    <span>${item.nome}</span>
+        } else {
 
-                    <strong>${item.quantidade} un.</strong>
-
-                </div>
-            `;
-
-        });
-
-        document.getElementById("modalTotal").textContent =
-            `R$ ${pedido.valor.toFixed(2)}`;
+            acoesStatus.classList.add("hidden");
+        }
 
         modal.classList.add("ativo");
 
     });
 
+    btnAtualizarStatus.addEventListener("click", async () => {
+
+        if (!pedidoAberto) return;
+
+        const novoStatus = selectNovoStatus.value;
+
+        if (novoStatus === "cancelado" && !confirm("Cancelar este pedido? O estoque será devolvido.")) {
+            return;
+        }
+
+        const dados = new FormData();
+        dados.append("id", pedidoAberto.id);
+        dados.append("status", novoStatus);
+
+        btnAtualizarStatus.disabled = true;
+
+        try {
+
+            await chamarApi("pedidos/atualizar.php", { method: "POST", body: dados });
+
+            fecharModal();
+
+            await carregarPedidos();
+
+        } catch (erro) {
+
+            alert(erro.message);
+
+        } finally {
+
+            btnAtualizarStatus.disabled = false;
+        }
+
+    });
+
     /* =========================================================
-       PESQUISA
+       PESQUISA E FILTROS
     ========================================================= */
 
     document.getElementById("pesquisaPedido")
-        .addEventListener("input", e => {
-
-            const termo = e.target.value.toLowerCase();
-
-            render(
-                pedidos.filter(p =>
-                    p.cliente.toLowerCase().includes(termo) ||
-                    String(p.id).includes(termo)
-                )
-            );
-
-        });
-
-    /* =========================================================
-       FILTROS
-    ========================================================= */
+        .addEventListener("input", aplicarFiltros);
 
     document.getElementById("filtroStatus")
         .addEventListener("change", aplicarFiltros);
 
     document.getElementById("filtroPeriodo")
         .addEventListener("change", aplicarFiltros);
-
-    function aplicarFiltros() {
-
-        let lista = [...pedidos];
-
-        const status =
-            document.getElementById("filtroStatus").value;
-
-        const periodo =
-            document.getElementById("filtroPeriodo").value;
-
-        if (status) {
-
-            lista = lista.filter(p => p.status === status);
-
-        }
-
-        if (periodo) {
-
-            const hoje = new Date();
-
-            lista = lista.filter(p => {
-
-                const data = new Date(p.data);
-
-                const dias =
-                    (hoje - data) / (1000 * 60 * 60 * 24);
-
-                if (periodo === "hoje")
-                    return dias < 1;
-
-                if (periodo === "semana")
-                    return dias <= 7;
-
-                if (periodo === "mes")
-                    return dias <= 30;
-
-                return true;
-
-            });
-
-        }
-
-        render(lista);
-
-    }
 
     /* =========================================================
        NAVEGAÇÃO

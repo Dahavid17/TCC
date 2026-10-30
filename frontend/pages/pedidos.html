@@ -25,7 +25,7 @@
 
     <header class="topbar">
 
-        <a href="pagina-marketplace.html" class="logo">
+        <a href="inicio.html" class="logo">
 
             <i class="bi bi-flower1"></i>
             <span>MarketPlace Rural</span>
@@ -91,7 +91,7 @@
 
         <nav>
 
-            <a href="pagina-marketplace.html">
+            <a href="inicio.html">
                 <i class="bi bi-house"></i>
                 <span>Início</span>
             </a>
@@ -238,7 +238,7 @@
                     <tr>
 
                         <th>Pedido</th>
-                        <th>Cliente</th>
+                        <th>Cliente / Vendedor</th>
                         <th>Produtos</th>
                         <th>Valor</th>
                         <th>Status</th>
@@ -333,6 +333,14 @@
 
                 </div>
 
+                <div class="acoes-status hidden" id="acoesStatus">
+
+                    <select id="novoStatus" aria-label="Novo status"></select>
+
+                    <button type="button" id="btnAtualizarStatus">Atualizar status</button>
+
+                </div>
+
             </div>
 
             <div class="modal-actions">
@@ -357,7 +365,7 @@
 
     </button>
 
-    <script src="../js/pedidos.js"></script>
+    <script src="../js/pedidos.js?v=2"></script>
 
 </body>
 

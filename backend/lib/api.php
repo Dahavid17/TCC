@@ -160,3 +160,21 @@ function buscar_produto(PDO $pdo, int $id): ?array
 
     return $linha ? normalizar_produto($linha) : null;
 }
+
+const STATUS_PEDIDO = ['recebido', 'negociacao', 'preparo', 'entregue', 'cancelado'];
+
+// Próximos status que cada parte pode aplicar. Vendedor conduz o pedido; comprador só cancela.
+function transicoes_permitidas(string $status, string $papel): array
+{
+    $vendedor = [
+        'recebido'   => ['negociacao', 'preparo', 'cancelado'],
+        'negociacao' => ['preparo', 'cancelado'],
+        'preparo'    => ['entregue', 'cancelado'],
+    ];
+    $comprador = [
+        'recebido'   => ['cancelado'],
+        'negociacao' => ['cancelado'],
+    ];
+
+    return ($papel === 'vendedor' ? $vendedor : $comprador)[$status] ?? [];
+}
