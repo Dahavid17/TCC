@@ -1,0 +1,340 @@
+﻿{
+    "s1":  {
+               "texto":  "Você já tentou comprar ou vender na internet e acabou caindo em uma tremenda dor de cabeça?",
+               "palavras":  [
+                                {
+                                    "pos":  0,
+                                    "inicio":  0.086
+                                },
+                                {
+                                    "pos":  5,
+                                    "inicio":  0.393
+                                },
+                                {
+                                    "pos":  8,
+                                    "inicio":  0.569
+                                },
+                                {
+                                    "pos":  15,
+                                    "inicio":  1.041
+                                },
+                                {
+                                    "pos":  23,
+                                    "inicio":  1.514
+                                },
+                                {
+                                    "pos":  26,
+                                    "inicio":  1.65
+                                },
+                                {
+                                    "pos":  33,
+                                    "inicio":  2.046
+                                },
+                                {
+                                    "pos":  36,
+                                    "inicio":  2.191
+                                },
+                                {
+                                    "pos":  45,
+                                    "inicio":  2.811
+                                },
+                                {
+                                    "pos":  47,
+                                    "inicio":  2.9
+                                },
+                                {
+                                    "pos":  54,
+                                    "inicio":  3.361
+                                },
+                                {
+                                    "pos":  61,
+                                    "inicio":  3.831
+                                },
+                                {
+                                    "pos":  64,
+                                    "inicio":  3.981
+                                },
+                                {
+                                    "pos":  68,
+                                    "inicio":  4.171
+                                },
+                                {
+                                    "pos":  77,
+                                    "inicio":  4.671
+                                },
+                                {
+                                    "pos":  81,
+                                    "inicio":  4.921
+                                },
+                                {
+                                    "pos":  84,
+                                    "inicio":  5.091
+                                }
+                            ]
+           },
+    "s2a":  {
+                "texto":  "Taxas absurdas,",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.089
+                                 },
+                                 {
+                                     "pos":  6,
+                                     "inicio":  0.591
+                                 }
+                             ]
+            },
+    "s2b":  {
+                "texto":  "plataformas complicadas",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.089
+                                 },
+                                 {
+                                     "pos":  12,
+                                     "inicio":  1.046
+                                 }
+                             ]
+            },
+    "s2c":  {
+                "texto":  "e zero segurança.",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.091
+                                 },
+                                 {
+                                     "pos":  2,
+                                     "inicio":  0.181
+                                 },
+                                 {
+                                     "pos":  7,
+                                     "inicio":  0.537
+                                 }
+                             ]
+            },
+    "s3a":  {
+                "texto":  "Mas calma!",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.089
+                                 },
+                                 {
+                                     "pos":  4,
+                                     "inicio":  0.364
+                                 }
+                             ]
+            },
+    "s3b":  {
+                "texto":  "É por isso que criamos o Marketplace Rural.",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.091
+                                 },
+                                 {
+                                     "pos":  2,
+                                     "inicio":  0.171
+                                 },
+                                 {
+                                     "pos":  6,
+                                     "inicio":  0.365
+                                 },
+                                 {
+                                     "pos":  11,
+                                     "inicio":  0.691
+                                 },
+                                 {
+                                     "pos":  15,
+                                     "inicio":  0.844
+                                 },
+                                 {
+                                     "pos":  23,
+                                     "inicio":  1.391
+                                 },
+                                 {
+                                     "pos":  25,
+                                     "inicio":  1.46
+                                 },
+                                 {
+                                     "pos":  37,
+                                     "inicio":  2.482
+                                 }
+                             ]
+            },
+    "s4a":  {
+                "texto":  "Aqui, compradores encontram tudo em um só lugar.",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.092
+                                 },
+                                 {
+                                     "pos":  6,
+                                     "inicio":  0.728
+                                 },
+                                 {
+                                     "pos":  18,
+                                     "inicio":  1.536
+                                 },
+                                 {
+                                     "pos":  28,
+                                     "inicio":  2.181
+                                 },
+                                 {
+                                     "pos":  33,
+                                     "inicio":  2.546
+                                 },
+                                 {
+                                     "pos":  36,
+                                     "inicio":  2.671
+                                 },
+                                 {
+                                     "pos":  39,
+                                     "inicio":  2.836
+                                 },
+                                 {
+                                     "pos":  42,
+                                     "inicio":  3.099
+                                 }
+                             ]
+            },
+    "s4b":  {
+                "texto":  "E vendedores lucram mais, com taxas justas e pagamentos seguros.",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.091
+                                 },
+                                 {
+                                     "pos":  2,
+                                     "inicio":  0.171
+                                 },
+                                 {
+                                     "pos":  13,
+                                     "inicio":  0.881
+                                 },
+                                 {
+                                     "pos":  20,
+                                     "inicio":  1.264
+                                 },
+                                 {
+                                     "pos":  26,
+                                     "inicio":  1.948
+                                 },
+                                 {
+                                     "pos":  30,
+                                     "inicio":  2.218
+                                 },
+                                 {
+                                     "pos":  36,
+                                     "inicio":  2.721
+                                 },
+                                 {
+                                     "pos":  43,
+                                     "inicio":  3.341
+                                 },
+                                 {
+                                     "pos":  45,
+                                     "inicio":  3.434
+                                 },
+                                 {
+                                     "pos":  56,
+                                     "inicio":  4.164
+                                 }
+                             ]
+            },
+    "s5a":  {
+                "texto":  "Chega de perder tempo.",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.094
+                                 },
+                                 {
+                                     "pos":  6,
+                                     "inicio":  0.481
+                                 },
+                                 {
+                                     "pos":  9,
+                                     "inicio":  0.631
+                                 },
+                                 {
+                                     "pos":  16,
+                                     "inicio":  1.093
+                                 }
+                             ]
+            },
+    "s5b":  {
+                "texto":  "Acesse o link na nossa bio, cadastre-se agora mesmo e faça parte do futuro das vendas!",
+                "palavras":  [
+                                 {
+                                     "pos":  0,
+                                     "inicio":  0.089
+                                 },
+                                 {
+                                     "pos":  7,
+                                     "inicio":  0.651
+                                 },
+                                 {
+                                     "pos":  9,
+                                     "inicio":  0.726
+                                 },
+                                 {
+                                     "pos":  14,
+                                     "inicio":  1.118
+                                 },
+                                 {
+                                     "pos":  17,
+                                     "inicio":  1.251
+                                 },
+                                 {
+                                     "pos":  23,
+                                     "inicio":  1.616
+                                 },
+                                 {
+                                     "pos":  28,
+                                     "inicio":  2.201
+                                 },
+                                 {
+                                     "pos":  40,
+                                     "inicio":  2.965
+                                 },
+                                 {
+                                     "pos":  46,
+                                     "inicio":  3.381
+                                 },
+                                 {
+                                     "pos":  52,
+                                     "inicio":  3.919
+                                 },
+                                 {
+                                     "pos":  54,
+                                     "inicio":  4.015
+                                 },
+                                 {
+                                     "pos":  59,
+                                     "inicio":  4.486
+                                 },
+                                 {
+                                     "pos":  65,
+                                     "inicio":  4.981
+                                 },
+                                 {
+                                     "pos":  68,
+                                     "inicio":  5.111
+                                 },
+                                 {
+                                     "pos":  75,
+                                     "inicio":  5.616
+                                 },
+                                 {
+                                     "pos":  79,
+                                     "inicio":  5.861
+                                 }
+                             ]
+            }
+}

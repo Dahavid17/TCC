@@ -2,13 +2,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const API = "../../backend/";
 
-    // Usados somente quando NÃO há sensores no banco. Sempre exibidos com o selo "Dado demonstrativo".
-    const SENSORES_DEMONSTRATIVOS = [
-        { tipo: "Umidade do solo", valor: 62, unidade: "%", icone: "bi-moisture" },
-        { tipo: "Temperatura ambiente", valor: 24.5, unidade: "°C", icone: "bi-thermometer-half" },
-        { tipo: "Umidade dos grãos", valor: 13.2, unidade: "%", icone: "bi-droplet-half" },
-        { tipo: "Nível do silo", valor: 78, unidade: "%", icone: "bi-database" }
-    ];
+    // O painel consulta o resumo a cada INTERVALO_MS (pausa com a aba oculta).
+    const INTERVALO_MS = 5000;
+
+    // Sem leitura há mais que isso, o sensor/placa aparece como "sem sinal".
+    const LIMITE_ONLINE_S = 90;
 
     /* ======================================================
        TEMA
@@ -37,9 +35,9 @@ document.addEventListener("DOMContentLoaded", async () => {
        API
     ====================================================== */
 
-    async function chamarApi(caminho) {
+    async function chamarApi(caminho, opcoes = {}) {
 
-        const resposta = await fetch(API + caminho);
+        const resposta = await fetch(API + caminho, opcoes);
 
         let dados = {};
 
@@ -99,100 +97,165 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     /* ======================================================
-       SENSORES
+       FORMATAÇÃO
+    ====================================================== */
+
+    // Ícone por tipo; nome e unidade vêm do backend (com fallback para sensores antigos).
+    function infoSensor(sensor) {
+
+        const t = (sensor.tipo || "").toLowerCase();
+        let info = { nome: sensor.tipo || "Sensor", unidade: "", icone: "bi-cpu" };
+
+        if (t.includes("solo")) info = { nome: "Umidade do solo", unidade: "%", icone: "bi-moisture" };
+        else if (t.includes("temp")) info = { nome: "Temperatura do ar", unidade: "°C", icone: "bi-thermometer-half" };
+        else if (t === "umidade_ar") info = { nome: "Umidade do ar", unidade: "%", icone: "bi-droplet-half" };
+        else if (t.includes("lumin")) info = { nome: "Luminosidade", unidade: "lx", icone: "bi-brightness-high" };
+
+        return {
+            nome: sensor.nome || info.nome,
+            unidade: sensor.unidade ?? info.unidade,
+            icone: info.icone
+        };
+    }
+
+    function numero(valor, unidade) {
+
+        const casas = unidade === "lx" ? 0 : 1;
+
+        return valor.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas });
+    }
+
+    function tempoDecorrido(segundos) {
+
+        if (segundos < 5) return "agora";
+        if (segundos < 60) return `há ${segundos} s`;
+        if (segundos < 3600) return `há ${Math.floor(segundos / 60)} min`;
+        if (segundos < 86400) return `há ${Math.floor(segundos / 3600)} h`;
+
+        return `há ${Math.floor(segundos / 86400)} dia(s)`;
+    }
+
+    // Situação de uma placa ou sensor a partir do tempo desde a última leitura.
+    function situacao(segundosSemSinal) {
+
+        if (segundosSemSinal === null || segundosSemSinal === undefined) {
+            return { texto: "Aguardando primeira leitura", classe: "aguardando", online: false };
+        }
+
+        if (segundosSemSinal <= LIMITE_ONLINE_S) {
+            return { texto: "Ao vivo", classe: "", online: true };
+        }
+
+        return { texto: `Sem sinal ${tempoDecorrido(segundosSemSinal)}`, classe: "alerta", online: false };
+    }
+
+    // Minigráfico (SVG) das últimas leituras, da mais antiga para a mais recente.
+    function grafico(valores) {
+
+        if (!valores || valores.length < 2) {
+            return `<div class="sensor-grafico vazio" aria-hidden="true"></div>`;
+        }
+
+        const largura = 200;
+        const altura = 44;
+        const min = Math.min(...valores);
+        const max = Math.max(...valores);
+        const faixa = max - min || 1;
+
+        const pontos = valores.map((v, i) => {
+            const x = (i / (valores.length - 1)) * largura;
+            const y = altura - 4 - ((v - min) / faixa) * (altura - 8);
+            return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(" ");
+
+        return `
+            <svg class="sensor-grafico" viewBox="0 0 ${largura} ${altura}" preserveAspectRatio="none" aria-hidden="true">
+                <polyline points="${pontos}" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+            </svg>
+        `;
+    }
+
+    /* ======================================================
+       SENSORES E DISPOSITIVOS
     ====================================================== */
 
     const gridSensores = document.getElementById("gridSensores");
+    const listaDispositivos = document.getElementById("listaDispositivos");
+    const ESTADOS = { inativo: "Inativo", manutencao: "Em manutenção" };
 
-    function infoSensor(tipo) {
+    function cardSensor(sensor) {
 
-        const t = (tipo || "").toLowerCase();
+        const info = infoSensor(sensor);
+        const temValor = sensor.valor !== null && sensor.valor !== undefined;
 
-        if (t.includes("solo")) return { nome: "Umidade do solo", unidade: "%", icone: "bi-moisture" };
-        if (t.includes("temp")) return { nome: "Temperatura ambiente", unidade: "°C", icone: "bi-thermometer-half" };
-        if (t.includes("gr")) return { nome: "Umidade dos grãos", unidade: "%", icone: "bi-droplet-half" };
-        if (t.includes("silo")) return { nome: "Nível do silo", unidade: "%", icone: "bi-database" };
+        let estado = situacao(sensor.segundos_sem_sinal);
 
-        return { nome: tipo || "Sensor", unidade: "", icone: "bi-cpu" };
-    }
+        if (sensor.status && sensor.status !== "ativo") {
+            estado = { texto: ESTADOS[sensor.status] || sensor.status, classe: "alerta" };
+        }
 
-    function numero(valor) {
+        const historico = sensor.historico || [];
+        const faixa = historico.length > 1
+            ? `Mín ${numero(Math.min(...historico), info.unidade)} · Máx ${numero(Math.max(...historico), info.unidade)} (últimas ${historico.length})`
+            : "";
 
-        return valor.toFixed(1).replace(".", ",");
-    }
-
-    function dataHoraBr(texto) {
-
-        const [data, hora] = texto.split(" ");
-        const [ano, mes, dia] = data.split("-");
-
-        return `${dia}/${mes}/${ano} ${hora.slice(0, 5)}`;
-    }
-
-    function cardSensor({ nome, icone, valor, unidade, estado, classeEstado, meta }) {
+        const quando = temValor
+            ? `atualizado ${tempoDecorrido(sensor.segundos_sem_sinal)}`
+            : "sem leituras ainda";
 
         return `
             <article class="sensor-card">
                 <header>
-                    <h3>${escapeHtml(nome)}</h3>
-                    <i class="bi ${icone}"></i>
+                    <h3>${escapeHtml(info.nome)}</h3>
+                    <i class="bi ${info.icone}" aria-hidden="true"></i>
                 </header>
-                <span class="sensor-valor">${valor === null ? "—" : numero(valor)}<small> ${escapeHtml(unidade)}</small></span>
-                <span class="sensor-estado ${classeEstado}">${escapeHtml(estado)}</span>
-                <p class="sensor-meta">${escapeHtml(meta)}</p>
+                <span class="sensor-valor">${temValor ? numero(sensor.valor, info.unidade) : "—"}<small> ${escapeHtml(info.unidade)}</small></span>
+                ${grafico(historico)}
+                <span class="sensor-estado ${estado.classe}">${escapeHtml(estado.texto)}</span>
+                <p class="sensor-meta">${escapeHtml(sensor.codigo)} · ${escapeHtml(quando)}</p>
+                ${faixa ? `<p class="sensor-meta">${escapeHtml(faixa)}</p>` : ""}
             </article>
         `;
     }
 
-    function renderizarSensores(sensores) {
+    function renderizarSensores(sensores, dispositivos) {
 
-        const demonstrativo = sensores.length === 0;
+        const vazio = sensores.length === 0 && dispositivos.length === 0;
 
-        document.getElementById("seloDemo").classList.toggle("hidden", !demonstrativo);
-        document.getElementById("avisoDemo").classList.toggle("hidden", !demonstrativo);
+        document.getElementById("iotVazio").classList.toggle("hidden", !vazio);
 
-        if (demonstrativo) {
+        gridSensores.innerHTML = sensores.map(cardSensor).join("");
 
-            gridSensores.innerHTML = SENSORES_DEMONSTRATIVOS.map(s => cardSensor({
-                nome: s.tipo,
-                icone: s.icone,
-                valor: s.valor,
-                unidade: s.unidade,
-                estado: "Simulado",
-                classeEstado: "simulado",
-                meta: "Dado demonstrativo · sem dispositivo conectado"
-            })).join("");
+        listaDispositivos.innerHTML = dispositivos.map(d => {
 
-            return;
-        }
+            const estado = situacao(d.segundos_sem_sinal);
 
-        const ESTADOS = { ativo: "Ativo", inativo: "Inativo", manutencao: "Em manutenção" };
-
-        gridSensores.innerHTML = sensores.map(s => {
-
-            const info = infoSensor(s.tipo);
-
-            return cardSensor({
-                nome: info.nome,
-                icone: info.icone,
-                valor: s.valor,
-                unidade: info.unidade,
-                estado: ESTADOS[s.status] || s.status,
-                classeEstado: s.status === "ativo" ? "" : "alerta",
-                meta: s.ultima_leitura
-                    ? `Dispositivo ${s.codigo} · atualizado em ${dataHoraBr(s.ultima_leitura)}`
-                    : `Dispositivo ${s.codigo} · sem leituras registradas`
-            });
+            return `
+                <div class="dispositivo-chip ${estado.online ? "online" : estado.classe}">
+                    <i class="bi bi-cpu" aria-hidden="true"></i>
+                    <span><strong>${escapeHtml(d.nome)}</strong> · ${escapeHtml(d.codigo)}</span>
+                    <span class="dispositivo-estado">${escapeHtml(estado.texto)}</span>
+                </div>
+            `;
 
         }).join("");
+
+        const algumOnline = dispositivos.some(d => situacao(d.segundos_sem_sinal).online)
+            || sensores.some(s => situacao(s.segundos_sem_sinal).online);
+
+        document.getElementById("seloAoVivo").classList.toggle("hidden", !algumOnline);
     }
 
     /* ======================================================
-       RESUMO DA FAZENDA
+       RESUMO DA FAZENDA (atualização automática)
     ====================================================== */
 
     const selectFazenda = document.getElementById("selectFazenda");
+    const iotAtualizacao = document.getElementById("iotAtualizacao");
     let fazendas = [];
+    let carregando = false;
+    let temporizador = null;
 
     function renderizarPropriedade(fazendaId) {
 
@@ -202,70 +265,249 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById("propNome").textContent = "Nenhuma propriedade cadastrada";
             document.getElementById("propDetalhe").textContent =
-                "O cadastro de propriedades ainda não está disponível nesta versão.";
+                "Conecte seu primeiro ESP32 para cadastrar a propriedade onde ele está instalado.";
 
             return;
         }
+
+        const area = fazenda.area_total
+            ? `${fazenda.area_total.toLocaleString("pt-BR")} ha`
+            : "Área não informada";
 
         document.getElementById("propNome").textContent = fazenda.nome;
         document.getElementById("propDetalhe").textContent =
-            `${fazenda.localizacao || "Localização não informada"} · ${fazenda.area_total.toLocaleString("pt-BR")} ha`;
+            `${fazenda.localizacao || "Localização não informada"} · ${area}`;
     }
 
-    async function carregar(fazendaId) {
+    function preencherSelectFazendas() {
 
-        const consulta = fazendaId ? `?fazenda_id=${encodeURIComponent(fazendaId)}` : "";
+        const atual = selectFazenda.value;
 
-        const { status, dados } = await chamarApi("gestao/resumo.php" + consulta);
+        selectFazenda.innerHTML =
+            `<option value="">Todas as propriedades</option>` +
+            fazendas.map(f => `<option value="${f.id}">${escapeHtml(f.nome)}</option>`).join("");
 
-        if (status === 403) {
+        selectFazenda.value = fazendas.some(f => String(f.id) === atual) ? atual : "";
+        selectFazenda.classList.toggle("hidden", fazendas.length < 2);
+    }
 
-            document.getElementById("mensagemAcesso").textContent = dados.mensagem;
-            document.getElementById("acessoNegado").classList.remove("hidden");
+    async function carregar() {
 
+        if (carregando) return;
+
+        carregando = true;
+
+        try {
+
+            const fazendaId = selectFazenda.value;
+            const consulta = fazendaId ? `?fazenda_id=${encodeURIComponent(fazendaId)}` : "";
+
+            const { status, dados } = await chamarApi("gestao/resumo.php" + consulta);
+
+            if (status !== 200 || !dados.sucesso) {
+
+                pararAtualizacao();
+
+                document.getElementById("conteudoGestao").classList.add("hidden");
+                document.getElementById("mensagemAcesso").textContent =
+                    dados.mensagem || "Não foi possível carregar a Gestão da Fazenda.";
+                document.getElementById("acessoNegado").classList.remove("hidden");
+
+                return;
+            }
+
+            document.getElementById("conteudoGestao").classList.remove("hidden");
+
+            const idsAntes = fazendas.map(f => f.id).join(",");
+            fazendas = dados.fazendas;
+
+            if (fazendas.map(f => f.id).join(",") !== idsAntes) preencherSelectFazendas();
+
+            document.getElementById("totalPropriedades").textContent = dados.resumo.propriedades;
+            document.getElementById("totalTalhoes").textContent = dados.resumo.talhoes;
+            document.getElementById("totalSafras").textContent = dados.resumo.safras_ativas;
+            document.getElementById("totalDispositivos").textContent = dados.resumo.dispositivos;
+
+            renderizarPropriedade(fazendaId);
+            renderizarSensores(dados.sensores, dados.dispositivos || []);
+
+            iotAtualizacao.textContent =
+                `Painel atualizado às ${new Date().toLocaleTimeString("pt-BR")} · atualiza sozinho a cada ${INTERVALO_MS / 1000} s`;
+
+        } catch (erro) {
+
+            console.error("Erro ao carregar a Gestão da Fazenda:", erro);
+            iotAtualizacao.textContent = "Sem conexão com o servidor. Tentando de novo...";
+
+        } finally {
+
+            carregando = false;
+        }
+    }
+
+    function iniciarAtualizacao() {
+
+        pararAtualizacao();
+        temporizador = setInterval(carregar, INTERVALO_MS);
+    }
+
+    function pararAtualizacao() {
+
+        clearInterval(temporizador);
+        temporizador = null;
+    }
+
+    // Aba oculta não consulta o servidor; ao voltar, atualiza na hora.
+    document.addEventListener("visibilitychange", () => {
+
+        if (document.hidden) {
+            pararAtualizacao();
+        } else if (!document.getElementById("conteudoGestao").classList.contains("hidden")) {
+            carregar();
+            iniciarAtualizacao();
+        }
+    });
+
+    selectFazenda.addEventListener("change", carregar);
+
+    /* ======================================================
+       CONECTAR ESP32
+    ====================================================== */
+
+    const modalEsp = document.getElementById("modalEsp");
+    const formEsp = document.getElementById("formEsp");
+    const espErro = document.getElementById("espErro");
+    const salvarEsp = document.getElementById("salvarEsp");
+    const espSucesso = document.getElementById("espSucesso");
+
+    function abrirModalEsp() {
+
+        formEsp.reset();
+        espErro.textContent = "";
+        formEsp.classList.remove("hidden");
+        espSucesso.classList.add("hidden");
+
+        const temFazenda = fazendas.length > 0;
+
+        document.getElementById("campoFazenda").classList.toggle("hidden", !temFazenda);
+        document.getElementById("novaFazenda").classList.toggle("hidden", temFazenda);
+
+        document.getElementById("espFazenda").innerHTML =
+            fazendas.map(f => `<option value="${f.id}">${escapeHtml(f.nome)}</option>`).join("");
+
+        if (selectFazenda.value) {
+            document.getElementById("espFazenda").value = selectFazenda.value;
+        }
+
+        modalEsp.classList.add("ativo");
+        document.getElementById("espCodigo").focus();
+    }
+
+    function fecharModalEsp() {
+
+        modalEsp.classList.remove("ativo");
+        document.getElementById("espToken").textContent = "";
+    }
+
+    document.getElementById("btnConectarEsp").addEventListener("click", abrirModalEsp);
+    document.getElementById("fecharModalEsp").addEventListener("click", fecharModalEsp);
+    document.getElementById("cancelarEsp").addEventListener("click", fecharModalEsp);
+    document.getElementById("concluirEsp").addEventListener("click", fecharModalEsp);
+
+    modalEsp.addEventListener("click", (e) => {
+        if (e.target === modalEsp) fecharModalEsp();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modalEsp.classList.contains("ativo")) fecharModalEsp();
+    });
+
+    formEsp.addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+        espErro.textContent = "";
+
+        const codigo = document.getElementById("espCodigo").value.trim().toUpperCase();
+
+        if (!/^[A-Z0-9][A-Z0-9-]{3,39}$/.test(codigo)) {
+            espErro.textContent = "Informe o código exibido no monitor serial (ex.: ESP32-MR-1A2B3C).";
             return;
         }
 
-        if (status !== 200 || !dados.sucesso) {
+        const corpo = { codigo, nome: document.getElementById("espNome").value.trim() };
 
-            document.getElementById("mensagemAcesso").textContent =
-                dados.mensagem || "Não foi possível carregar a Gestão da Fazenda.";
-            document.getElementById("acessoNegado").classList.remove("hidden");
+        if (fazendas.length > 0) {
+            corpo.fazenda_id = Number(document.getElementById("espFazenda").value);
+        } else {
+            corpo.fazenda = {
+                nome: document.getElementById("fazNome").value.trim(),
+                localizacao: document.getElementById("fazLocal").value.trim(),
+                area_total: document.getElementById("fazArea").value.trim()
+            };
 
-            return;
+            if (!corpo.fazenda.nome) {
+                espErro.textContent = "Informe o nome da propriedade.";
+                return;
+            }
         }
 
-        document.getElementById("conteudoGestao").classList.remove("hidden");
+        salvarEsp.disabled = true;
 
-        fazendas = dados.fazendas;
+        try {
 
-        document.getElementById("totalPropriedades").textContent = dados.resumo.propriedades;
-        document.getElementById("totalTalhoes").textContent = dados.resumo.talhoes;
-        document.getElementById("totalSafras").textContent = dados.resumo.safras_ativas;
-        document.getElementById("totalDispositivos").textContent = dados.resumo.dispositivos;
+            const { status, dados } = await chamarApi("iot/dispositivos.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(corpo)
+            });
 
-        if (fazendas.length > 1 && selectFazenda.classList.contains("hidden")) {
+            if (status !== 201 || !dados.sucesso) {
+                espErro.textContent = dados.mensagem || "Não foi possível conectar o ESP32.";
+                return;
+            }
 
-            selectFazenda.innerHTML =
-                `<option value="">Todas as propriedades</option>` +
-                fazendas.map(f => `<option value="${f.id}">${escapeHtml(f.nome)}</option>`).join("");
+            document.getElementById("espSucessoMsg").textContent = dados.mensagem;
+            document.getElementById("espSucessoCodigo").textContent = dados.codigo;
+            document.getElementById("espToken").textContent = dados.token;
 
-            selectFazenda.classList.remove("hidden");
+            formEsp.classList.add("hidden");
+            espSucesso.classList.remove("hidden");
+
+            await carregar();
+
+        } catch (erro) {
+
+            console.error("Erro ao conectar ESP32:", erro);
+            espErro.textContent = "Sem conexão com o servidor. Tente novamente.";
+
+        } finally {
+
+            salvarEsp.disabled = false;
+        }
+    });
+
+    document.getElementById("copiarToken").addEventListener("click", async (e) => {
+
+        const botao = e.currentTarget;
+
+        try {
+            await navigator.clipboard.writeText(document.getElementById("espToken").textContent);
+            botao.innerHTML = '<i class="bi bi-check2"></i> Copiado';
+        } catch (erro) {
+            botao.innerHTML = '<i class="bi bi-x"></i> Copie manualmente';
         }
 
-        renderizarPropriedade(fazendaId);
-        renderizarSensores(dados.sensores);
-    }
+        setTimeout(() => { botao.innerHTML = '<i class="bi bi-clipboard"></i> Copiar'; }, 2500);
+    });
 
-    selectFazenda.addEventListener("change", () => carregar(selectFazenda.value));
+    /* ======================================================
+       INÍCIO
+    ====================================================== */
 
-    try {
+    await carregar();
 
-        await carregar("");
-
-    } catch (erro) {
-
-        console.error("Erro ao carregar a Gestão da Fazenda:", erro);
+    if (!document.getElementById("conteudoGestao").classList.contains("hidden")) {
+        iniciarAtualizacao();
     }
 
 });

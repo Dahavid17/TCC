@@ -1,0 +1,9 @@
+{
+  "broker": "wss://public.cloud.shiftr.io:443",
+  "broker_usuario": "public",
+  "broker_senha": "public",
+  "api": "http://127.0.0.1:8080/backend/iot/receber.php",
+  "dispositivos": {
+    "ESP32-MR-88CDA7": "cole aqui o token exibido em Gestão da Fazenda > Conectar ESP32"
+  }
+}

@@ -1,0 +1,2472 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 7,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 451 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      },
+      {
+        "code": "timeline_track_too_dense",
+        "severity": "warning",
+        "message": "Track 0 has 5 timed elements in this HTML file. Smaller sub-compositions keep timelines easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move coherent scene groups into separate .html files under compositions/ and mount them from the parent with data-composition-src so the timeline stays easier to inspect, revise, and validate."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"c1\"> is a timeline element that contains nested <div id=\"c1-palco\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#c1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"c1\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"c2\"> is a timeline element that contains nested <div id=\"b1\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#c2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"c2\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"c3\"> is a timeline element that contains nested <div id=\"c3-luz\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#c3",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"c3\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"c4\"> is a timeline element that contains nested <div id=\"c4-palco\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#c4",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"c4\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<section id=\"c5\"> is a timeline element that contains nested <div id=\"c5-botao\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#c5",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\11981735640\\Downloads\\marketplace\\video-src\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <section id=\"c5\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 2,
+    "infoCount": 33,
+    "findings": [
+      {
+        "code": "container_overflow",
+        "severity": "warning",
+        "time": 21.194,
+        "selector": "#c3-luz",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1103.24,
+          "top": -308.84,
+          "right": 2076.76,
+          "bottom": 2208.84,
+          "width": 973.51,
+          "height": 2517.67
+        },
+        "containerSelector": "#c3",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "right": 996.76,
+          "top": 308.84,
+          "bottom": 288.84
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1103.24,
+          "y": -308.84,
+          "width": 973.51,
+          "height": 2517.67
+        },
+        "firstSeen": 21.194,
+        "lastSeen": 27.25,
+        "occurrences": 2,
+        "heldMs": 0,
+        "times": [
+          21.194,
+          27.25
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "warning",
+        "time": 38.579,
+        "selector": "#c4-moedas > div:nth-of-type(4)",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 922.14,
+          "top": 955.11,
+          "right": 960.95,
+          "bottom": 990.8,
+          "width": 38.81,
+          "height": 35.69
+        },
+        "containerSelector": "#c4-moedas > div:nth-of-type(8)",
+        "text": "R$",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 922.14,
+          "y": 955.11,
+          "width": 38.81,
+          "height": 35.69
+        },
+        "firstSeen": 38.579,
+        "lastSeen": 38.885,
+        "occurrences": 2,
+        "heldMs": 305.9999999999974,
+        "times": [
+          38.579,
+          38.885
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 24.801,
+        "selector": "div.tela-busca",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 342,
+          "top": 546,
+          "right": 646,
+          "bottom": 572,
+          "width": 304,
+          "height": 26
+        },
+        "containerSelector": "#c3-vitrine > div:nth-of-type(1) > i:nth-of-type(1)",
+        "text": "Buscar produtos do campo…",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 342,
+          "y": 546,
+          "width": 304,
+          "height": 26
+        },
+        "firstSeen": 24.801,
+        "lastSeen": 25.719,
+        "occurrences": 2,
+        "heldMs": 918.0000000000028,
+        "times": [
+          24.801,
+          25.719
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 26.944,
+        "selector": "div.tela-marca",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 364,
+          "top": 472,
+          "right": 630.17,
+          "bottom": 510,
+          "width": 266.17,
+          "height": 38
+        },
+        "containerSelector": "#c3-vitrine > div:nth-of-type(5) > i:nth-of-type(1)",
+        "text": "MarketPlace Rural",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 364,
+          "y": 472,
+          "width": 266.17,
+          "height": 38
+        },
+        "firstSeen": 26.944,
+        "lastSeen": 26.944,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          26.944
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(1) > b:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 328,
+          "top": -205.17,
+          "right": 398.86,
+          "bottom": -174.17,
+          "width": 70.86,
+          "height": 31
+        },
+        "containerSelector": "#root",
+        "text": "Maçã",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 205.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 328,
+          "y": -205.17,
+          "width": 70.86,
+          "height": 31
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(1) > i:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 328,
+          "top": -170.17,
+          "right": 448.69,
+          "bottom": -144.17,
+          "width": 120.69,
+          "height": 26
+        },
+        "containerSelector": "#root",
+        "text": "R$ 8,90/kg",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 170.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 328,
+          "y": -170.17,
+          "width": 120.69,
+          "height": 26
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(2) > b:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 568,
+          "top": -205.17,
+          "right": 651.88,
+          "bottom": -174.17,
+          "width": 83.88,
+          "height": 31
+        },
+        "containerSelector": "#root",
+        "text": "Alface",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 205.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 568,
+          "y": -205.17,
+          "width": 83.88,
+          "height": 31
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(2) > i:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 568,
+          "top": -170.17,
+          "right": 689.52,
+          "bottom": -144.17,
+          "width": 121.52,
+          "height": 26
+        },
+        "containerSelector": "#root",
+        "text": "R$ 3,50/un",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 170.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 568,
+          "y": -170.17,
+          "width": 121.52,
+          "height": 26
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(5) > i:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 328,
+          "top": 409.83,
+          "right": 458.84,
+          "bottom": 435.83,
+          "width": 130.84,
+          "height": 26
+        },
+        "containerSelector": "div.tela-topo",
+        "text": "R$ 14,90/dz",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.67,
+        "lifetime": {
+          "start": 15.9,
+          "end": 28.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 328,
+          "y": 409.83,
+          "width": 130.84,
+          "height": 26
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(6) > i:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 568,
+          "top": 409.83,
+          "right": 703.78,
+          "bottom": 435.83,
+          "width": 135.78,
+          "height": 26
+        },
+        "containerSelector": "div.tela-topo",
+        "text": "R$ 29,90/un",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.67,
+        "lifetime": {
+          "start": 15.9,
+          "end": 28.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 568,
+          "y": 409.83,
+          "width": 135.78,
+          "height": 26
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 310,
+          "top": -371.17,
+          "right": 770,
+          "bottom": 1348.83,
+          "width": 460,
+          "height": 1720
+        },
+        "containerSelector": "div.tela",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 290,
+          "top": 420,
+          "right": 790,
+          "bottom": 1340,
+          "width": 500,
+          "height": 920
+        },
+        "overflow": {
+          "top": 791.17,
+          "bottom": 8.83
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 310,
+          "y": -371.17,
+          "width": 460,
+          "height": 1720
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(3)",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": 310,
+          "top": -81.17,
+          "right": 530,
+          "bottom": 188.83,
+          "width": 220,
+          "height": 270
+        },
+        "containerSelector": "#root",
+        "text": "Cenoura R$ 4,20/kg",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 81.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 310,
+          "y": -81.17,
+          "width": 220,
+          "height": 270
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "panel_out_of_canvas",
+        "severity": "info",
+        "time": 27.25,
+        "selector": "#c3-vitrine > div:nth-of-type(4)",
+        "message": "Painted panel extends outside the composition canvas.",
+        "rect": {
+          "left": 550,
+          "top": -81.17,
+          "right": 770,
+          "bottom": 188.83,
+          "width": 220,
+          "height": 270
+        },
+        "containerSelector": "#root",
+        "text": "Milho R$ 6,00/kg",
+        "fixHint": "Move the panel inward, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 81.17
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 550,
+          "y": -81.17,
+          "width": 220,
+          "height": 270
+        },
+        "firstSeen": 27.25,
+        "lastSeen": 27.25,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 615.6,
+          "top": -237.76,
+          "right": 654.71,
+          "bottom": -201.71,
+          "width": 39.11,
+          "height": 36.05
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 237.76
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 615.6,
+          "y": -237.76,
+          "width": 39.11,
+          "height": 36.05
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(2)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 709.46,
+          "top": -239.44,
+          "right": 749.48,
+          "bottom": -202.34,
+          "width": 40.02,
+          "height": 37.1
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 239.44
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 709.46,
+          "y": -239.44,
+          "width": 40.02,
+          "height": 37.1
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(3)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 806.86,
+          "top": -241.21,
+          "right": 853.27,
+          "bottom": -195.45,
+          "width": 46.41,
+          "height": 45.76
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 241.21
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 806.86,
+          "y": -241.21,
+          "width": 46.41,
+          "height": 45.76
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(4)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 922.12,
+          "top": -244.91,
+          "right": 960.97,
+          "bottom": -209.18,
+          "width": 38.85,
+          "height": 35.73
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 244.91
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 922.12,
+          "y": -244.91,
+          "width": 38.85,
+          "height": 35.73
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(5)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 633.5,
+          "top": -195.76,
+          "right": 669.28,
+          "bottom": -163.52,
+          "width": 35.78,
+          "height": 32.24
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 195.76
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 633.5,
+          "y": -195.76,
+          "width": 35.78,
+          "height": 32.24
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(6)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 715.89,
+          "top": -200.78,
+          "right": 761.82,
+          "bottom": -155.97,
+          "width": 45.93,
+          "height": 44.81
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 200.78
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 715.89,
+          "y": -200.78,
+          "width": 45.93,
+          "height": 44.81
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(7)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 830.67,
+          "top": -202.33,
+          "right": 875.36,
+          "bottom": -159.36,
+          "width": 44.69,
+          "height": 42.97
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 202.33
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 830.67,
+          "y": -202.33,
+          "width": 44.69,
+          "height": 42.97
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(8)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 913.4,
+          "top": -195.43,
+          "right": 949.91,
+          "bottom": -162.38,
+          "width": 36.51,
+          "height": 33.05
+        },
+        "containerSelector": "#root",
+        "text": "R$",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "top": 195.43
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 913.4,
+          "y": -195.43,
+          "width": 36.51,
+          "height": 33.05
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(1)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 591.68,
+          "top": -263.21,
+          "right": 678.63,
+          "bottom": -176.26,
+          "width": 86.95,
+          "height": 86.95
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 591.68,
+          "y": -263.21,
+          "width": 86.95,
+          "height": 86.95
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(2)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 684.85,
+          "top": -265.51,
+          "right": 774.08,
+          "bottom": -176.27,
+          "width": 89.23,
+          "height": 89.23
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 684.85,
+          "y": -265.51,
+          "width": 89.23,
+          "height": 89.23
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(3)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 776.74,
+          "top": -271.65,
+          "right": 883.38,
+          "bottom": -165.01,
+          "width": 106.64,
+          "height": 106.64
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 776.74,
+          "y": -271.65,
+          "width": 106.64,
+          "height": 106.64
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(4)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 898.4,
+          "top": -270.19,
+          "right": 984.69,
+          "bottom": -183.9,
+          "width": 86.29,
+          "height": 86.29
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 898.4,
+          "y": -270.19,
+          "width": 86.29,
+          "height": 86.29
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(5)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 612.04,
+          "top": -218.99,
+          "right": 690.74,
+          "bottom": -140.29,
+          "width": 78.7,
+          "height": 78.7
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 612.04,
+          "y": -218.99,
+          "width": 78.7,
+          "height": 78.7
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(6)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 686.36,
+          "top": -230.87,
+          "right": 791.35,
+          "bottom": -125.88,
+          "width": 104.99,
+          "height": 104.99
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 686.36,
+          "y": -230.87,
+          "width": 104.99,
+          "height": 104.99
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(7)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 802.3,
+          "top": -231.56,
+          "right": 903.73,
+          "bottom": -130.13,
+          "width": 101.44,
+          "height": 101.44
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 802.3,
+          "y": -231.56,
+          "width": 101.44,
+          "height": 101.44
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 33.306,
+        "selector": "#c4-moedas > div:nth-of-type(8)",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 891.41,
+          "top": -219.15,
+          "right": 971.9,
+          "bottom": -138.66,
+          "width": 80.49,
+          "height": 80.49
+        },
+        "containerSelector": "#c4-dir",
+        "text": "R$",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 540,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 540,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 891.41,
+          "y": -219.15,
+          "width": 80.49,
+          "height": 80.49
+        },
+        "firstSeen": 33.306,
+        "lastSeen": 33.306,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          33.306
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 39.361,
+        "selector": "#c4-moedas > div:nth-of-type(1)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 614.81,
+          "top": 961.31,
+          "right": 655.5,
+          "bottom": 999.23,
+          "width": 40.7,
+          "height": 37.92
+        },
+        "containerSelector": "#c4-moedas > div:nth-of-type(5)",
+        "text": "R$",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.22,
+        "lifetime": {
+          "start": 28.3,
+          "end": 41.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 614.81,
+          "y": 961.31,
+          "width": 40.7,
+          "height": 37.92
+        },
+        "firstSeen": 39.361,
+        "lastSeen": 39.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 39.361,
+        "selector": "#c4-moedas > div:nth-of-type(2)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 709,
+          "top": 960.01,
+          "right": 749.93,
+          "bottom": 998.21,
+          "width": 40.93,
+          "height": 38.2
+        },
+        "containerSelector": "#c4-moedas > div:nth-of-type(6)",
+        "text": "R$",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.22,
+        "lifetime": {
+          "start": 28.3,
+          "end": 41.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 709,
+          "y": 960.01,
+          "width": 40.93,
+          "height": 38.2
+        },
+        "firstSeen": 39.361,
+        "lastSeen": 39.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 39.361,
+        "selector": "#c4-moedas > div:nth-of-type(3)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 812.47,
+          "top": 965.89,
+          "right": 847.66,
+          "bottom": 997.45,
+          "width": 35.19,
+          "height": 31.56
+        },
+        "containerSelector": "#c4-moedas > div:nth-of-type(7)",
+        "text": "R$",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.3,
+        "lifetime": {
+          "start": 28.3,
+          "end": 41.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 812.47,
+          "y": 965.89,
+          "width": 35.19,
+          "height": 31.56
+        },
+        "firstSeen": 39.361,
+        "lastSeen": 39.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "text_occluded",
+        "severity": "info",
+        "time": 39.361,
+        "selector": "#c4-moedas > div:nth-of-type(4)",
+        "message": "Text is hidden beneath an opaque element.",
+        "rect": {
+          "left": 922.14,
+          "top": 955.11,
+          "right": 960.95,
+          "bottom": 990.8,
+          "width": 38.81,
+          "height": 35.69
+        },
+        "containerSelector": "#c4-moedas > div:nth-of-type(8)",
+        "text": "R$",
+        "fixHint": "Give the text its own zone, raise its stacking order above the covering element, or mark intentional layering with data-layout-allow-occlusion.",
+        "coveredFraction": 0.04,
+        "lifetime": {
+          "start": 28.3,
+          "end": 41.8
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 922.14,
+          "y": 955.11,
+          "width": 38.81,
+          "height": 35.69
+        },
+        "firstSeen": 39.361,
+        "lastSeen": 39.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 45.417,
+        "selector": "#c5-cursor",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1150,
+          "top": 1700,
+          "right": 1270,
+          "bottom": 1878,
+          "width": 120,
+          "height": 178
+        },
+        "containerSelector": "#c5",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "overflow": {
+          "right": 190
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1150,
+          "y": 1700,
+          "width": 120,
+          "height": 178
+        },
+        "firstSeen": 45.417,
+        "lastSeen": 45.417,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          45.417
+        ]
+      },
+      {
+        "code": "escaped_container",
+        "severity": "info",
+        "time": 45.417,
+        "selector": "#c5-cursor",
+        "message": "Positioned element renders far outside its offset parent — its coordinates were likely computed in a different frame (canvas/viewport pixels).",
+        "rect": {
+          "left": 1150,
+          "top": 1700,
+          "right": 1270,
+          "bottom": 1878,
+          "width": 120,
+          "height": 178
+        },
+        "containerSelector": "#c5",
+        "text": "",
+        "fixHint": "Compute left/top in the offset parent's frame (subtract its rect), or mark intentional placement with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1080,
+          "bottom": 1920,
+          "width": 1080,
+          "height": 1920
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1150,
+          "y": 1700,
+          "width": 120,
+          "height": 178
+        },
+        "firstSeen": 45.417,
+        "lastSeen": 45.417,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          45.417
+        ]
+      }
+    ],
+    "duration": 54.5,
+    "samples": [
+      3.028,
+      9.083,
+      15.139,
+      21.194,
+      27.25,
+      33.306,
+      39.361,
+      45.417,
+      51.472
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 35,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 15,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(4) > svg > text",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 853.369140625,
+          "y": 453.75,
+          "width": 83.26171875,
+          "height": 151.25
+        },
+        "time": 3.028,
+        "times": [
+          3.028
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.24:1; WCAG AA requires 3:1.",
+        "text": "Cenoura",
+        "fg": "rgb(49,87,44)",
+        "bg": "rgb(16,20,17)",
+        "ratio": 2.24,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(72,106,68)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(3) > b",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 312,
+          "y": 70.82769775390625,
+          "width": 216,
+          "height": 49
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.24:1; WCAG AA requires 3:1.",
+        "text": "Milho",
+        "fg": "rgb(49,87,44)",
+        "bg": "rgb(16,20,17)",
+        "ratio": 2.24,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(72,106,68)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(4) > b",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 552,
+          "y": 70.82769775390625,
+          "width": 216,
+          "height": 49
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.26:1; WCAG AA requires 3:1.",
+        "text": "Ovos caipira",
+        "fg": "rgb(49,87,44)",
+        "bg": "rgb(15,19,16)",
+        "ratio": 2.26,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(71,105,66)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(5) > b",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 312,
+          "y": 360.82769775390625,
+          "width": 216,
+          "height": 49
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.58:1; WCAG AA requires 3:1.",
+        "text": "R$ 14,90/dz",
+        "fg": "rgb(79,119,45)",
+        "bg": "rgb(49,87,44)",
+        "ratio": 1.58,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(137,164,114)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(5) > i",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 312,
+          "y": 409.82769775390625,
+          "width": 216,
+          "height": 26
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.26:1; WCAG AA requires 3:1.",
+        "text": "Mel",
+        "fg": "rgb(49,87,44)",
+        "bg": "rgb(15,19,16)",
+        "ratio": 2.26,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(71,105,66)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(6) > b",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 552,
+          "y": 360.82769775390625,
+          "width": 216,
+          "height": 49
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.58:1; WCAG AA requires 3:1.",
+        "text": "R$ 29,90/un",
+        "fg": "rgb(79,119,45)",
+        "bg": "rgb(49,87,44)",
+        "ratio": 1.58,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(137,164,114)",
+        "large": true,
+        "selector": "div > section:nth-of-type(3) > div:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(6) > i",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 552,
+          "y": 409.82769775390625,
+          "width": 216,
+          "height": 26
+        },
+        "time": 27.25,
+        "times": [
+          27.25
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 589.677001953125,
+          "y": 934.786376953125,
+          "width": 90.95849609375,
+          "height": 90.95849609375
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 683.6934814453125,
+          "y": 933.3341064453125,
+          "width": 91.550537109375,
+          "height": 91.550537109375
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 791.44580078125,
+          "y": 943.05517578125,
+          "width": 77.2333984375,
+          "height": 77.2333984375
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(4)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 898.44677734375,
+          "y": 929.8529663085938,
+          "width": 86.2001953125,
+          "height": 86.2003173828125
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(5)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 607.06787109375,
+          "y": 976.03662109375,
+          "width": 88.6455078125,
+          "height": 88.6455078125
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(6)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 696.2392578125,
+          "y": 979.0048828125,
+          "width": 85.240234375,
+          "height": 85.240234375
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(7)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 806.7340087890625,
+          "y": 972.8746337890625,
+          "width": 92.563232421875,
+          "height": 92.563232421875
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.82:1; WCAG AA requires 3:1.",
+        "text": "R$",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(214,137,16)",
+        "ratio": 2.82,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(76,76,76)",
+        "large": true,
+        "selector": "div > section:nth-of-type(4) > div > div:nth-of-type(2) > div:nth-of-type(8) > div:nth-of-type(8)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 886.7091064453125,
+          "y": 976.1466064453125,
+          "width": 89.894287109375,
+          "height": 89.894287109375
+        },
+        "time": 39.361,
+        "times": [
+          39.361
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      3.028,
+      15.139,
+      27.25,
+      39.361,
+      51.472
+    ],
+    "checked": 48,
+    "passed": 33
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 7,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "film_silent",
+        "severity": "warning",
+        "message": "This 55 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"EM\" (1 word) is on screen 0.10 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "EM",
+        "selector": "#legendas > div:nth-of-type(4) > span:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 452.19,
+          "y": 1486.43,
+          "width": 175.60999999999996,
+          "height": 133.72000000000003
+        },
+        "time": 4.438,
+        "words": 1,
+        "seconds": 0.102,
+        "floorSeconds": 0.4
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 36 text elements stay under it for 0.5 s or more, the smallest \"Problema 3\" at 19 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Problema 3",
+        "selector": "#b3 > div:nth-of-type(2) > small:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 425.98,
+          "y": 1086.13,
+          "width": 155.04,
+          "height": 22.95
+        },
+        "time": 13.625,
+        "times": [
+          8.5,
+          10.875,
+          13.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          22.625,
+          23.875,
+          23.875,
+          24.125,
+          24.125,
+          25,
+          25,
+          25.125,
+          25.125,
+          25.875,
+          25.875,
+          26,
+          26,
+          26.75,
+          26.75,
+          27,
+          27,
+          37.375,
+          37.5,
+          37.75,
+          37.875,
+          38,
+          38.125,
+          38.375,
+          38.5
+        ],
+        "fontPx": 19.25,
+        "floorPx": 28,
+        "seconds": 2.625,
+        "elements": [
+          {
+            "selector": "#b3 > div:nth-of-type(2) > small:nth-of-type(1)",
+            "text": "Problema 3",
+            "fontPx": 19.25,
+            "time": 13.625,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.tela-busca",
+            "text": "Buscar produtos do campo…",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 6.25
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(1) > i:nth-of-type(1)",
+            "text": "R$ 8,90/kg",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(2) > i:nth-of-type(1)",
+            "text": "R$ 3,50/un",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(3) > i:nth-of-type(1)",
+            "text": "R$ 4,20/kg",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(4) > i:nth-of-type(1)",
+            "text": "R$ 6,00/kg",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(5) > i:nth-of-type(1)",
+            "text": "R$ 14,90/dz",
+            "fontPx": 22,
+            "time": 24.125,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(6) > i:nth-of-type(1)",
+            "text": "R$ 29,90/un",
+            "fontPx": 22,
+            "time": 24.125,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(7) > i:nth-of-type(1)",
+            "text": "R$ 7,80/kg",
+            "fontPx": 22,
+            "time": 25.125,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(8) > i:nth-of-type(1)",
+            "text": "R$ 5,40/L",
+            "fontPx": 22,
+            "time": 25.125,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(9) > i:nth-of-type(1)",
+            "text": "R$ 4,90/kg",
+            "fontPx": 22,
+            "time": 26,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(10) > i:nth-of-type(1)",
+            "text": "R$ 5,20/kg",
+            "fontPx": 22,
+            "time": 26,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(11) > i:nth-of-type(1)",
+            "text": "R$ 32,00/kg",
+            "fontPx": 22,
+            "time": 27,
+            "seconds": 1.875
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(12) > i:nth-of-type(1)",
+            "text": "R$ 39,90/kg",
+            "fontPx": 22,
+            "time": 27,
+            "seconds": 1.875
+          },
+          {
+            "selector": "#b2 > div:nth-of-type(2) > small:nth-of-type(1)",
+            "text": "Problema 2",
+            "fontPx": 24.78,
+            "time": 10.875,
+            "seconds": 5.375
+          },
+          {
+            "selector": "#b1 > div:nth-of-type(2) > small:nth-of-type(1)",
+            "text": "Problema 1",
+            "fontPx": 26,
+            "time": 8.5,
+            "seconds": 7.75
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "Maçã",
+            "fontPx": 26,
+            "time": 22.625,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "Alface",
+            "fontPx": 26,
+            "time": 22.625,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(3) > b:nth-of-type(1)",
+            "text": "Cenoura",
+            "fontPx": 26,
+            "time": 22.625,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(4) > b:nth-of-type(1)",
+            "text": "Milho",
+            "fontPx": 26,
+            "time": 22.625,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(5) > b:nth-of-type(1)",
+            "text": "Ovos caipira",
+            "fontPx": 26,
+            "time": 23.875,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(6) > b:nth-of-type(1)",
+            "text": "Mel",
+            "fontPx": 26,
+            "time": 23.875,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(7) > b:nth-of-type(1)",
+            "text": "Tomate",
+            "fontPx": 26,
+            "time": 25,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(8) > b:nth-of-type(1)",
+            "text": "Leite",
+            "fontPx": 26,
+            "time": 25,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(9) > b:nth-of-type(1)",
+            "text": "Batata",
+            "fontPx": 26,
+            "time": 25.875,
+            "seconds": 3
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(10) > b:nth-of-type(1)",
+            "text": "Laranja",
+            "fontPx": 26,
+            "time": 25.875,
+            "seconds": 3
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(11) > b:nth-of-type(1)",
+            "text": "Café",
+            "fontPx": 26,
+            "time": 26.75,
+            "seconds": 2.125
+          },
+          {
+            "selector": "#c3-vitrine > div:nth-of-type(12) > b:nth-of-type(1)",
+            "text": "Queijo",
+            "fontPx": 26,
+            "time": 26.75,
+            "seconds": 2.125
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(1)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 37.375,
+            "seconds": 4.125
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(2)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 37.5,
+            "seconds": 4
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(3)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 37.75,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(4)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 37.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(5)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 38,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(6)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 38.125,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(7)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 38.375,
+            "seconds": 3.125
+          },
+          {
+            "selector": "#c4-moedas > div:nth-of-type(8)",
+            "text": "R$",
+            "fontPx": 26,
+            "time": 38.5,
+            "seconds": 3
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"ISSO\" (1 word) is on screen 0.27 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "ISSO",
+        "selector": "#legendas > div:nth-of-type(11) > span:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 582.03,
+          "y": 1383.01,
+          "width": 247.19000000000005,
+          "height": 122.66000000000008
+        },
+        "time": 18.367,
+        "words": 1,
+        "seconds": 0.273,
+        "floorSeconds": 0.4
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"O\" (1 word) is on screen 0.04 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "O",
+        "selector": "#legendas > div:nth-of-type(12) > span:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 896.43,
+          "y": 1405.38,
+          "width": 55.22000000000003,
+          "height": 85.06999999999994
+        },
+        "time": 19.367,
+        "words": 1,
+        "seconds": 0.039,
+        "floorSeconds": 0.4
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"DE\" (1 word) is on screen 0.13 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "DE",
+        "selector": "#legendas > div:nth-of-type(22) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 665.74,
+          "y": 1379.74,
+          "width": 143.56999999999994,
+          "height": 128.16000000000008
+        },
+        "time": 42.273,
+        "words": 1,
+        "seconds": 0.133,
+        "floorSeconds": 0.4
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"LINK\" (1 word) is on screen 0.33 s (±0.01 s), under its 0.40 s floor: hold it about 0.5 s + 0.3 s a word (0.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "LINK",
+        "selector": "#legendas > div:nth-of-type(24) > span:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 680.46,
+          "y": 1377.4,
+          "width": 264.77,
+          "height": 132.08999999999992
+        },
+        "time": 45.039,
+        "words": 1,
+        "seconds": 0.328,
+        "floorSeconds": 0.4
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 436
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "audio_none",
+        "severity": "info",
+        "message": "The film has no sound: no clip in it plays audio.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      }
+    ]
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

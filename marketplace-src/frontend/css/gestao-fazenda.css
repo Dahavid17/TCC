@@ -1,0 +1,161 @@
+/* Complementa estoque.css (estrutura do painel) com os blocos da Gestão da Fazenda. */
+
+.page-header select {
+    padding: 12px 14px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background: var(--branco);
+    font: inherit;
+}
+
+.propriedade-box {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+}
+
+.propriedade-box > i {
+    font-size: 28px;
+    color: var(--verde);
+}
+
+.propriedade-box h2 {
+    margin: 0 0 4px;
+    font-size: 20px;
+}
+
+.propriedade-box p {
+    margin: 0;
+    opacity: .7;
+}
+
+/* IoT */
+
+.iot {
+    margin-top: 32px;
+}
+
+.iot-cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.iot-cabecalho h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.iot-aviso {
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: #fff4e5;
+    color: #92400e;
+}
+
+.selo-demo {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff4e5;
+    color: #b45309;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.grid-sensores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.sensor-card {
+    padding: 20px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+}
+
+.sensor-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.sensor-card h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.sensor-card header i {
+    font-size: 20px;
+    color: var(--verde);
+}
+
+.sensor-valor {
+    display: block;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--verde);
+}
+
+.sensor-valor small {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sensor-meta {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: .7;
+}
+
+.sensor-estado {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #eef5e8;
+    color: var(--verde);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.sensor-estado.simulado {
+    background: #fff4e5;
+    color: #b45309;
+}
+
+.sensor-estado.alerta {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+body.dark .propriedade-box,
+body.dark .sensor-card,
+body.dark .page-header select {
+    background: #1f2a1c;
+    border-color: #33402f;
+    color: #fff;
+}
+
+body.dark .sensor-valor {
+    color: #b7d98b;
+}
+
+@media (max-width: 560px) {
+    .propriedade-box {
+        padding: 16px;
+    }
+}

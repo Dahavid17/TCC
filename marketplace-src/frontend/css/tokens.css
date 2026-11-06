@@ -1,0 +1,161 @@
+/* =============================================================
+   TOKENS.CSS — Sistema de Design Compartilhado
+   BuzzCodex / MarketPlace Rural
+   Importar este arquivo antes de qualquer CSS de página.
+   ============================================================= */
+
+/* ── Google Fonts ─────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@600;700&display=swap');
+
+/* ── Paleta MarketPlace Rural ─────────────────────────────── */
+:root {
+  /* Cores principais */
+  --verde:        #31572c;
+  --verde-medio:  #4f772d;
+  --verde-claro:  #90a955;
+  --areia:        #f5f0e6;
+  --branco:       #ffffff;
+  --texto:        #202820;
+  --suave:        #667064;
+  --borda:        #e3dac8;
+
+  /* Feedback */
+  --erro:         #c0392b;
+  --sucesso:      #2e7d32;
+  --alerta:       #d68910;
+
+  /* Sombras */
+  --sombra:       0 20px 50px rgba(49, 87, 44, 0.14);
+  --sombra-sm:    0 8px 25px rgba(49, 87, 44, 0.08);
+
+  /* Border-radius — tokens */
+  --radius-sm:    10px;
+  --radius-md:    16px;
+  --radius-lg:    24px;
+  --radius-xl:    32px;
+  --radius-pill:  999px;
+
+  /* Tipografia */
+  --fonte-display: 'Lora', Georgia, serif;
+  --fonte-corpo:   'Inter', Arial, sans-serif;
+}
+
+/* ── Reset base ───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  color: var(--texto);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Utilitários de mensagem ──────────────────────────────── */
+.msg-erro {
+  color: var(--erro);
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 16px;
+  display: block;
+  margin-top: 5px;
+}
+
+.msg-sucesso {
+  color: var(--sucesso);
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 16px;
+  display: block;
+  margin-top: 5px;
+}
+
+.msg-aviso {
+  color: var(--alerta);
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 16px;
+  display: block;
+  margin-top: 5px;
+}
+
+/* ── Acessibilidade: focus-visible global ─────────────────── */
+:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Componente input-box compartilhado ───────────────────── */
+.input-box {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fffaf5;
+  border: 1px solid var(--borda);
+  border-radius: var(--radius-md);
+  padding: 0 14px;
+  transition: border-color .25s, box-shadow .25s;
+}
+
+.input-box:focus-within {
+  border-color: var(--verde);
+  box-shadow: 0 0 0 4px rgba(49, 87, 44, .08);
+}
+
+.input-box i {
+  color: var(--verde);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.input-box input {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--texto);
+  font-size: 15px;
+  font-family: var(--fonte-corpo);
+}
+
+.input-box input::placeholder {
+  color: #a8b5aa;
+}
+
+.show-pass {
+  border: none;
+  background: transparent;
+  color: var(--verde);
+  cursor: pointer;
+  font-size: 18px;
+  flex-shrink: 0;
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Modo escuro: inputs ──────────────────────────────────── */
+body.dark .input-box {
+  background: #101411;
+  border-color: #2a382c;
+}
+
+body.dark .input-box input {
+  color: #f5f5f5;
+}
+
+body.dark .input-box input::placeholder {
+  color: #667064;
+}

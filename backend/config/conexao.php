@@ -3,16 +3,18 @@
 // Crie backend/config/config.local.php no servidor a partir de config.example.php.
 // Alternativa: variáveis de ambiente DB_HOST, DB_NAME, DB_USER, DB_PASS.
 
-$configLocal = __DIR__ . '/config.local.php';
+// Ambiente local de desenvolvimento: MARKETPLACE_CONFIG aponta para outro arquivo (ver dev/).
+$configLocal = getenv('MARKETPLACE_CONFIG') ?: __DIR__ . '/config.local.php';
 $config = is_file($configLocal) ? require $configLocal : [];
 
 $host    = $config['host']    ?? getenv('DB_HOST') ?: 'localhost';
+$porta   = $config['porta']   ?? getenv('DB_PORT') ?: '3306';
 $dbname  = $config['dbname']  ?? getenv('DB_NAME') ?: '';
 $usuario = $config['usuario'] ?? getenv('DB_USER') ?: '';
 $senha   = $config['senha']   ?? getenv('DB_PASS') ?: '';
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host={$host};dbname={$dbname};charset={$charset}";
+$dsn = "mysql:host={$host};port={$porta};dbname={$dbname};charset={$charset}";
 
 $opcoes = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,

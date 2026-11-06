@@ -54,22 +54,165 @@
     font-size: 20px;
 }
 
-.iot-aviso {
-    margin: 0 0 16px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: #fff4e5;
-    color: #92400e;
+.iot-acoes {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.selo-demo {
-    display: inline-block;
+.selo-ao-vivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 6px 12px;
     border-radius: 999px;
-    background: #fff4e5;
-    color: #b45309;
+    background: #eef5e8;
+    color: var(--verde);
     font-size: 12px;
     font-weight: 700;
+}
+
+.ponto-ao-vivo {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--sucesso);
+    animation: pulso-ao-vivo 1.6s ease-in-out infinite;
+}
+
+/* .hidden (estoque.css) perde para regras de display declaradas depois dela. */
+.selo-ao-vivo.hidden,
+.campo.hidden {
+    display: none;
+}
+
+@keyframes pulso-ao-vivo {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ponto-ao-vivo { animation: none; }
+}
+
+.btn-conectar,
+.btn-primario {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background: var(--verde);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-conectar:hover,
+.btn-primario:hover {
+    background: var(--verde-medio);
+}
+
+.btn-primario:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.btn-secundario {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #ececec;
+    color: var(--texto);
+    font: inherit;
+    cursor: pointer;
+}
+
+.iot-atualizacao {
+    margin: 0 0 16px;
+    font-size: 13px;
+    color: var(--suave);
+}
+
+.lista-dispositivos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.lista-dispositivos:empty {
+    display: none;
+}
+
+.dispositivo-chip {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 14px;
+    font-size: 14px;
+}
+
+.dispositivo-chip > i {
+    color: var(--suave);
+}
+
+.dispositivo-estado {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #f1f1ee;
+    color: var(--suave);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.dispositivo-chip.online > i,
+.dispositivo-chip.online .dispositivo-estado {
+    color: var(--verde);
+}
+
+.dispositivo-chip.online .dispositivo-estado {
+    background: #eef5e8;
+}
+
+.dispositivo-chip.alerta .dispositivo-estado {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.iot-vazio {
+    padding: 40px 24px;
+    text-align: center;
+    background: var(--branco);
+    border: 1px dashed var(--borda);
+    border-radius: 20px;
+}
+
+.iot-vazio > i {
+    font-size: 40px;
+    color: var(--verde);
+}
+
+.iot-vazio h3 {
+    margin: 12px 0 8px;
+    color: var(--verde);
+}
+
+.iot-vazio p {
+    max-width: 480px;
+    margin: 0 auto;
+    color: var(--suave);
+    line-height: 1.6;
 }
 
 .grid-sensores {
@@ -132,9 +275,9 @@
     font-weight: 700;
 }
 
-.sensor-estado.simulado {
-    background: #fff4e5;
-    color: #b45309;
+.sensor-estado.aguardando {
+    background: #f1f1ee;
+    color: var(--suave);
 }
 
 .sensor-estado.alerta {
@@ -142,9 +285,106 @@
     color: #dc2626;
 }
 
+.sensor-grafico {
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin-top: 10px;
+    color: var(--verde-claro);
+}
+
+.sensor-grafico.vazio {
+    border-bottom: 2px dashed var(--borda);
+    height: 24px;
+    margin-bottom: 20px;
+}
+
+.sensor-meta + .sensor-meta {
+    margin-top: 2px;
+}
+
+/* Modal: conectar ESP32 (estrutura base em estoque.css) */
+
+.modal-header h2 {
+    color: var(--verde);
+    font-size: 20px;
+}
+
+.campo label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.campo-ajuda {
+    font-size: 12px;
+    color: var(--suave);
+    line-height: 1.5;
+}
+
+.opcional {
+    font-weight: 400;
+    color: var(--suave);
+}
+
+.nova-fazenda {
+    margin: 0 0 8px;
+    padding: 16px 16px 0;
+    border: 1px solid var(--borda);
+    border-radius: 16px;
+}
+
+.nova-fazenda legend {
+    padding: 0 6px;
+    font-weight: 700;
+    color: var(--verde);
+}
+
+.campo-linha {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+}
+
+.esp-sucesso p {
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.esp-sucesso-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    color: var(--sucesso);
+}
+
+.token-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px 10px 10px 14px;
+    background: var(--areia);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+}
+
+.token-box code {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+}
+
+.esp-sucesso .campo-ajuda code {
+    font-size: 12px;
+}
+
 body.dark .propriedade-box,
 body.dark .sensor-card,
-body.dark .page-header select {
+body.dark .page-header select,
+body.dark .dispositivo-chip,
+body.dark .iot-vazio {
     background: #1f2a1c;
     border-color: #33402f;
     color: #fff;
@@ -154,8 +394,58 @@ body.dark .sensor-valor {
     color: #b7d98b;
 }
 
+body.dark .selo-ao-vivo,
+body.dark .dispositivo-chip.online .dispositivo-estado {
+    background: #2a3a25;
+    color: #b7d98b;
+}
+
+body.dark .dispositivo-estado,
+body.dark .sensor-estado.aguardando {
+    background: #2a2f2a;
+    color: #c8cfc6;
+}
+
+body.dark .modal-header h2,
+body.dark .nova-fazenda legend,
+body.dark .iot-vazio h3 {
+    color: #b7d98b;
+}
+
+body.dark .nova-fazenda,
+body.dark .token-box {
+    background: #101411;
+    border-color: #2A382C;
+}
+
+body.dark .btn-secundario {
+    background: #2a2f2a;
+    color: #fff;
+}
+
+body.dark .iot-atualizacao,
+body.dark .campo-ajuda,
+body.dark .opcional,
+body.dark .iot-vazio p {
+    color: #aab3a8;
+}
+
 @media (max-width: 560px) {
     .propriedade-box {
         padding: 16px;
+    }
+
+    .campo-linha {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .iot-acoes,
+    .btn-conectar {
+        width: 100%;
+    }
+
+    .btn-conectar {
+        justify-content: center;
     }
 }

@@ -1,0 +1,18 @@
+[30-Oct-2026 13:47:46 America/Fortaleza] PHP Fatal error:  Uncaught mysqli_sql_exception: Connection timed out in /home2/buzzcodexcom/public_html/backend/config/conexao.php:8
+Stack trace:
+#0 /home2/buzzcodexcom/public_html/backend/config/conexao.php(8): mysqli->__construct('10.140.169.23', 'root', Object(SensitiveParameterValue), 'marketplace_rur...')
+#1 /home2/buzzcodexcom/public_html/backend/auth/login.php(13): require_once('/home2/buzzcode...')
+#2 {main}
+  thrown in /home2/buzzcodexcom/public_html/backend/config/conexao.php on line 8
+[30-Oct-2026 13:48:12 America/Fortaleza] PHP Fatal error:  Uncaught mysqli_sql_exception: Connection timed out in /home2/buzzcodexcom/public_html/backend/config/conexao.php:8
+Stack trace:
+#0 /home2/buzzcodexcom/public_html/backend/config/conexao.php(8): mysqli->__construct('10.140.169.23', 'root', Object(SensitiveParameterValue), 'marketplace_rur...')
+#1 /home2/buzzcodexcom/public_html/backend/auth/login.php(13): require_once('/home2/buzzcode...')
+#2 {main}
+  thrown in /home2/buzzcodexcom/public_html/backend/config/conexao.php on line 8
+[30-Oct-2026 13:50:03 America/Fortaleza] PHP Fatal error:  Uncaught mysqli_sql_exception: Connection timed out in /home2/buzzcodexcom/public_html/backend/config/conexao.php:8
+Stack trace:
+#0 /home2/buzzcodexcom/public_html/backend/config/conexao.php(8): mysqli->__construct('10.140.169.23', 'root', Object(SensitiveParameterValue), 'marketplace_rur...')
+#1 /home2/buzzcodexcom/public_html/backend/auth/login.php(13): require_once('/home2/buzzcode...')
+#2 {main}
+  thrown in /home2/buzzcodexcom/public_html/backend/config/conexao.php on line 8

@@ -1,0 +1,3 @@
+node_modules/
+# Tem os tokens das placas: não versionar.
+config.json

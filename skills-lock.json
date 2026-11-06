@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "skills": {
+    "captions-overlay": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/captions-overlay/SKILL.md",
+      "computedHash": "0b2a08fafef5f298be649dcd6ab24110e6f278b647cfbdaadd9c43be884e0336"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "106acf230014cbb43ca34e6410371321b56ca742f9ee0442e8ec05bf02eb0384"
+    },
+    "hyperframes": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes/SKILL.md",
+      "computedHash": "4e8ddade006fb5a0b1639a4c65eb161740c134266a2314c0869a450734a23c1f"
+    },
+    "hyperframes-cli": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-cli/SKILL.md",
+      "computedHash": "2c9685a94abf8c231898bd46be600f93bd077bbebbd169863592c04a0cae1b18"
+    },
+    "hyperframes-registry": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-registry/SKILL.md",
+      "computedHash": "d8a3783564d7cc295b1e3307cb327f444a89814d506adad8602a43dc3b0fb433"
+    },
+    "improve-codebase-architecture": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "skillPath": "skills/engineering/improve-codebase-architecture/SKILL.md",
+      "computedHash": "11cfd9568d71445df710d5a9332c674ad773de0c9d5fc22d3ffa175bdd7d988b"
+    },
+    "motion-doctrine": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/motion-doctrine/SKILL.md",
+      "computedHash": "28d51d95e6bd0c808961cd6ced29e11a09f10f7711133ff86e9eb10f45c30ee2"
+    }
+  }
+}

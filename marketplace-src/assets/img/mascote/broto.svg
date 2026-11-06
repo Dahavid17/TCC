@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" role="img" aria-label="Broto, o mascote do MarketPlace Rural">
+  <!-- Broto: mascote do onboarding. As classes broto-* são animadas pelo onboarding.css -->
+  <ellipse cx="80" cy="172" rx="46" ry="6" fill="#31572c" opacity=".15"/>
+
+  <g class="broto-corpo">
+    <!-- folhas -->
+    <g class="broto-folhas">
+      <path d="M80 62 C80 50 80 42 82 30" fill="none" stroke="#31572c" stroke-width="5" stroke-linecap="round"/>
+      <path d="M80 42 C62 22 38 24 30 34 C44 50 66 54 80 42 Z" fill="#4f772d"/>
+      <path d="M78 41 C64 36 50 34 38 34" fill="none" stroke="#90a955" stroke-width="2" stroke-linecap="round"/>
+      <path d="M82 32 C96 10 122 8 132 18 C120 38 96 42 82 32 Z" fill="#31572c"/>
+      <path d="M84 31 C98 24 112 18 124 18" fill="none" stroke="#4f772d" stroke-width="2" stroke-linecap="round"/>
+    </g>
+
+    <!-- pés e braço parado -->
+    <ellipse cx="62" cy="164" rx="13" ry="6" fill="#4f772d"/>
+    <ellipse cx="98" cy="164" rx="13" ry="6" fill="#4f772d"/>
+    <path d="M28 116 C16 120 12 130 16 140" fill="none" stroke="#4f772d" stroke-width="9" stroke-linecap="round"/>
+
+    <!-- corpo -->
+    <path d="M80 58 C120 58 138 92 138 122 C138 150 112 166 80 166 C48 166 22 150 22 122 C22 92 40 58 80 58 Z" fill="#90a955"/>
+    <ellipse cx="80" cy="136" rx="36" ry="22" fill="#f5f0e6" opacity=".45"/>
+
+    <!-- rosto -->
+    <g class="broto-olhos">
+      <ellipse cx="62" cy="104" rx="7" ry="9" fill="#202820"/>
+      <ellipse cx="98" cy="104" rx="7" ry="9" fill="#202820"/>
+      <circle cx="64.5" cy="100.5" r="2.5" fill="#ffffff"/>
+      <circle cx="100.5" cy="100.5" r="2.5" fill="#ffffff"/>
+    </g>
+    <ellipse cx="48" cy="120" rx="8" ry="5" fill="#d68910" opacity=".3"/>
+    <ellipse cx="112" cy="120" rx="8" ry="5" fill="#d68910" opacity=".3"/>
+    <path d="M70 120 Q80 130 90 120" fill="none" stroke="#202820" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- braço que acena -->
+    <path class="broto-braco" d="M132 114 C146 106 150 94 146 84" fill="none" stroke="#4f772d" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>

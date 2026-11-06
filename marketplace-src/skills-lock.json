@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "design-mobile-apps": {
+      "source": "designed-by-ai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/design-mobile-apps/SKILL.md",
+      "computedHash": "30bfa26c39e384af50d5ca2a9da7c39e239ce822f5e3fd2a31e8e6b55d3679ac"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "913b9d37d0d54047dd65222bb8c67b2bf04e3cb87dcad1729068d7a8b2c8c396"
+    },
+    "hyperframes-cli": {
+      "source": "heygen-com/hyperframes",
+      "sourceType": "github",
+      "skillPath": "skills/hyperframes-cli/SKILL.md",
+      "computedHash": "2c9685a94abf8c231898bd46be600f93bd077bbebbd169863592c04a0cae1b18"
+    }
+  }
+}

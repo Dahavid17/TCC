@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="t"><title id="t">Caminhão entregando o pedido ao comprador</title>
+<rect width="600" height="400" fill="#f5f0e6"/>
+<circle cx="500" cy="90" r="44" fill="#90a955" opacity=".35"/>
+<rect x="0" y="300" width="600" height="100" fill="#e3dac8"/>
+<rect x="0" y="296" width="600" height="8" fill="#90a955"/>
+<rect x="60" y="150" width="250" height="140" rx="14" fill="#31572c"/>
+<rect x="310" y="190" width="110" height="100" rx="14" fill="#4f772d"/>
+<path d="M330 200h60l26 40h-86z" fill="#f5f0e6"/>
+<circle cx="130" cy="296" r="30" fill="#202820"/><circle cx="130" cy="296" r="12" fill="#e3dac8"/>
+<circle cx="360" cy="296" r="30" fill="#202820"/><circle cx="360" cy="296" r="12" fill="#e3dac8"/>
+<rect x="95" y="190" width="70" height="50" rx="6" fill="#c69c6d"/><rect x="175" y="190" width="70" height="50" rx="6" fill="#a97f52"/>
+<circle cx="500" cy="230" r="44" fill="#fff" stroke="#e3dac8" stroke-width="2"/>
+<path d="M480 230l14 14 28-30" fill="none" stroke="#2e7d32" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="450" y="90" width="100" height="14" rx="7" fill="#31572c" opacity=".25"/>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "marketplace-site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server", "C:/Users/11981735640/Downloads/marketplace/marketplace-src", "-p", "8101", "-c-1"],
+      "port": 8101
+    },
+    {
+      "name": "marketplace-php-local",
+      "runtimeExecutable": "C:/xampp/php/php.exe",
+      "runtimeArgs": ["-S", "127.0.0.1:8080", "-t", "C:/Users/11981735640/Desktop/TCC/TCC", "C:/Users/11981735640/Desktop/TCC/TCC/dev/router.php"],
+      "port": 8080
+    }
+  ]
+}

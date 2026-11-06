@@ -1,0 +1,554 @@
+/* =============================================================
+   INICIO.CSS
+   Página inicial do MarketPlace Rural
+   Mantém o mesmo padrão visual do login.
+   ============================================================= */
+
+body{
+    min-height:100vh;
+    background:var(--areia);
+    color:var(--texto);
+    font-family:var(--fonte-corpo);
+    padding-bottom:90px;
+}
+
+/* =============================================================
+   LAYOUT
+   ============================================================= */
+
+.home-page{
+    max-width:1280px;
+    margin:auto;
+}
+
+/* =============================================================
+   HERO
+   ============================================================= */
+
+.hero{
+    position:relative;
+    padding:32px 6%;
+    background:
+    linear-gradient(rgba(33,65,29,.82),rgba(33,65,29,.82)),
+    url("https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1400&q=80");
+    background-size:cover;
+    background-position:center;
+    color:white;
+    border-radius:0 0 var(--radius-xl) var(--radius-xl);
+}
+
+.hero-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:36px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:white;
+    text-decoration:none;
+    font-size:22px;
+    font-weight:800;
+}
+
+.brand i{
+    font-size:28px;
+}
+
+.hero-actions{
+    display:flex;
+    gap:10px;
+}
+
+.icon-btn,
+.avatar-btn{
+    width:44px;
+    height:44px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.18);
+    color:white;
+    cursor:pointer;
+    display:grid;
+    place-items:center;
+    transition:.25s;
+}
+
+.icon-btn:hover,
+.avatar-btn:hover{
+    background:rgba(255,255,255,.28);
+}
+
+.avatar-btn{
+    font-size:24px;
+}
+
+.location{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:13px;
+    color:#E9F3E4;
+}
+
+.hero-content h1{
+    font-family:var(--fonte-display);
+    font-size:clamp(28px,4vw,46px);
+    margin:10px 0 6px;
+}
+
+.hero-content p{
+    color:#EEF5E8;
+    font-size:16px;
+}
+
+/* =============================================================
+   PESQUISA
+   ============================================================= */
+
+.search-box{
+    margin-top:28px;
+    height:54px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:0 18px;
+    border-radius:var(--radius-lg);
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+}
+
+.search-box i{
+    color:#EEF5E8;
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    background:transparent;
+    outline:none;
+    color:white;
+    font-size:15px;
+}
+
+.search-box input::placeholder{
+    color:#E7EFE3;
+}
+
+/* =============================================================
+   CONTEÚDO
+   ============================================================= */
+
+.content{
+    padding:34px 6%;
+}
+
+.section{
+    margin-bottom:36px;
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.section-header h2{
+    font-size:24px;
+    font-family:var(--fonte-display);
+    color:var(--verde);
+}
+
+.link-btn{
+    background:none;
+    border:none;
+    color:var(--verde);
+    font-weight:700;
+    cursor:pointer;
+}
+
+.link-btn:hover{
+    text-decoration:underline;
+}
+
+/* =============================================================
+   CATEGORIAS
+   ============================================================= */
+
+.categories-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+
+.category-card{
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:var(--radius-lg);
+    padding:20px 12px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    transition:.25s;
+}
+
+.category-card i{
+    font-size:30px;
+    color:var(--verde);
+}
+
+.category-card span{
+    font-size:13px;
+    font-weight:700;
+    color:var(--texto);
+}
+
+.category-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--verde-medio);
+    box-shadow:var(--sombra);
+    background:rgba(49,87,44,.05);
+}
+
+/* =============================================================
+   PRODUTOS
+   ============================================================= */
+
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:22px;
+}
+
+/* Card vazio */
+
+.empty-state{
+    grid-column:1/-1;
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:var(--radius-xl);
+    padding:55px 28px;
+    text-align:center;
+    box-shadow:var(--sombra);
+}
+
+.empty-icon{
+    width:78px;
+    height:78px;
+    margin:auto;
+    margin-bottom:20px;
+    border-radius:50%;
+    background:rgba(49,87,44,.1);
+    display:grid;
+    place-items:center;
+}
+
+.empty-icon i{
+    font-size:36px;
+    color:var(--verde);
+}
+
+.empty-state h3{
+    font-family:var(--fonte-display);
+    color:var(--verde);
+    margin-bottom:12px;
+    font-size:26px;
+}
+
+.empty-state p{
+    color:var(--suave);
+    line-height:1.7;
+    max-width:480px;
+    margin:auto;
+}
+
+/* =============================================================
+   CARD DE SUGESTÃO
+   ============================================================= */
+
+.suggestion-card{
+    background:
+    linear-gradient(135deg,#F7F2E8,#ECE4D4);
+    border:1px solid var(--borda);
+    border-radius:var(--radius-xl);
+    padding:28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:25px;
+}
+
+.suggestion-text{
+    flex:1;
+}
+
+.tag{
+    display:inline-block;
+    background:rgba(49,87,44,.1);
+    color:var(--verde);
+    border:1px solid rgba(49,87,44,.18);
+    padding:8px 16px;
+    border-radius:var(--radius-pill);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    font-weight:700;
+    margin-bottom:14px;
+}
+
+.suggestion-text h3{
+    font-family:var(--fonte-display);
+    color:var(--verde);
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.suggestion-text p{
+    color:var(--suave);
+    line-height:1.7;
+}
+
+.suggestion-image{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    background:rgba(49,87,44,.12);
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+}
+
+.suggestion-image i{
+    font-size:56px;
+    color:var(--verde);
+}
+
+/* =============================================================
+   NAVEGAÇÃO INFERIOR
+   ============================================================= */
+
+.bottom-nav{
+    position:fixed;
+    left:50%;
+    bottom:16px;
+    transform:translateX(-50%);
+    width:min(92%,520px);
+    background:var(--branco);
+    border:1px solid var(--borda);
+    border-radius:var(--radius-pill);
+    display:flex;
+    justify-content:space-around;
+    padding:10px 6px;
+    box-shadow:var(--sombra);
+    z-index:1000;
+}
+
+.nav-item{
+    text-decoration:none;
+    color:var(--suave);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+    font-size:12px;
+    font-weight:600;
+    transition:.25s;
+}
+
+.nav-item i{
+    font-size:20px;
+}
+
+.nav-item:hover,
+.nav-item.ativo{
+    color:var(--verde);
+}
+
+/* =============================================================
+   BOTÃO DE TEMA
+   ============================================================= */
+
+#temaBtn{
+    position:fixed;
+    right:24px;
+    bottom:100px;
+    width:52px;
+    height:52px;
+    border:none;
+    border-radius:50%;
+    background:var(--verde);
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+    box-shadow:var(--sombra);
+    transition:.25s;
+    z-index:999;
+}
+
+#temaBtn:hover{
+    transform:translateY(-3px);
+    background:var(--verde-medio);
+}
+
+/* =============================================================
+   MODO ESCURO
+   ============================================================= */
+
+body.dark{
+    background:#101411;
+    color:#F5F5F5;
+}
+
+body.dark .content{
+    background:#101411;
+}
+
+body.dark .section-header h2{
+    color:white;
+}
+
+body.dark .category-card,
+body.dark .empty-state,
+body.dark .bottom-nav{
+    background:#18201A;
+    border-color:#2A382C;
+}
+
+body.dark .category-card span{
+    color:white;
+}
+
+body.dark .empty-state h3{
+    color:white;
+}
+
+body.dark .empty-state p{
+    color:#B5C0B7;
+}
+
+body.dark .suggestion-card{
+    background:#18201A;
+    border-color:#2A382C;
+}
+
+body.dark .suggestion-text h3{
+    color:white;
+}
+
+body.dark .suggestion-text p{
+    color:#B5C0B7;
+}
+
+body.dark .tag{
+    background:rgba(144,169,85,.12);
+    color:var(--verde-claro);
+    border-color:rgba(144,169,85,.2);
+}
+
+body.dark .nav-item{
+    color:#B5C0B7;
+}
+
+body.dark .nav-item.ativo,
+body.dark .nav-item:hover{
+    color:var(--verde-claro);
+}
+
+body.dark #temaBtn{
+    background:white;
+    color:var(--verde);
+}
+
+/* =============================================================
+   RESPONSIVIDADE
+   ============================================================= */
+
+@media(max-width:900px){
+
+    .hero{
+        padding:28px 5%;
+    }
+
+    .content{
+        padding:28px 5%;
+    }
+
+    .categories-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+    .suggestion-card{
+        flex-direction:column;
+        text-align:center;
+    }
+}
+
+@media(max-width:600px){
+
+    .brand{
+        font-size:18px;
+    }
+
+    .brand i{
+        font-size:24px;
+    }
+
+    .hero-content h1{
+        font-size:30px;
+    }
+
+    .section-header h2{
+        font-size:21px;
+    }
+
+    .categories-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .category-card{
+        padding:18px 10px;
+    }
+
+    .suggestion-image{
+        width:90px;
+        height:90px;
+    }
+
+    .suggestion-image i{
+        font-size:42px;
+    }
+
+    #temaBtn{
+        width:46px;
+        height:46px;
+        right:16px;
+        bottom:92px;
+    }
+}
+
+@media(max-width:380px){
+
+    .hero{
+        padding:24px 4%;
+    }
+
+    .content{
+        padding:24px 4%;
+    }
+
+    .categories-grid{
+        gap:12px;
+    }
+
+    .category-card{
+        padding:16px 8px;
+    }
+}

@@ -1,0 +1,295 @@
+/* =============================================================
+   ONBOARDING — tour do mascote Broto no primeiro acesso
+   Usa os tokens e o visual de modal do painel (dashboard.css).
+   ============================================================= */
+
+.tour {
+    position: fixed;
+    inset: 0;
+    z-index: 3100;
+}
+
+/* Sem alvo (boas-vindas e final): fundo igual ao do .modal */
+.tour.sem-alvo {
+    background: rgba(0, 0, 0, .45);
+}
+
+/* Recorte que destaca o elemento real da tela */
+.tour-foco {
+    position: fixed;
+    border-radius: var(--radius-md);
+    box-shadow: 0 0 0 4px var(--verde-claro), 0 0 0 9999px rgba(0, 0, 0, .45);
+    pointer-events: none;
+    transition: top .3s ease, left .3s ease, width .3s ease, height .3s ease;
+}
+
+.tour.sem-alvo .tour-foco {
+    display: none;
+}
+
+/* ---------- BALÃO ---------- */
+
+.tour-balao {
+    position: fixed;
+    width: min(400px, calc(100vw - 32px));
+    padding: 24px;
+    background: var(--branco);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--sombra);
+    animation: tour-entrar .3s ease;
+}
+
+.tour.sem-alvo .tour-balao {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tour-topo {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.tour-mascote {
+    flex-shrink: 0;
+    width: 88px;
+}
+
+.tour-mascote svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.tour-cabeca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.tour-passo {
+    color: var(--verde-medio);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.tour-balao h2 {
+    margin-bottom: 8px;
+    color: var(--verde);
+    font-family: var(--fonte-display);
+    font-size: 22px;
+    line-height: 1.25;
+}
+
+.tour-balao p {
+    color: var(--suave);
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+/* ---------- RODAPÉ ---------- */
+
+.tour-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.tour-rodape .modal-acoes {
+    margin-top: 0;
+    margin-left: auto;
+}
+
+.tour-rodape button {
+    white-space: nowrap;
+}
+
+.tour-pontos {
+    display: flex;
+    gap: 6px;
+}
+
+.tour-pontos span {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-pill);
+    background: var(--borda);
+    transition: width .25s, background .25s;
+}
+
+.tour-pontos span.ativo {
+    width: 22px;
+    background: var(--verde);
+}
+
+.tour-pular {
+    padding: 8px 4px;
+    border: none;
+    background: none;
+    color: var(--suave);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.tour-pular:hover {
+    color: var(--verde);
+}
+
+.tour-pular[hidden] {
+    display: none;
+}
+
+/* ---------- MASCOTE ANIMADO ---------- */
+
+.tour-mascote .broto-olhos {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tour-piscar 4s infinite;
+}
+
+.tour-mascote .broto-braco {
+    transform-box: fill-box;
+    transform-origin: 0% 100%;
+}
+
+.tour-mascote.acenando .broto-braco {
+    animation: tour-acenar 1.2s ease-in-out 2;
+}
+
+.tour-mascote .broto-folhas {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: tour-balancar 3s ease-in-out infinite;
+}
+
+.tour-mascote.comemorando .broto-corpo {
+    animation: tour-pulo .6s ease-in-out 3;
+}
+
+@keyframes tour-entrar {
+    from { opacity: 0; translate: 0 12px; }
+    to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes tour-piscar {
+    0%, 92%, 100% { transform: scaleY(1); }
+    96%           { transform: scaleY(.1); }
+}
+
+@keyframes tour-acenar {
+    0%, 100% { transform: rotate(0); }
+    25%      { transform: rotate(-18deg); }
+    75%      { transform: rotate(14deg); }
+}
+
+@keyframes tour-balancar {
+    0%, 100% { transform: rotate(-3deg); }
+    50%      { transform: rotate(3deg); }
+}
+
+@keyframes tour-pulo {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tour-balao,
+    .tour-mascote *,
+    .tour-mascote.acenando .broto-braco,
+    .tour-mascote.comemorando .broto-corpo {
+        animation: none;
+    }
+
+    .tour-foco {
+        transition: none;
+    }
+}
+
+/* ---------- CELULAR: balão fixo embaixo ---------- */
+
+@media (max-width: 599px) {
+    .tour .tour-balao,
+    .tour.sem-alvo .tour-balao {
+        top: auto;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        width: auto;
+        padding: 20px;
+        transform: none;
+    }
+
+    .tour-mascote {
+        width: 64px;
+    }
+
+    .tour-balao h2 {
+        font-size: 19px;
+    }
+
+    .tour-balao p {
+        font-size: 14px;
+    }
+
+    /* Botões de largura cheia como nos modais do celular, mas lado a lado; "Pular" embaixo */
+    .tour-rodape {
+        flex-direction: column-reverse;
+        align-items: stretch;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .tour-rodape .modal-acoes {
+        flex-direction: row;
+        margin-left: 0;
+    }
+
+    .tour-rodape .modal-acoes button {
+        flex: 1;
+        padding: 12px 10px;
+    }
+}
+
+/* ---------- MODO ESCURO ---------- */
+
+body.dark .tour-balao {
+    background: #1f2a1c;
+    color: #fff;
+}
+
+body.dark .tour-balao h2 {
+    color: #fff;
+}
+
+body.dark .tour-balao p,
+body.dark .tour-pular {
+    color: #c9d1c7;
+}
+
+body.dark .tour-passo {
+    color: var(--verde-claro);
+}
+
+body.dark .tour-pontos span {
+    background: #2a382c;
+}
+
+body.dark .tour-pontos span.ativo {
+    background: var(--verde-claro);
+}
+
+body.dark .tour-rodape .modal-acoes button:first-child {
+    background: transparent;
+    border-color: #2a382c;
+    color: #fff;
+}

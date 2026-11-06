@@ -1,0 +1,17 @@
+{
+  "name": "marketplace-rural-ponte-wokwi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Repassa as leituras do ESP32 simulado no Wokwi (MQTT) para a API do Marketplace Rural.",
+  "type": "module",
+  "main": "ponte.mjs",
+  "scripts": {
+    "start": "node ponte.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "mqtt": "^5.10.0"
+  }
+}

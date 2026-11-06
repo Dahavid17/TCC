@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS marketplace_rural
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE marketplace_rural;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(120) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  telefone VARCHAR(20) NOT NULL,
+  senha VARCHAR(255) NOT NULL,
+  tipo ENUM('produtor', 'comprador') NOT NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

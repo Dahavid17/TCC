@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="../css/tokens.css">
     <link rel="stylesheet" href="../css/estoque.css">
-    <link rel="stylesheet" href="../css/gestao-fazenda.css">
+    <link rel="stylesheet" href="../css/gestao-fazenda.css?v=3">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -229,22 +229,142 @@
 
                     <h2><i class="bi bi-broadcast"></i> Monitoramento IoT</h2>
 
-                    <span class="selo-demo hidden" id="seloDemo">Dado demonstrativo</span>
+                    <div class="iot-acoes">
+
+                        <span class="selo-ao-vivo hidden" id="seloAoVivo">
+                            <span class="ponto-ao-vivo" aria-hidden="true"></span> Ao vivo
+                        </span>
+
+                        <button type="button" class="btn-conectar" id="btnConectarEsp">
+                            <i class="bi bi-plus-lg"></i> Conectar ESP32
+                        </button>
+
+                    </div>
 
                 </div>
 
-                <p class="iot-aviso hidden" id="avisoDemo">
-                    Nenhum sensor cadastrado ainda. Os valores abaixo são <strong>simulados</strong>
-                    para demonstrar a interface — não são leituras de dispositivos reais.
-                </p>
+                <p class="iot-atualizacao" id="iotAtualizacao" aria-live="polite"></p>
+
+                <div class="lista-dispositivos" id="listaDispositivos"></div>
 
                 <div class="grid-sensores" id="gridSensores"></div>
+
+                <div class="iot-vazio hidden" id="iotVazio">
+
+                    <i class="bi bi-cpu"></i>
+
+                    <h3>Nenhum ESP32 conectado</h3>
+
+                    <p>
+                        Ligue a placa, copie o código que aparece no monitor serial e clique em
+                        <strong>Conectar ESP32</strong>. As leituras de temperatura, umidade do ar,
+                        luminosidade e umidade do solo aparecem aqui em tempo real.
+                    </p>
+
+                </div>
 
             </section>
 
         </div>
 
     </main>
+
+    <!-- MODAL: CONECTAR ESP32 -->
+
+    <div class="modal" id="modalEsp" role="dialog" aria-modal="true" aria-labelledby="tituloModalEsp">
+
+        <div class="modal-box">
+
+            <div class="modal-header">
+
+                <h2 id="tituloModalEsp">Conectar ESP32</h2>
+
+                <button type="button" id="fecharModalEsp" aria-label="Fechar">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <form id="formEsp" novalidate>
+
+                <div class="campo">
+                    <label for="espCodigo">Código do dispositivo</label>
+                    <input id="espCodigo" name="codigo" required maxlength="40" autocomplete="off"
+                        spellcheck="false" placeholder="Ex.: ESP32-MR-1A2B3C">
+                    <small class="campo-ajuda">Aparece no monitor serial do ESP32 assim que a placa liga.</small>
+                </div>
+
+                <div class="campo">
+                    <label for="espNome">Nome da estação <span class="opcional">(opcional)</span></label>
+                    <input id="espNome" name="nome" maxlength="120" placeholder="Estação do talhão 1">
+                </div>
+
+                <div class="campo hidden" id="campoFazenda">
+                    <label for="espFazenda">Propriedade</label>
+                    <select id="espFazenda" name="fazenda_id"></select>
+                </div>
+
+                <fieldset class="nova-fazenda hidden" id="novaFazenda">
+
+                    <legend>Sua primeira propriedade</legend>
+
+                    <div class="campo">
+                        <label for="fazNome">Nome da propriedade</label>
+                        <input id="fazNome" maxlength="150" placeholder="Sítio Boa Vista">
+                    </div>
+
+                    <div class="campo-linha">
+
+                        <div class="campo">
+                            <label for="fazLocal">Localização <span class="opcional">(opcional)</span></label>
+                            <input id="fazLocal" maxlength="255" placeholder="Arceburgo - MG">
+                        </div>
+
+                        <div class="campo">
+                            <label for="fazArea">Área (ha) <span class="opcional">(opcional)</span></label>
+                            <input id="fazArea" inputmode="decimal" placeholder="12,5">
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                <span class="msg-erro" id="espErro" role="alert"></span>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secundario" id="cancelarEsp">Cancelar</button>
+                    <button type="submit" class="btn-primario" id="salvarEsp">Conectar</button>
+                </div>
+
+            </form>
+
+            <div class="esp-sucesso hidden" id="espSucesso">
+
+                <p class="esp-sucesso-titulo">
+                    <i class="bi bi-check-circle-fill"></i> <span id="espSucessoMsg">ESP32 conectado ao seu perfil.</span>
+                </p>
+
+                <p>Token da placa <strong id="espSucessoCodigo"></strong> — copie agora, ele não será exibido de novo:</p>
+
+                <div class="token-box">
+                    <code id="espToken"></code>
+                    <button type="button" class="btn-secundario" id="copiarToken"><i class="bi bi-clipboard"></i> Copiar</button>
+                </div>
+
+                <p class="campo-ajuda">
+                    Cole o token em <code>iot/ponte-wokwi/config.json</code>, no campo <code>dispositivos</code>,
+                    ao lado do código da placa. A ponte recarrega o arquivo sozinha e as leituras começam a chegar.
+                </p>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-primario" id="concluirEsp">Concluir</button>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
     <!-- BOTÃO TEMA -->
 
@@ -255,7 +375,7 @@
     </button>
 
     <script src="../js/menu.js?v=2"></script>
-    <script src="../js/gestao-fazenda.js"></script>
+    <script src="../js/gestao-fazenda.js?v=2"></script>
 
 </body>
 
