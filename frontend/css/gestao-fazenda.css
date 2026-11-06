@@ -523,6 +523,67 @@ body.dark .iot-vazio p {
     color: #aab3a8;
 }
 
+/* Fazenda em 3D */
+
+.visao-3d {
+    margin-top: 32px;
+}
+
+.visao-3d-ajuda {
+    max-width: 780px;
+    margin: 0 0 14px;
+    color: var(--suave);
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.visao-3d-palco {
+    position: relative;
+    height: 560px;
+    overflow: hidden;
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    background: radial-gradient(ellipse at 50% 35%, #f4fbf1 0%, #d9eed2 58%, #bfdcbf 100%);
+}
+
+.visao-3d-estado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 100%;
+    margin: 0;
+    padding: 24px;
+    color: var(--suave);
+    text-align: center;
+}
+
+.visao-3d-estado i {
+    animation: girar-3d 1s linear infinite;
+}
+
+@keyframes girar-3d {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .visao-3d-estado i { animation: none; }
+}
+
+body.dark .visao-3d-palco {
+    border-color: #33402f;
+}
+
+body.dark .visao-3d-ajuda {
+    color: #aab3a8;
+}
+
+@media (max-width: 560px) {
+    .visao-3d-palco {
+        height: 480px;
+    }
+}
+
 @media (max-width: 560px) {
     .propriedade-box {
         padding: 16px;

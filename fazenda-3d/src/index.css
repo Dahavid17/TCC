@@ -1,0 +1,18 @@
+html,
+body,
+#root {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    font-family: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: #202820;
+    background: #eaf3e6;
+}
+
+.app {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+}

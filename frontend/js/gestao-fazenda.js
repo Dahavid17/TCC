@@ -346,6 +346,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             renderizarPropriedade(fazendaId);
             renderizarSensores(dados.sensores, dados.dispositivos || []);
+            atualizarCena3d(dados.sensores);
 
             iotAtualizacao.textContent =
                 `Painel atualizado às ${new Date().toLocaleTimeString("pt-BR")} · atualiza sozinho a cada ${INTERVALO_MS / 1000} s`;
@@ -606,6 +607,67 @@ document.addEventListener("DOMContentLoaded", async () => {
             btnConfirmarApagar.disabled = false;
         }
     });
+
+    /* ======================================================
+       FAZENDA EM 3D (pacote ../vendor/fazenda-3d, ~280 KB compactado)
+       Só é baixado quando a seção chega perto da tela.
+    ====================================================== */
+
+    const VERSAO_CENA_3D = "3";
+    const palco3d = document.getElementById("palco3d");
+    const estado3d = document.getElementById("estado3d");
+    let cena3d = null;
+    let sensoresParaCena = [];
+
+    function atualizarCena3d(sensores) {
+
+        sensoresParaCena = sensores || [];
+        cena3d?.atualizar(sensoresParaCena);
+    }
+
+    function carregarCena3d() {
+
+        const estilo = document.createElement("link");
+        estilo.rel = "stylesheet";
+        estilo.href = `../vendor/fazenda-3d/fazenda-3d.css?v=${VERSAO_CENA_3D}`;
+        document.head.append(estilo);
+
+        const script = document.createElement("script");
+        script.src = `../vendor/fazenda-3d/fazenda-3d.js?v=${VERSAO_CENA_3D}`;
+        script.async = true;
+
+        script.addEventListener("load", () => {
+            try {
+                estado3d.remove();
+                cena3d = window.FazendaInteligente3D.montar(palco3d, { sensoresReais: sensoresParaCena });
+            } catch (erro) {
+                console.error("Visão 3D:", erro);
+                palco3d.innerHTML = '<p class="visao-3d-estado">Não foi possível exibir a visão 3D neste navegador.</p>';
+            }
+        });
+
+        script.addEventListener("error", () => {
+            estado3d.textContent = "Não foi possível carregar a visão 3D. Recarregue a página para tentar de novo.";
+        });
+
+        document.body.append(script);
+    }
+
+    if ("IntersectionObserver" in window) {
+
+        const observador = new IntersectionObserver((entradas) => {
+            if (entradas.some(e => e.isIntersecting)) {
+                observador.disconnect();
+                carregarCena3d();
+            }
+        }, { rootMargin: "300px 0px" });
+
+        observador.observe(palco3d);
+
+    } else {
+
+        carregarCena3d();
+    }
 
     /* ======================================================
        INÍCIO

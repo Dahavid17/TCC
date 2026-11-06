@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="../css/tokens.css">
     <link rel="stylesheet" href="../css/estoque.css">
-    <link rel="stylesheet" href="../css/gestao-fazenda.css?v=4">
+    <link rel="stylesheet" href="../css/gestao-fazenda.css?v=5">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -266,6 +266,32 @@
 
             </section>
 
+            <!-- VISÃO 3D (pacote em ../vendor/fazenda-3d, carregado só quando a seção aparece) -->
+
+            <section class="visao-3d" id="visao3d" aria-labelledby="tituloVisao3d">
+
+                <div class="iot-cabecalho">
+
+                    <h2 id="tituloVisao3d"><i class="bi bi-box"></i> Fazenda em 3D</h2>
+
+                </div>
+
+                <p class="visao-3d-ajuda">
+                    Umidade do solo, temperatura, umidade do ar e luminosidade mostram as leituras reais do
+                    seu ESP32. Os demais marcadores (NPK, CO₂ e trator) são <strong>simulados</strong> para
+                    demonstrar o monitoramento completo.
+                </p>
+
+                <div class="visao-3d-palco" id="palco3d">
+
+                    <p class="visao-3d-estado" id="estado3d">
+                        <i class="bi bi-arrow-repeat"></i> Carregando a cena 3D…
+                    </p>
+
+                </div>
+
+            </section>
+
         </div>
 
     </main>
@@ -409,7 +435,7 @@
 
     <script src="../js/menu.js?v=2"></script>
     <script src="../js/onboarding.js?v=4"></script>
-    <script src="../js/gestao-fazenda.js?v=4"></script>
+    <script src="../js/gestao-fazenda.js?v=7"></script>
 
 </body>
 

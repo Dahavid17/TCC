@@ -13,6 +13,12 @@ Backups dos 11 arquivos substituídos: `/home2/buzzcodexcom/backup-iot-2026-11-0
 e `frontend/pages/inicio.html`. Sem mudança no banco. Backups das versões anteriores:
 `/home2/buzzcodexcom/backup-iot-excluir-2026-11-06/`.
 
+**Fazenda em 3D: ENVIADA em 06/11/2026.** Nova pasta `frontend/vendor/fazenda-3d/`
+(`fazenda-3d.js` e `.css`, gerados por `fazenda-3d/` com `npm run build:widget`) e novas versões de
+`frontend/pages/gestao-fazenda.html`, `frontend/js/gestao-fazenda.js` e `frontend/css/gestao-fazenda.css`.
+Sem mudança no banco. Backups: `/home2/buzzcodexcom/backup-3d-2026-11-06/`. A pasta `vendor` ficou
+0555 como as demais do `frontend`: mude para 0755 para atualizar o pacote.
+
 Atenção para próximos deploys pelo cPanel: `Fileman/get_file_content` insere
 `<meta charset="utf-8">` logo após o primeiro `<head` ao LER (inclusive `<header>` em JS).
 Não edite arquivos lendo por essa API; envie com `Fileman/upload_files`, que grava os bytes exatos.
