@@ -12,12 +12,13 @@
 
     <link rel="stylesheet" href="../css/tokens.css">
     <link rel="stylesheet" href="../css/estoque.css">
-    <link rel="stylesheet" href="../css/gestao-fazenda.css?v=3">
+    <link rel="stylesheet" href="../css/gestao-fazenda.css?v=4">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="../css/responsivo.css?v=1">
+    <link rel="stylesheet" href="../css/onboarding.css?v=2">
 </head>
 
 <body>
@@ -366,6 +367,38 @@
 
     </div>
 
+    <!-- MODAL: APAGAR SENSOR OU PLACA -->
+
+    <div class="modal" id="modalApagar" role="alertdialog" aria-modal="true"
+        aria-labelledby="tituloModalApagar" aria-describedby="textoApagar">
+
+        <div class="modal-box modal-apagar">
+
+            <div class="modal-header">
+
+                <h2 id="tituloModalApagar">Apagar sensor?</h2>
+
+                <button type="button" id="fecharModalApagar" aria-label="Fechar">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+            <p class="texto-apagar" id="textoApagar"></p>
+
+            <p class="aviso-apagar"><i class="bi bi-exclamation-triangle"></i> Esta ação não pode ser desfeita.</p>
+
+            <span class="msg-erro" id="apagarErro" role="alert"></span>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-secundario" id="cancelarApagar">Cancelar</button>
+                <button type="button" class="btn-perigo" id="confirmarApagar">Apagar</button>
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- BOTÃO TEMA -->
 
     <button type="button" id="temaBtn" aria-label="Alternar tema">
@@ -375,7 +408,8 @@
     </button>
 
     <script src="../js/menu.js?v=2"></script>
-    <script src="../js/gestao-fazenda.js?v=2"></script>
+    <script src="../js/onboarding.js?v=4"></script>
+    <script src="../js/gestao-fazenda.js?v=4"></script>
 
 </body>
 

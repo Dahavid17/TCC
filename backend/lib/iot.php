@@ -19,6 +19,20 @@ const PADRAO_CODIGO_DISPOSITIVO = '/^[A-Z0-9][A-Z0-9-]{3,39}$/';
 // Quantas leituras recentes de cada sensor vão para o gráfico do painel.
 const IOT_LEITURAS_HISTORICO = 30;
 
+// sensores_iot.codigo_esp32 é UNIQUE no banco (um código por sensor). Como uma placa
+// tem vários sensores, cada um recebe "<código da placa>:<tipo>",
+// ex.: ESP32-MR-88CDA7:temperatura.
+function codigo_sensor(string $codigoPlaca, string $tipo): string
+{
+    return $codigoPlaca . ':' . $tipo;
+}
+
+// Código da placa a partir do código do sensor (sensores antigos, sem ":", ficam como estão).
+function codigo_placa_do_sensor(string $codigoSensor): string
+{
+    return explode(':', $codigoSensor, 2)[0];
+}
+
 // Bloqueia quem não é produtor/administrador (a regra vale no backend, não só no menu).
 function exigir_produtor(PDO $pdo, int $usuarioId): void
 {

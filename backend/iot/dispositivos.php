@@ -111,7 +111,8 @@ try {
         $novaFazenda = [
             'nome'        => $fazendaNome,
             'localizacao' => $localizacao !== '' ? $localizacao : null,
-            'area_total'  => $area !== '' ? number_format((float) $area, 2, '.', '') : null,
+            // area_total é NOT NULL no banco: sem área informada, grava 0 (o painel mostra "Área não informada").
+            'area_total'  => number_format($area !== '' ? (float) $area : 0, 2, '.', ''),
         ];
     } else {
         responder(422, ['sucesso' => false, 'mensagem' => 'Escolha a propriedade onde o ESP32 está instalado.']);
@@ -141,17 +142,19 @@ try {
     }
 
     // Os cards aparecem já na conexão ("aguardando primeira leitura") e acompanham a placa se ela mudar de propriedade.
-    $pdo->prepare('UPDATE sensores_iot SET fazenda_id = :fazenda WHERE codigo_esp32 = :codigo')
-        ->execute([':fazenda' => $fazendaId, ':codigo' => $codigo]);
+    // O código da placa só tem [A-Z0-9-], então não há curinga do LIKE dentro dele.
+    $pdo->prepare('UPDATE sensores_iot SET fazenda_id = :fazenda WHERE codigo_esp32 LIKE :prefixo')
+        ->execute([':fazenda' => $fazendaId, ':prefixo' => codigo_sensor($codigo, '%')]);
 
-    $buscarSensor = $pdo->prepare('SELECT id FROM sensores_iot WHERE codigo_esp32 = :codigo AND tipo_sensor = :tipo LIMIT 1');
+    $buscarSensor = $pdo->prepare('SELECT id FROM sensores_iot WHERE codigo_esp32 = :codigo LIMIT 1');
     $criarSensor  = $pdo->prepare("INSERT INTO sensores_iot (fazenda_id, tipo_sensor, codigo_esp32, status) VALUES (:fazenda, :tipo, :codigo, 'ativo')");
 
     foreach (array_keys(SENSORES_ESTACAO) as $tipo) {
-        $buscarSensor->execute([':codigo' => $codigo, ':tipo' => $tipo]);
+        $codigoSensor = codigo_sensor($codigo, $tipo);
+        $buscarSensor->execute([':codigo' => $codigoSensor]);
 
         if ($buscarSensor->fetchColumn() === false) {
-            $criarSensor->execute([':fazenda' => $fazendaId, ':tipo' => $tipo, ':codigo' => $codigo]);
+            $criarSensor->execute([':fazenda' => $fazendaId, ':tipo' => $tipo, ':codigo' => $codigoSensor]);
         }
     }
 

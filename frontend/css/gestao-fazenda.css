@@ -241,9 +241,88 @@
     font-size: 15px;
 }
 
-.sensor-card header i {
+.sensor-card header .sensor-icone {
     font-size: 20px;
     color: var(--verde);
+}
+
+.sensor-acoes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Lixeira dos cards e das placas */
+.btn-apagar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--suave);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-apagar:hover,
+.btn-apagar:focus-visible {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.btn-apagar:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 1px;
+}
+
+.dispositivo-chip .btn-apagar {
+    width: 28px;
+    height: 28px;
+    margin-right: -6px;
+}
+
+/* Confirmação de exclusão */
+.modal-apagar {
+    max-width: 460px;
+}
+
+.texto-apagar {
+    margin-bottom: 12px;
+    line-height: 1.55;
+}
+
+.aviso-apagar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #b91c1c;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-perigo {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 12px;
+    background: #dc2626;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-perigo:hover {
+    background: #b91c1c;
+}
+
+.btn-perigo:disabled {
+    opacity: .6;
+    cursor: wait;
 }
 
 .sensor-valor {
@@ -421,6 +500,20 @@ body.dark .token-box {
 body.dark .btn-secundario {
     background: #2a2f2a;
     color: #fff;
+}
+
+body.dark .btn-apagar {
+    color: #aab3a8;
+}
+
+body.dark .btn-apagar:hover,
+body.dark .btn-apagar:focus-visible {
+    background: #3a1f1f;
+    color: #fca5a5;
+}
+
+body.dark .aviso-apagar {
+    color: #fca5a5;
 }
 
 body.dark .iot-atualizacao,

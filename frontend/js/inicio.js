@@ -151,7 +151,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await carregarDados();
 
-    // Negociações continua como demonstração (sem backend): contador em 0.
+    // Contador de negociações; se falhar, o restante da página continua funcionando.
+    chamarApi("negociacoes/listar.php")
+        .then(dados => {
+            document.getElementById("totalNegociacoes").textContent = dados.conversas.length;
+        })
+        .catch(error => console.error("Erro ao carregar negociações:", error));
 
     /* ==========================================================
        PRODUTOS EM DESTAQUE
@@ -204,9 +209,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <strong>R$ ${produto.preco.toFixed(2).replace(".", ",")}</strong>
                         ${meu
                             ? `<button class="btn-comprar" data-ir="meus-produtos.html">Seu produto</button>`
-                            : produto.estoque === 0
-                                ? `<button class="btn-comprar" disabled>Esgotado</button>`
-                                : `<button class="btn-comprar" data-comprar="${produto.id}">Fazer pedido</button>`}
+                            : `<div class="produto-acoes">
+                                   ${produto.estoque === 0
+                                       ? `<button class="btn-comprar" disabled>Esgotado</button>`
+                                       : `<button class="btn-comprar" data-comprar="${produto.id}">Fazer pedido</button>`}
+                                   <button class="btn-negociar" data-ir="negociacoes.html?anuncio=${produto.id}">
+                                       <i class="bi bi-chat-dots"></i> Negociar
+                                   </button>
+                               </div>`}
                     </div>
                 </article>
             `;
@@ -429,5 +439,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("btnExplorar")?.addEventListener("click", () => {
         document.querySelector(".produtos").scrollIntoView({ behavior: "smooth" });
     });
+
+    /* ==========================================================
+       ONBOARDING (primeiro acesso)
+    ========================================================== */
+
+    window.iniciarOnboarding?.(usuarioLogado);
 
 });

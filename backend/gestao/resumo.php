@@ -56,7 +56,7 @@ try {
             "SELECT s.id, s.tipo_sensor, s.codigo_esp32, s.status
                FROM sensores_iot s
               WHERE s.fazenda_id IN ($marcadores)
-              ORDER BY s.codigo_esp32,
+              ORDER BY SUBSTRING_INDEX(s.codigo_esp32, ':', 1),
                        FIELD(s.tipo_sensor, $marcadoresTipo) = 0,
                        FIELD(s.tipo_sensor, $marcadoresTipo),
                        s.id"
@@ -84,7 +84,7 @@ try {
                 'tipo'               => $s['tipo_sensor'],
                 'nome'               => $catalogo['nome'] ?? null,
                 'unidade'            => $catalogo['unidade'] ?? null,
-                'codigo'             => $s['codigo_esp32'],
+                'codigo'             => codigo_placa_do_sensor($s['codigo_esp32']),
                 'status'             => $s['status'],
                 'valor'              => $ultima ? (float) $ultima['valor_leitura'] : null,
                 'ultima_leitura'     => $ultima['data_hora'] ?? null,

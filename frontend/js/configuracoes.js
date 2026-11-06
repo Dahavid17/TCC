@@ -55,6 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Contas administradoras não trocam de tipo por aqui.
     if (blocoTipo) blocoTipo.hidden = usuario.tipo_acesso === "admin";
+
+    // O tour da Gestão da Fazenda só faz sentido para quem acessa essa área.
+    const cartaoTourGestao = document.getElementById("cartaoTourGestao");
+    if (cartaoTourGestao) cartaoTourGestao.hidden = !["produtor", "admin"].includes(usuario.tipo_acesso);
   }
 
   const btnSalvarTipo = document.getElementById("btnSalvarTipo");

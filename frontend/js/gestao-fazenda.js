@@ -67,6 +67,8 @@ document.addEventListener("DOMContentLoaded", async () => {
        USUÁRIO (sessão do servidor)
     ====================================================== */
 
+    let usuarioSessao = null;
+
     try {
 
         const { dados } = await chamarApi("auth/sessao.php");
@@ -77,6 +79,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const { usuario } = dados;
+        usuarioSessao = usuario;
         const tipo = usuario.tipo_acesso || "";
 
         document.getElementById("nomeUsuario").textContent = usuario.nome;
@@ -208,7 +211,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             <article class="sensor-card">
                 <header>
                     <h3>${escapeHtml(info.nome)}</h3>
-                    <i class="bi ${info.icone}" aria-hidden="true"></i>
+                    <div class="sensor-acoes">
+                        <i class="bi ${info.icone} sensor-icone" aria-hidden="true"></i>
+                        <button type="button" class="btn-apagar" data-apagar-sensor="${sensor.id}"
+                            data-nome="${escapeHtml(info.nome)}" data-codigo="${escapeHtml(sensor.codigo)}"
+                            aria-label="Apagar o sensor ${escapeHtml(info.nome)}" title="Apagar sensor">
+                            <i class="bi bi-trash3" aria-hidden="true"></i>
+                        </button>
+                    </div>
                 </header>
                 <span class="sensor-valor">${temValor ? numero(sensor.valor, info.unidade) : "—"}<small> ${escapeHtml(info.unidade)}</small></span>
                 ${grafico(historico)}
@@ -230,12 +240,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         listaDispositivos.innerHTML = dispositivos.map(d => {
 
             const estado = situacao(d.segundos_sem_sinal);
+            const qtdSensores = sensores.filter(s => s.codigo === d.codigo).length;
 
             return `
                 <div class="dispositivo-chip ${estado.online ? "online" : estado.classe}">
                     <i class="bi bi-cpu" aria-hidden="true"></i>
                     <span><strong>${escapeHtml(d.nome)}</strong> · ${escapeHtml(d.codigo)}</span>
                     <span class="dispositivo-estado">${escapeHtml(estado.texto)}</span>
+                    <button type="button" class="btn-apagar" data-apagar-placa="${escapeHtml(d.codigo)}"
+                        data-nome="${escapeHtml(d.nome)}" data-sensores="${qtdSensores}"
+                        aria-label="Apagar a placa ${escapeHtml(d.nome)}" title="Apagar placa">
+                        <i class="bi bi-trash3" aria-hidden="true"></i>
+                    </button>
                 </div>
             `;
 
@@ -501,13 +517,108 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     /* ======================================================
+       APAGAR SENSOR OU PLACA
+    ====================================================== */
+
+    const modalApagar = document.getElementById("modalApagar");
+    const btnConfirmarApagar = document.getElementById("confirmarApagar");
+    const apagarErro = document.getElementById("apagarErro");
+    let pedidoApagar = null;
+
+    function abrirModalApagar(botao) {
+
+        const { apagarSensor, apagarPlaca, nome, codigo, sensores } = botao.dataset;
+
+        if (apagarSensor) {
+            pedidoApagar = { corpo: { sensor_id: Number(apagarSensor) } };
+            document.getElementById("tituloModalApagar").textContent = "Apagar sensor?";
+            document.getElementById("textoApagar").textContent =
+                `O sensor "${nome}" (${codigo}) e todas as leituras dele serão apagados. ` +
+                "A placa continua conectada, mas esse tipo de leitura deixa de ser gravado. " +
+                "Para voltar a gravar, conecte a placa de novo em Conectar ESP32.";
+        } else {
+            const qtd = Number(sensores) || 0;
+            pedidoApagar = { corpo: { dispositivo: apagarPlaca } };
+            document.getElementById("tituloModalApagar").textContent = "Apagar placa?";
+            document.getElementById("textoApagar").textContent =
+                `A placa "${nome}" (${apagarPlaca}), ${qtd === 1 ? "o sensor dela" : `os ${qtd} sensores dela`} ` +
+                "e todas as leituras serão apagados, e o token usado pela ponte deixa de funcionar.";
+        }
+
+        apagarErro.textContent = "";
+        btnConfirmarApagar.disabled = false;
+        modalApagar.classList.add("ativo");
+        document.getElementById("cancelarApagar").focus();
+    }
+
+    function fecharModalApagar() {
+
+        modalApagar.classList.remove("ativo");
+        pedidoApagar = null;
+    }
+
+    // Os cards são redesenhados a cada atualização: os cliques são tratados na lista.
+    [gridSensores, listaDispositivos].forEach(lista => lista.addEventListener("click", (e) => {
+        const botao = e.target.closest(".btn-apagar");
+        if (botao) abrirModalApagar(botao);
+    }));
+
+    document.getElementById("cancelarApagar").addEventListener("click", fecharModalApagar);
+    document.getElementById("fecharModalApagar").addEventListener("click", fecharModalApagar);
+
+    modalApagar.addEventListener("click", (e) => {
+        if (e.target === modalApagar) fecharModalApagar();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modalApagar.classList.contains("ativo")) fecharModalApagar();
+    });
+
+    btnConfirmarApagar.addEventListener("click", async () => {
+
+        if (!pedidoApagar) return;
+
+        btnConfirmarApagar.disabled = true;
+        apagarErro.textContent = "";
+
+        try {
+
+            const { status, dados } = await chamarApi("iot/excluir.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(pedidoApagar.corpo)
+            });
+
+            if (status !== 200 || !dados.sucesso) {
+                apagarErro.textContent = dados.mensagem || "Não foi possível apagar.";
+                btnConfirmarApagar.disabled = false;
+                return;
+            }
+
+            fecharModalApagar();
+            await carregar();
+            iotAtualizacao.textContent = `${dados.mensagem} ${iotAtualizacao.textContent}`;
+
+        } catch (erro) {
+
+            console.error("Erro ao apagar:", erro);
+            apagarErro.textContent = "Sem conexão com o servidor. Tente novamente.";
+            btnConfirmarApagar.disabled = false;
+        }
+    });
+
+    /* ======================================================
        INÍCIO
     ====================================================== */
 
     await carregar();
 
     if (!document.getElementById("conteudoGestao").classList.contains("hidden")) {
+
         iniciarAtualizacao();
+
+        // Primeiro acesso à aba (ou ?tour=1): o Broto apresenta a Gestão da Fazenda.
+        window.iniciarOnboarding?.(usuarioSessao, "gestao");
     }
 
 });

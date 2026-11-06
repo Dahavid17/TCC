@@ -12,3 +12,9 @@ marketplace-src/uploads/produtos/
 # Dependências e tokens das placas (ponte do Wokwi)
 node_modules/
 iot/ponte-wokwi/config.json
+
+# Artefatos de deploy (cópias geradas a partir do código; o LEIA-ME e o SQL ficam versionados)
+deploy-*/*.zip
+deploy-*/pacote/
+deploy-*/limpo/
+deploy-*/backup/

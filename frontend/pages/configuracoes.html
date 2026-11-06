@@ -13,7 +13,7 @@
     />
 
     <link rel="stylesheet" href="../css/tokens.css" />
-    <link rel="stylesheet" href="../css/configuracoes.css" />
+    <link rel="stylesheet" href="../css/configuracoes.css?v=3" />
 
     <link
       rel="stylesheet"
@@ -323,6 +323,26 @@
                 <checkbox id="temaAutomatico" name="tema_automatico" />
               </div>
 
+              <div class="switch-card">
+                <div>
+                  <strong>Tour do Broto</strong>
+
+                  <p>Rever a apresentação do painel com o mascote.</p>
+                </div>
+
+                <a href="inicio.html?tour=1" class="btn-principal btn-tour">Ver tour novamente</a>
+              </div>
+
+              <div class="switch-card" id="cartaoTourGestao" hidden>
+                <div>
+                  <strong>Tour da Gestão da Fazenda</strong>
+
+                  <p>Rever com o Broto a propriedade, o ESP32 e os sensores ao vivo.</p>
+                </div>
+
+                <a href="gestao-fazenda.html?tour=1" class="btn-principal btn-tour">Ver tour da Gestão</a>
+              </div>
+
               <button
                 type="submit"
                 id="btnSalvarPreferencias"
@@ -404,6 +424,6 @@
     </button>
 
     <script src="../js/menu.js?v=2"></script>
-    <script src="../js/configuracoes.js?v=2"></script>
+    <script src="../js/configuracoes.js?v=3"></script>
   </body>
 </html>

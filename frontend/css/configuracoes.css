@@ -326,6 +326,18 @@ body{
     margin-top:4px;
 }
 
+.btn-tour{
+    flex-shrink:0;
+    margin:0 0 0 16px;
+    padding:12px 18px;
+    text-decoration:none;
+    white-space:nowrap;
+}
+
+.switch-card[hidden]{
+    display:none;
+}
+
 /* ZONA DE PERIGO */
 
 .descricao{

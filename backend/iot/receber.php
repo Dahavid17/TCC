@@ -15,6 +15,8 @@ require_once __DIR__ . '/../lib/iot.php';
 //   {"dispositivo":"ESP32-MR-88CDA7","temperatura":26.5,"umidade_ar":62,
 //    "luminosidade":800,"umidade_solo":41.3}
 // Campos de sensor ausentes são ignorados; pelo menos um precisa vir.
+// Só grava tipos com sensor cadastrado (criados ao conectar a placa): um sensor que o
+// produtor apagou não volta sozinho — para recriá-lo, conecte a placa de novo.
 exigir_metodo('POST');
 
 $corpo  = ler_corpo_json();
@@ -57,35 +59,37 @@ try {
     }
 
     $buscarSensor = $pdo->prepare(
-        'SELECT id FROM sensores_iot WHERE codigo_esp32 = :codigo AND tipo_sensor = :tipo ORDER BY id LIMIT 1'
-    );
-    $criarSensor = $pdo->prepare(
-        "INSERT INTO sensores_iot (fazenda_id, tipo_sensor, codigo_esp32, status) VALUES (:fazenda, :tipo, :codigo, 'ativo')"
+        'SELECT id FROM sensores_iot WHERE codigo_esp32 = :codigo LIMIT 1'
     );
     $gravarLeitura = $pdo->prepare(
         'INSERT INTO leituras_iot (sensor_id, valor_leitura, data_hora) VALUES (:sensor, :valor, NOW())'
     );
 
+    $gravadas = 0;
+    $ignoradas = [];
+
     $pdo->beginTransaction();
 
     foreach ($leituras as $tipo => $valor) {
-        $buscarSensor->execute([':codigo' => $codigo, ':tipo' => $tipo]);
+        $buscarSensor->execute([':codigo' => codigo_sensor($codigo, $tipo)]);
         $sensorId = $buscarSensor->fetchColumn();
 
         if ($sensorId === false) {
-            $criarSensor->execute([':fazenda' => $dispositivo['fazenda_id'], ':tipo' => $tipo, ':codigo' => $codigo]);
-            $sensorId = $pdo->lastInsertId();
+            $ignoradas[] = $tipo; // sensor apagado pelo produtor
+            continue;
         }
 
         $gravarLeitura->execute([':sensor' => $sensorId, ':valor' => $valor]);
+        $gravadas++;
     }
 
+    // A placa está se comunicando mesmo que todos os sensores tenham sido apagados.
     $pdo->prepare('UPDATE dispositivos_iot SET ultima_comunicacao = NOW() WHERE id = :id')
         ->execute([':id' => $dispositivo['id']]);
 
     $pdo->commit();
 
-    responder(201, ['sucesso' => true, 'gravadas' => count($leituras)]);
+    responder($gravadas ? 201 : 200, ['sucesso' => true, 'gravadas' => $gravadas, 'ignoradas' => $ignoradas]);
 } catch (Throwable $erro) {
     if (isset($pdo) && $pdo->inTransaction()) {
         $pdo->rollBack();
