@@ -7,6 +7,12 @@ as edições de `inicio.html`/`configuracoes.html` publicados e conferidos byte 
 Backups dos 11 arquivos substituídos: `/home2/buzzcodexcom/backup-iot-2026-11-06/`
 (nome com `__` no lugar de `/`). Para desfazer, copie de volta e mantenha a tabela.
 
+**Exclusão de sensores e placas: ENVIADA em 06/11/2026** (commit `d533d9c`). Novos/alterados:
+`backend/iot/excluir.php`, `backend/iot/receber.php`, `frontend/pages/gestao-fazenda.html`,
+`frontend/js/gestao-fazenda.js`, `frontend/css/gestao-fazenda.css`, `frontend/js/onboarding.js`
+e `frontend/pages/inicio.html`. Sem mudança no banco. Backups das versões anteriores:
+`/home2/buzzcodexcom/backup-iot-excluir-2026-11-06/`.
+
 Atenção para próximos deploys pelo cPanel: `Fileman/get_file_content` insere
 `<meta charset="utf-8">` logo após o primeiro `<head` ao LER (inclusive `<header>` em JS).
 Não edite arquivos lendo por essa API; envie com `Fileman/upload_files`, que grava os bytes exatos.
