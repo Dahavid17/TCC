@@ -1,0 +1,14 @@
+# Credenciais do banco: cada ambiente tem o seu (modelo em config.example.php)
+backend/config/config.local.php
+marketplace-src/backend/config/config.local.php
+
+# Logs do PHP gerados no servidor (expõem caminhos e IPs internos)
+error_log
+
+# Fotos enviadas pelos usuários
+uploads/produtos/
+marketplace-src/uploads/produtos/
+
+# Dependências e tokens das placas (ponte do Wokwi)
+node_modules/
+iot/ponte-wokwi/config.json
