@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
 
     <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/negociacoes.css">
+    <link rel="stylesheet" href="../css/negociacoes.css?v=3">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -141,8 +141,7 @@
 
                 <h1>Negociações</h1>
 
-                <p>Converse diretamente com compradores e produtores.
-                    <strong>Modo demonstração:</strong> as conversas são exemplos locais, não são enviadas a outros usuários.</p>
+                <p>Converse diretamente com compradores e produtores sobre os produtos anunciados.</p>
 
             </div>
 
@@ -168,7 +167,7 @@
 
                 <strong id="aguardandoResposta">0</strong>
 
-                <span>Aguardando resposta</span>
+                <span>Aguardando sua resposta</span>
 
             </div>
 
@@ -188,7 +187,7 @@
 
                 <strong id="propostasEnviadas">0</strong>
 
-                <span>Propostas</span>
+                <span>Propostas enviadas</span>
 
             </div>
 
@@ -208,11 +207,7 @@
 
                 </div>
 
-                <div id="listaConversas">
-
-                    <!-- Futuramente preenchido pelo JS/Back-end -->
-
-                </div>
+                <div id="listaConversas"></div>
 
                 <div id="semConversas" class="empty-state hidden">
 
@@ -262,20 +257,22 @@
 
                 <form class="chat-input" id="formMensagem">
 
+                    <button type="button" id="btnProposta" title="Enviar proposta" aria-label="Enviar proposta">
+
+                        <i class="bi bi-currency-dollar"></i>
+
+                    </button>
+
                     <input
                         type="text"
                         id="mensagemInput"
                         name="mensagem"
-                        placeholder="Digite uma mensagem..."
+                        maxlength="2000"
+                        placeholder="Selecione uma conversa para escrever"
+                        aria-label="Mensagem"
                         autocomplete="off">
 
-                    <button type="button" id="btnAnexo">
-
-                        <i class="bi bi-paperclip"></i>
-
-                    </button>
-
-                    <button type="submit" id="btnEnviar">
+                    <button type="submit" id="btnEnviar" aria-label="Enviar mensagem">
 
                         <i class="bi bi-send-fill"></i>
 
@@ -309,15 +306,19 @@
 
             <form id="formProposta">
 
+                <p class="proposta-produto" id="produtoProposta"></p>
+
                 <div class="campo">
 
-                    <label for="valorProposta">Valor da proposta</label>
+                    <label for="valorProposta">Valor total da proposta (R$)</label>
 
                     <input
                         type="number"
                         id="valorProposta"
+                        name="valor"
                         step="0.01"
-                        min="0">
+                        min="0.01"
+                        required>
 
                 </div>
 
@@ -327,7 +328,9 @@
 
                     <textarea
                         id="observacaoProposta"
+                        name="observacao"
                         rows="4"
+                        maxlength="2000"
                         placeholder="Descreva sua proposta..."></textarea>
 
                 </div>
@@ -363,7 +366,7 @@
     </button>
 
     <script src="../js/menu.js?v=2"></script>
-    <script src="../js/negociacoes.js?v=2"></script>
+    <script src="../js/negociacoes.js?v=3"></script>
 
 </body>
 

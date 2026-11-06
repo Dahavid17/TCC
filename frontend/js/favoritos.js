@@ -366,13 +366,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         .addEventListener("change", aplicarFiltros);
 
     /* ======================================================
-       NEGOCIAÇÃO (demonstração)
+       NEGOCIAÇÃO: abre a conversa com o vendedor deste produto
     ====================================================== */
 
     document.getElementById("irNegociacao")
         .addEventListener("click", () => {
 
-            window.location.href = "negociacoes.html";
+            window.location.href = favoritoAtual
+                ? `negociacoes.html?anuncio=${favoritoAtual.id}`
+                : "negociacoes.html";
 
         });
 

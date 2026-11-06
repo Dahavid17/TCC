@@ -804,6 +804,48 @@ body.dark .modal-box {
 
 }
 
+.produto-info button:disabled {
+
+    opacity: .55;
+
+    cursor: not-allowed;
+
+}
+
+.produto-acoes {
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+.produto-info .btn-negociar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    background: transparent;
+
+    border: 1px solid var(--verde);
+
+    color: var(--verde);
+
+}
+
+body.dark .produto-info .btn-negociar {
+
+    border-color: var(--verde-claro);
+
+    color: var(--verde-claro);
+
+}
+
 /* =============================================================
    STATUS
    ============================================================= */

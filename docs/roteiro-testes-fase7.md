@@ -83,12 +83,18 @@ Use duas contas: **A** (vendedora) e **B** (compradora). Marque cada item como �
 | 6.7 | Estoque de um favorito em 0 | Aparece como "Indisponível" | |
 | 6.8 | Limpar Favoritos | Lista fica vazia e persiste | |
 
-## 7. Negociações (demonstração)
+## 7. Negociações (chat real)
+
+Use dois navegadores (ou uma janela anônima) para ter A e B logados ao mesmo tempo.
 
 | # | Passo | Resultado esperado | OK |
 |---|-------|--------------------|----|
-| 7.1 | Abrir Negociações | Aviso "Modo demonstração" visível; nome do usuário real no topo | |
-| 7.2 | Abrir uma conversa e enviar mensagem | Funciona localmente (não é chat real) | |
+| 7.1 | B: Abrir Negociações sem conversas | Lista vazia com orientação para usar "Negociar"; nenhuma conversa de exemplo | |
+| 7.2 | B: Clicar em "Negociar" em um produto de A (Início ou Favoritos) | Abre o chat com A sobre aquele produto | |
+| 7.3 | B: Enviar uma mensagem | Aparece no chat de B; em até 15 s aparece na lista de A com contador de não lidas | |
+| 7.4 | A: Abrir a conversa e responder | Contador zera; a resposta aparece no chat aberto de B em poucos segundos, sem recarregar | |
+| 7.5 | B: Enviar proposta (botão $) | Mensagem de proposta com o valor; card "Propostas enviadas" soma 1 | |
+| 7.6 | A: Marcar como entregue um pedido de B desse produto | Conversa aparece como "Concluída" para os dois | |
 
 ## 8. Segurança (conta B logada)
 

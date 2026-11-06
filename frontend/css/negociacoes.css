@@ -271,14 +271,76 @@ body{
     background:rgba(49,87,44,.08);
 }
 
+.conversa-item .avatar{
+    flex-shrink:0;
+}
+
 .conversa-info{
     display:flex;
     flex-direction:column;
     gap:4px;
+    flex:1;
+    min-width:0;
 }
 
 .conversa-info small{
     color:var(--suave);
+}
+
+.conversa-topo,
+.conversa-rodape{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.conversa-topo strong{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.conversa-topo time{
+    flex-shrink:0;
+    font-size:11px;
+    color:var(--suave);
+}
+
+.conversa-produto,
+.conversa-previa{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.conversa-produto{
+    font-size:12px;
+}
+
+.badge-nao-lidas{
+    flex-shrink:0;
+    min-width:20px;
+    height:20px;
+    padding:0 6px;
+    border-radius:999px;
+    background:var(--verde);
+    color:white;
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.tag-concluida{
+    margin-left:4px;
+    padding:1px 8px;
+    border-radius:999px;
+    background:rgba(49,87,44,.12);
+    color:var(--verde);
+    font-size:11px;
+    font-weight:700;
 }
 
 /* CHAT */
@@ -325,6 +387,38 @@ body{
 
 .mensagem p{
     line-height:1.5;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+}
+
+.proposta{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    padding:8px 12px;
+    border-radius:12px;
+    background:rgba(49,87,44,.10);
+}
+
+.proposta small{
+    font-size:12px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+}
+
+.proposta strong{
+    font-size:20px;
+}
+
+.mensagem.enviada .proposta{
+    background:rgba(255,255,255,.18);
+}
+
+.proposta-produto{
+    margin-bottom:16px;
+    color:var(--suave);
+    font-size:14px;
 }
 
 .mensagem span{
@@ -394,11 +488,21 @@ body{
     cursor:pointer;
 }
 
-#btnAnexo{
-    background:#F2F2F2;
+#btnProposta{
+    flex-shrink:0;
+    background:rgba(49,87,44,.12);
+    color:var(--verde);
+    font-size:20px;
+}
+
+.chat-input button:disabled,
+.chat-input input:disabled{
+    opacity:.5;
+    cursor:not-allowed;
 }
 
 #btnEnviar{
+    flex-shrink:0;
     background:var(--verde);
     color:white;
 }
@@ -571,7 +675,16 @@ body.dark .sidebar a.ativo{
     color:var(--verde-claro);
 }
 
+body.dark #btnProposta,
+body.dark .tag-concluida,
+body.dark .mensagem.recebida .proposta{
+    background:rgba(144,169,85,.15);
+    color:var(--verde-claro);
+}
+
 body.dark .conversa-info small,
+body.dark .conversa-topo time,
+body.dark .proposta-produto,
 body.dark #tipoUsuario,
 body.dark .page-header p,
 body.dark .chat-usuario small{
@@ -597,6 +710,11 @@ body.dark .chat-usuario small{
 
     .lista-conversas{
         max-height:260px;
+    }
+
+    .chat-box{
+        height:75vh;
+        min-height:420px;
     }
 
 }
