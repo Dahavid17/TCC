@@ -16,8 +16,14 @@ const ZOOM_MAX = 2.4;
 //                  substituem as simuladas desses sensores (ver dados/leiturasDoMarketplace.js)
 //   incorporado    modo para embutir numa página com rolagem: sem zoom pela roda do mouse
 //                  (botões + e −) e com rolagem vertical liberada no toque
-export function FazendaInteligente({ intervaloMs = 1500, leiturasReais = null, incorporado = false, titulo = "Fazenda Inteligente", className = "" }) {
+//   grupos         mostra só os sensores destes grupos (ex.: ["plantacao", "estufa"]); null = todos
+export function FazendaInteligente({ intervaloMs = 1500, leiturasReais = null, grupos = null, incorporado = false, titulo = "Fazenda Inteligente", className = "" }) {
     const simuladas = useLeiturasSimuladas(SENSORES, intervaloMs);
+    const chaveGrupos = grupos ? grupos.join(",") : "";
+    const sensores = useMemo(
+        () => (chaveGrupos ? SENSORES.filter((s) => chaveGrupos.split(",").includes(s.grupo)) : SENSORES),
+        [chaveGrupos]
+    );
     const [selecionado, setSelecionado] = useState(null);
     const [emFoco, setEmFoco] = useState(null);
     const [zoomFator, setZoomFator] = useState(1);
@@ -50,6 +56,7 @@ export function FazendaInteligente({ intervaloMs = 1500, leiturasReais = null, i
             <Canvas shadows dpr={[1, 2]} onPointerMissed={() => setSelecionado(null)}>
                 <Suspense fallback={null}>
                     <Cena
+                        sensores={sensores}
                         leituras={leituras}
                         status={status}
                         selecionado={selecionado}
@@ -64,6 +71,7 @@ export function FazendaInteligente({ intervaloMs = 1500, leiturasReais = null, i
 
             <Legenda
                 titulo={titulo}
+                sensores={sensores}
                 leituras={leituras}
                 status={status}
                 selecionado={selecionado}

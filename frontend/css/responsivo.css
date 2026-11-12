@@ -626,3 +626,38 @@ body.menu-aberto {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* =============================================================
+   LEITURA FÁCIL (público de mais idade)
+   Menu e botões de ícone maiores, item ativo bem marcado e foco bem visível.
+   ============================================================= */
+
+.sidebar a {
+    min-height: 50px;
+    font-size: 16px;
+}
+
+.sidebar a i {
+    font-size: 21px;
+}
+
+.sidebar a.ativo {
+    box-shadow: inset 5px 0 0 var(--verde);
+}
+
+body.dark .sidebar a.ativo {
+    box-shadow: inset 5px 0 0 var(--verde-claro);
+}
+
+.icon-btn {
+    min-width: 46px;
+    min-height: 46px;
+    font-size: 20px;
+}
+
+.sidebar a:focus-visible,
+.icon-btn:focus-visible,
+#temaBtn:focus-visible {
+    outline: 4px solid #f2a516;
+    outline-offset: 2px;
+}

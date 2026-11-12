@@ -321,3 +321,62 @@ body.dark .tour-rodape .modal-acoes button:first-child {
     border-color: #2a382c;
     color: #fff;
 }
+
+/* ---------- BOTÃO "VER TOUR" (topo da página, sempre visível) ---------- */
+
+.btn-ver-tour {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 2px solid var(--verde);
+    border-radius: var(--radius-pill);
+    background: var(--branco);
+    color: var(--verde);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+
+.btn-ver-tour i {
+    font-size: 20px;
+}
+
+.btn-ver-tour:hover,
+.btn-ver-tour:focus-visible {
+    background: var(--verde);
+    color: #fff;
+}
+
+body.dark .btn-ver-tour {
+    background: transparent;
+    border-color: var(--verde-claro);
+    color: var(--verde-claro);
+}
+
+body.dark .btn-ver-tour:hover,
+body.dark .btn-ver-tour:focus-visible {
+    background: var(--verde-claro);
+    color: #101411;
+}
+
+/* No celular fica só o ícone (o nome continua para leitores de tela). */
+@media (max-width: 599px) {
+    .btn-ver-tour {
+        width: 44px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .btn-ver-tour span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+}

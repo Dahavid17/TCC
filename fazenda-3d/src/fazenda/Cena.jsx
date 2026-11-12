@@ -9,8 +9,6 @@ import { Trator, Trilha, criarCurvaTrilha } from "./modelos/Trator";
 import { Decoracao } from "./modelos/Decoracao";
 import { MarcadorSensor } from "./sensores/MarcadorSensor";
 
-const SENSORES_FIXOS = SENSORES.filter((s) => s.ancora !== "trator");
-const SENSORES_TRATOR = SENSORES.filter((s) => s.ancora === "trator");
 
 // Câmera ortográfica em ângulo isométrico; o zoom inicial se ajusta ao tamanho do canvas.
 // Em telas largas o centro da vista anda para (-x, +z), o que empurra a fazenda para a
@@ -51,8 +49,10 @@ function Luzes() {
     );
 }
 
-export function Cena({ leituras, status, selecionado, emFoco, onFoco, onSelecionar, zoomPelaRoda = true, zoomFator = 1 }) {
+export function Cena({ sensores = SENSORES, leituras, status, selecionado, emFoco, onFoco, onSelecionar, zoomPelaRoda = true, zoomFator = 1 }) {
     const curva = useMemo(criarCurvaTrilha, []);
+    const SENSORES_FIXOS = useMemo(() => sensores.filter((s) => s.ancora !== "trator"), [sensores]);
+    const SENSORES_TRATOR = useMemo(() => sensores.filter((s) => s.ancora === "trator"), [sensores]);
     const telaLarga = useThree((state) => state.size.width > 900);
     const alvo = useMemo(() => (telaLarga ? [-2.2, 0, 2.2] : [0, 0, 0]), [telaLarga]);
     const cargaAtual = leituras["trator-carga"]?.campos.carga?.valor ?? 50;

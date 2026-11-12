@@ -6,9 +6,9 @@ import { ROTULO_STATUS, resumoSensor } from "./dados/status";
 // Clicar em um item fixa o painel do sensor na cena.
 //   comDadosReais: a cena mistura leituras reais e simuladas; os simulados ganham a etiqueta "Simulado".
 //   incorporado: a cena está dentro de outra página, então os títulos descem de nível.
-export function Legenda({ titulo, leituras, status, selecionado, onSelecionar, comDadosReais = false, incorporado = false }) {
-    const alertas = SENSORES.filter((s) => status[s.id] !== "normal").length;
-    const reais = SENSORES.filter((s) => leituras[s.id]?.origem === "real").length;
+export function Legenda({ titulo, sensores = SENSORES, leituras, status, selecionado, onSelecionar, comDadosReais = false, incorporado = false }) {
+    const alertas = sensores.filter((s) => status[s.id] !== "normal").length;
+    const reais = sensores.filter((s) => leituras[s.id]?.origem === "real").length;
     const Titulo = incorporado ? "h3" : "h1";
     const TituloGrupo = incorporado ? "h4" : "h2";
     // No celular a lista começa recolhida para não cobrir a cena.
@@ -24,7 +24,7 @@ export function Legenda({ titulo, leituras, status, selecionado, onSelecionar, c
             </div>
 
             <p className={`legenda-resumo ${alertas ? "com-alerta" : ""}`} aria-live="polite">
-                {comDadosReais ? `${reais} reais · ${SENSORES.length - reais} simulados` : `${SENSORES.length} sensores`}
+                {comDadosReais ? `${reais} reais · ${sensores.length - reais} simulados` : `${sensores.length} sensores`}
                 {" · "}
                 {alertas ? `${alertas} em alerta` : "todos normais"}
             </p>
@@ -32,14 +32,14 @@ export function Legenda({ titulo, leituras, status, selecionado, onSelecionar, c
             <details open={abertaNoInicio}>
                 <summary>Sensores</summary>
 
-                {Object.entries(GRUPOS).map(([chave, grupo]) => (
+                {Object.entries(GRUPOS).filter(([chave]) => sensores.some((s) => s.grupo === chave)).map(([chave, grupo]) => (
                     <section key={chave} className="legenda-grupo">
                         <TituloGrupo className="legenda-grupo-titulo">
                             <span className="legenda-cor" style={{ background: grupo.cor }} aria-hidden="true" />
                             {grupo.nome}
                         </TituloGrupo>
                         <ul>
-                            {SENSORES.filter((s) => s.grupo === chave).map((sensor) => {
+                            {sensores.filter((s) => s.grupo === chave).map((sensor) => {
                                 const simulado = comDadosReais && leituras[sensor.id]?.origem !== "real";
 
                                 return (

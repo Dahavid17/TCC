@@ -28,25 +28,41 @@ function criarLoja(inicial) {
     };
 }
 
-function CenaDoMarketplace({ loja, titulo }) {
+//   Opções: titulo; grupos = só os sensores destes grupos ("plantacao", "estufa", "maquinario").
+//   Os planos do Marketplace usam ["plantacao", "estufa"] (Essencial) e todos (Pro).
+//   Sem sensoresReais (ex.: página de planos) todos os marcadores ficam simulados.
+//   cena.configurar({ titulo, grupos }) troca o plano mostrado SEM recriar a cena
+//   (recriar o <Canvas> pode perder o contexto WebGL em alguns navegadores).
+
+function CenaDoMarketplace({ loja, lojaConfig }) {
     const sensores = useSyncExternalStore(loja.assinar, loja.ler);
+    const { titulo, grupos } = useSyncExternalStore(lojaConfig.assinar, lojaConfig.ler);
     const leiturasReais = useMemo(() => leiturasDoResumo(sensores), [sensores]);
 
-    return <FazendaInteligente leiturasReais={leiturasReais} incorporado titulo={titulo} />;
+    return (
+        <FazendaInteligente
+            leiturasReais={sensores.length ? leiturasReais : null}
+            grupos={grupos}
+            incorporado
+            titulo={titulo}
+        />
+    );
 }
 
-function montar(elemento, { sensoresReais = [], titulo = "Fazenda em 3D" } = {}) {
+function montar(elemento, { sensoresReais = [], titulo = "Fazenda em 3D", grupos = null } = {}) {
     const loja = criarLoja(sensoresReais);
+    const lojaConfig = criarLoja({ titulo, grupos });
     const raiz = createRoot(elemento);
 
     raiz.render(
         <StrictMode>
-            <CenaDoMarketplace loja={loja} titulo={titulo} />
+            <CenaDoMarketplace loja={loja} lojaConfig={lojaConfig} />
         </StrictMode>
     );
 
     return {
         atualizar: (sensores) => loja.escrever(Array.isArray(sensores) ? sensores : []),
+        configurar: (opcoes = {}) => lojaConfig.escrever({ ...lojaConfig.ler(), ...opcoes }),
         desmontar: () => raiz.unmount(),
     };
 }

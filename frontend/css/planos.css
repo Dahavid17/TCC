@@ -1,0 +1,584 @@
+/* =============================================================
+   PLANOS.CSS — vitrine dos planos da Gestão da Fazenda
+   Público de mais idade: letras maiores, botões grandes e cores fortes.
+   ============================================================= */
+
+.planos-pagina {
+    font-size: 17px;
+    line-height: 1.55;
+}
+
+.planos-topo {
+    max-width: 900px;
+    margin-bottom: 28px;
+}
+
+.planos-topo h1 {
+    font-family: var(--fonte-display);
+    font-size: clamp(28px, 4vw, 38px);
+    color: var(--verde);
+    margin-bottom: 10px;
+}
+
+.planos-subtitulo {
+    font-size: 19px;
+    color: var(--texto);
+    margin-bottom: 18px;
+}
+
+.aviso-demo {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    border: 2px solid #e8c766;
+    border-radius: var(--radius-md);
+    background: #fff8e1;
+    color: #5c4300;
+    font-size: 16px;
+}
+
+.aviso-demo i {
+    font-size: 22px;
+    color: #b07d00;
+    flex-shrink: 0;
+}
+
+/* Etapas 1-2-3 */
+
+.planos-etapas {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.planos-etapas li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px 10px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    font-weight: 600;
+}
+
+.planos-etapas i {
+    font-size: 20px;
+    color: var(--verde-medio);
+}
+
+.etapa-num {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--verde);
+    color: #fff;
+    font-weight: 800;
+}
+
+/* ---------- CARTÕES ---------- */
+
+.planos-grade {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.plano-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 28px 28px;
+    border: 2px solid var(--borda);
+    border-radius: var(--radius-lg);
+    background: var(--branco);
+    box-shadow: var(--sombra-sm);
+}
+
+.plano-card.plano-pro {
+    border: 3px solid var(--verde);
+    box-shadow: var(--sombra);
+}
+
+.plano-card.plano-atual {
+    outline: 4px solid var(--verde-claro);
+    outline-offset: 3px;
+}
+
+.plano-selo {
+    position: absolute;
+    top: -16px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--verde);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.plano-selo-atual {
+    right: auto;
+    left: 24px;
+    background: var(--verde-claro);
+    color: #1c2a12;
+}
+
+.plano-cabeca {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+}
+
+.plano-icone {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: #eef5e8;
+    color: var(--verde);
+    font-size: 30px;
+    flex-shrink: 0;
+}
+
+.plano-pro .plano-icone {
+    background: var(--verde);
+    color: #fff;
+}
+
+.plano-cabeca h2 {
+    font-size: 26px;
+    color: var(--verde);
+}
+
+.plano-preco {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    margin-bottom: 10px;
+}
+
+.plano-preco strong {
+    font-size: 40px;
+    line-height: 1;
+    color: var(--texto);
+}
+
+.plano-preco span {
+    color: var(--suave);
+    font-weight: 600;
+}
+
+.plano-preco small {
+    width: 100%;
+    color: var(--suave);
+    font-size: 13px;
+}
+
+.plano-chamada {
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.plano-itens {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-bottom: 26px;
+}
+
+.plano-itens li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.plano-itens i {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: #eef5e8;
+    color: var(--verde);
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.plano-botoes {
+    margin-top: auto;
+    display: grid;
+    gap: 12px;
+}
+
+/* Botões grandes e fáceis de reconhecer */
+
+.btn-escolher,
+.btn-ver-3d,
+.btn-ouvir {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 12px 22px;
+    border-radius: var(--radius-md);
+    font: inherit;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background .2s, color .2s, transform .1s;
+}
+
+.btn-escolher i,
+.btn-ver-3d i,
+.btn-ouvir i {
+    font-size: 22px;
+}
+
+.btn-escolher {
+    border: none;
+    background: var(--verde);
+    color: #fff;
+    box-shadow: 0 6px 0 #1f3a1b;
+}
+
+.btn-escolher:hover {
+    background: var(--verde-medio);
+}
+
+.btn-escolher:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 #1f3a1b;
+}
+
+.btn-escolher:disabled {
+    opacity: .75;
+    cursor: wait;
+}
+
+.btn-ver-3d,
+.btn-ouvir {
+    border: 2px solid var(--verde);
+    background: var(--branco);
+    color: var(--verde);
+}
+
+.btn-ver-3d:hover,
+.btn-ouvir:hover,
+.btn-ouvir.falando {
+    background: #eef5e8;
+}
+
+.btn-escolher:focus-visible,
+.btn-ver-3d:focus-visible,
+.btn-ouvir:focus-visible,
+.planos-abas button:focus-visible {
+    outline: 4px solid #f2a516;
+    outline-offset: 3px;
+}
+
+.girando {
+    animation: girar-3d 1s linear infinite;
+}
+
+/* ---------- COMO FUNCIONA (abas) ---------- */
+
+.planos-demo,
+.planos-comparar {
+    margin-bottom: 40px;
+}
+
+.planos-demo h2,
+.planos-comparar h2 {
+    font-size: 26px;
+    color: var(--verde);
+    margin-bottom: 8px;
+}
+
+.planos-demo-ajuda {
+    max-width: 820px;
+    margin-bottom: 18px;
+}
+
+.planos-abas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.planos-abas button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 58px;
+    padding: 10px 26px;
+    border: 2px solid var(--verde);
+    border-radius: var(--radius-pill);
+    background: var(--branco);
+    color: var(--verde);
+    font: inherit;
+    font-size: 18px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.planos-abas button i {
+    font-size: 22px;
+}
+
+.planos-abas button[aria-selected="true"] {
+    background: var(--verde);
+    color: #fff;
+}
+
+.planos-painel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.planos-palco {
+    height: 520px;
+}
+
+.fazenda-palco-plano {
+    height: 100%;
+}
+
+.planos-descricao {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 26px;
+    border: 2px solid var(--borda);
+    border-radius: var(--radius-lg);
+    background: var(--branco);
+}
+
+.planos-descricao h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 26px;
+    color: var(--verde);
+}
+
+.planos-descricao-chamada {
+    font-weight: 600;
+}
+
+.planos-passos {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+}
+
+.planos-passos li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.passo-icone {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #eef5e8;
+    color: var(--verde);
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.planos-passos strong {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 2px;
+}
+
+.planos-passos p {
+    color: var(--suave);
+    font-size: 16px;
+}
+
+/* ---------- COMPARAÇÃO ---------- */
+
+.tabela-rolagem {
+    overflow-x: auto;
+    border: 2px solid var(--borda);
+    border-radius: var(--radius-lg);
+    background: var(--branco);
+}
+
+.tabela-planos {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+}
+
+.tabela-planos th,
+.tabela-planos td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--borda);
+}
+
+.tabela-planos thead th {
+    background: #eef5e8;
+    color: var(--verde);
+    font-size: 18px;
+}
+
+.tabela-planos tbody tr:last-child th,
+.tabela-planos tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabela-planos tbody th {
+    font-weight: 600;
+}
+
+.tabela-planos tbody th i {
+    color: var(--verde-medio);
+    margin-right: 6px;
+}
+
+.marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 800;
+}
+
+.marca i {
+    font-size: 22px;
+}
+
+.marca.sim { color: var(--sucesso); }
+.marca.nao { color: #9a3b32; }
+
+/* ---------- MODO ESCURO ---------- */
+
+body.dark .planos-subtitulo,
+body.dark .plano-preco strong {
+    color: #f5f5f5;
+}
+
+body.dark .planos-topo h1,
+body.dark .plano-cabeca h2,
+body.dark .planos-demo h2,
+body.dark .planos-comparar h2,
+body.dark .planos-descricao h3 {
+    color: var(--verde-claro);
+}
+
+body.dark .plano-card,
+body.dark .planos-descricao,
+body.dark .tabela-rolagem,
+body.dark .planos-etapas li {
+    background: #18201a;
+    border-color: #2a382c;
+    color: #f5f5f5;
+}
+
+body.dark .plano-card.plano-pro {
+    border-color: var(--verde-claro);
+}
+
+body.dark .plano-icone,
+body.dark .plano-itens i,
+body.dark .passo-icone {
+    background: #243321;
+    color: var(--verde-claro);
+}
+
+body.dark .plano-preco span,
+body.dark .plano-preco small,
+body.dark .planos-passos p {
+    color: #b8c2b5;
+}
+
+body.dark .aviso-demo {
+    background: #2e2610;
+    border-color: #6b5413;
+    color: #f3dfa2;
+}
+
+body.dark .btn-ver-3d,
+body.dark .btn-ouvir,
+body.dark .planos-abas button {
+    background: transparent;
+    border-color: var(--verde-claro);
+    color: var(--verde-claro);
+}
+
+body.dark .planos-abas button[aria-selected="true"] {
+    background: var(--verde-claro);
+    color: #101411;
+}
+
+body.dark .tabela-planos thead th {
+    background: #243321;
+    color: var(--verde-claro);
+}
+
+body.dark .tabela-planos th,
+body.dark .tabela-planos td {
+    border-color: #2a382c;
+}
+
+body.dark .marca.sim { color: #7fd17f; }
+body.dark .marca.nao { color: #f08a80; }
+
+/* ---------- TELAS MENORES ---------- */
+
+@media (max-width: 1100px) {
+    .planos-painel {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+    .planos-pagina {
+        font-size: 16px;
+    }
+
+    .plano-card {
+        padding: 26px 18px 20px;
+    }
+
+    .planos-abas button {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 14px;
+        font-size: 16px;
+    }
+
+    .planos-palco {
+        height: 440px;
+    }
+
+    .planos-descricao {
+        padding: 20px 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .girando { animation: none; }
+}

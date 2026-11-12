@@ -2,8 +2,10 @@
 // Há um roteiro por página:
 //   "painel" -> inicio.js chama window.iniciarOnboarding(usuario)
 //   "gestao" -> gestao-fazenda.js chama window.iniciarOnboarding(usuario, "gestao")
-// "Já viu o tour" fica guardado no navegador, por usuário e por roteiro;
-// a página aberta com ?tour=1 mostra o roteiro de novo.
+// O tour aparece SOZINHO só no primeiro acesso. "Já viu" fica guardado no servidor
+// (preferências do usuário, valem em qualquer navegador) e também no navegador.
+// Ele é marcado como visto assim que abre: fechar a aba no meio não faz o tour voltar.
+// Para rever: botão "Ver tour" no topo da página, Configurações > Preferências, ou ?tour=1.
 
 (function () {
 
@@ -12,27 +14,33 @@
     const DESKTOP = 900;
     const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // O roteiro "painel" mantém a chave antiga para quem já viu o tour não revê-lo.
-    function chave(usuario, roteiro) {
+    // Chave antiga (só no navegador), mantida para quem já viu o tour não revê-lo.
+    function chaveAntiga(usuario, roteiro) {
         return roteiro === "painel"
             ? "marketplace:onboarding:" + usuario.id
             : `marketplace:onboarding:${roteiro}:${usuario.id}`;
     }
 
     function jaViu(usuario, roteiro) {
+
+        if (window.PreferenciasUsuario?.obter(`tour:${roteiro}`) === "visto") return true;
+
         try {
-            return localStorage.getItem(chave(usuario, roteiro)) === "visto";
+            return localStorage.getItem(chaveAntiga(usuario, roteiro)) === "visto";
         } catch (erro) {
             return false;
         }
     }
 
     function marcarVisto(usuario, roteiro) {
+
         try {
-            localStorage.setItem(chave(usuario, roteiro), "visto");
+            localStorage.setItem(chaveAntiga(usuario, roteiro), "visto");
         } catch (erro) {
-            // Sem armazenamento (aba anônima): o tour só volta a aparecer.
+            // Sem armazenamento no navegador: fica valendo o servidor.
         }
+
+        window.PreferenciasUsuario?.definir(`tour:${roteiro}`, "visto");
     }
 
     function primeiroNome(usuario) {
@@ -49,6 +57,11 @@
                 titulo: `${primeiroNome(usuario)}, esta é a Gestão da Fazenda 🌾`,
                 texto: "Aqui você acompanha sua propriedade e o que os sensores estão medindo no campo, em tempo real. Vou te mostrar em poucos passos.",
                 mascote: "acenando"
+            },
+            {
+                alvo: () => [document.getElementById("bannerPlano")],
+                titulo: "Seu plano",
+                texto: "Aqui aparece o plano que você escolheu e o que ele inclui. Para mudar, toque em “Trocar de plano”. Enquanto nenhum ESP32 estiver enviando leituras, o painel mostra dados de EXEMPLO."
             },
             {
                 alvo: () => [document.querySelector(".cards-resumo")],
@@ -70,8 +83,13 @@
                     : "Assim que a placa enviar a primeira leitura, aparecem aqui a umidade do solo, a temperatura, a umidade do ar e a luminosidade, atualizadas a cada 5 segundos."
             },
             {
+                alvo: () => [document.getElementById("secAutomacao")].filter(el => el && !el.classList.contains("hidden")),
+                titulo: "A fazenda se cuida sozinha",
+                texto: "Irrigação, ventilação e luz da estufa ligam e desligam sozinhas de acordo com os sensores. Se quiser, toque em “Ligar” ou “Desligar” para controlar você mesmo."
+            },
+            {
                 titulo: "Tudo pronto!",
-                texto: "Quando quiser rever esta apresentação, é só ir em Configurações, na aba Preferências.",
+                texto: "Esta apresentação não vai aparecer sozinha de novo. Quando quiser revê-la, toque no botão “Ver tour”, no alto da tela.",
                 mascote: "comemorando",
                 acao: () => temLeituras()
                     ? { rotulo: "Ver meus sensores", rolarAte: ".iot" }
@@ -133,7 +151,7 @@
             },
             {
                 titulo: "Tudo pronto!",
-                texto: "Quando quiser rever este tour, é só ir em Configurações, na aba Preferências.",
+                texto: "Este tour não vai aparecer sozinho de novo. Quando quiser revê-lo, toque no botão “Ver tour”, no alto da tela, ou vá em Configurações › Preferências.",
                 mascote: "comemorando",
                 acao: vende
                     ? { rotulo: "Cadastrar primeiro produto", destino: "meus-produtos.html" }
@@ -402,9 +420,46 @@
         mostrar(0);
     }
 
-    window.iniciarOnboarding = function (usuario, roteiro = "painel") {
+    let abrindo = false;
+
+    async function abrirUmaVez(usuario, roteiro) {
+
+        if (abrindo || document.querySelector(".tour")) return;
+        abrindo = true;
+
+        // Marca já na abertura: mesmo que a pessoa feche a aba no meio, não reaparece.
+        marcarVisto(usuario, roteiro);
+
+        try {
+            await abrir(usuario, roteiro);
+        } catch (erro) {
+            console.error("Tour:", erro);
+        } finally {
+            abrindo = false;
+        }
+    }
+
+    // Botão sempre visível no topo para rever o tour quando quiser.
+    function criarBotaoTour(usuario, roteiro) {
+
+        const destino = document.querySelector(".top-actions");
+        if (!destino || destino.querySelector(".btn-ver-tour")) return;
+
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "btn-ver-tour";
+        botao.innerHTML = '<i class="bi bi-question-circle-fill" aria-hidden="true"></i><span>Ver tour</span>';
+        botao.title = "Rever a apresentação desta página com o Broto";
+        botao.addEventListener("click", () => abrirUmaVez(usuario, roteiro));
+
+        destino.prepend(botao);
+    }
+
+    window.iniciarOnboarding = async function (usuario, roteiro = "painel") {
 
         if (!usuario || !usuario.id || !ROTEIROS[roteiro]) return;
+
+        criarBotaoTour(usuario, roteiro);
 
         const url = new URL(window.location.href);
         const pedido = url.searchParams.get("tour") === "1";
@@ -412,10 +467,15 @@
         if (pedido) {
             url.searchParams.delete("tour");
             history.replaceState(null, "", url);
+            abrirUmaVez(usuario, roteiro);
+            return;
         }
 
-        if (pedido || !jaViu(usuario, roteiro)) {
-            abrir(usuario, roteiro);
+        // Consulta o servidor antes de decidir (vale para qualquer navegador/computador).
+        await window.PreferenciasUsuario?.carregar(usuario);
+
+        if (!jaViu(usuario, roteiro)) {
+            abrirUmaVez(usuario, roteiro);
         }
     };
 
