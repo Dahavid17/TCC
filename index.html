@@ -4,9 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Buzz Code — Intro</title>
+  <title>Buzz Codex</title>
+  <meta name="description" content="Buzz Codex — desenvolvimento web. Conheça o MarketPlace Rural, nosso TCC que conecta produtores rurais e compradores." />
   <link rel="canonical" href="https://buzzcodex.com.br/index.html" />
-  <link rel="icon" type="image/png" href="assets/img/favicon/favicon.png" />
+  <!-- Ícones: o Google exige no mínimo 48x48 (múltiplos de 48); /favicon.ico é o reserva dos navegadores. -->
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/img/favicon/buzzcodex-48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon/buzzcodex-96.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/img/favicon/buzzcodex-192.png" />
+  <link rel="apple-touch-icon" href="assets/img/favicon/apple-touch-icon.png" />
+  <meta name="theme-color" content="#09090d" />
   <style>
     * {
       margin: 0;
@@ -326,7 +333,7 @@
         drawHexLogo(cx, cy, logoSize, logoP);
       }
 
-      // ── TEXTO DINÂMICO ("BUZZ CODE") — SEM SOBREPOSIÇÃO ──
+      // ── TEXTO DINÂMICO ("BUZZ CODEX") — SEM SOBREPOSIÇÃO ──
       const textP = progress(T.tagIn, T.tagIn + 0.65);
       if (textP > 0) {
         ctx.save();
@@ -341,7 +348,7 @@
         // Cálculo milimétrico de espaçamento
         const buzzWidth = ctx.measureText('BUZZ').width;
         const spaceWidth = ctx.measureText(' ').width;
-        const codeWidth = ctx.measureText('CODE').width;
+        const codeWidth = ctx.measureText('CODEX').width;
         const totalWidth = buzzWidth + spaceWidth + codeWidth;
 
         const startX = cx - totalWidth / 2;
@@ -353,10 +360,10 @@
         ctx.fillStyle = '#ffffff';
         ctx.fillText('BUZZ', startX, textY);
 
-        // "CODE" — Verde Neon (--verde)
+        // "CODEX" — Verde Neon (--verde)
         ctx.shadowColor = 'rgba(52, 211, 4, 0.6)';
         ctx.fillStyle = '#34d304';
-        ctx.fillText('CODE', startX + buzzWidth + spaceWidth, textY);
+        ctx.fillText('CODEX', startX + buzzWidth + spaceWidth, textY);
 
         // Subtítulo Corporativo Suave
         ctx.textAlign = 'center';
