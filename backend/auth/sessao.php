@@ -24,15 +24,25 @@ try {
 
     $id = (int) $_SESSION['usuario_id'];
 
-    $sql = 'SELECT id, nome, email, telefone, cidade, endereco, tipo_acesso
+    $sql = 'SELECT id, nome, email, telefone, cidade, endereco, tipo_acesso, foto_perfil
             FROM usuarios
             WHERE id = :id
             LIMIT 1';
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':id' => $id]);
+    try {
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+    } catch (PDOException $semColunaFoto) {
+        // Banco sem a migração 007 (coluna foto_perfil): segue sem a foto.
+        $stmt = $pdo->prepare(str_replace(', foto_perfil', '', $sql));
+        $stmt->execute([':id' => $id]);
+    }
 
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($usuario) {
+        $usuario['foto_perfil'] = $usuario['foto_perfil'] ?? null;
+    }
 
     if (!$usuario) {
         session_unset();
@@ -48,7 +58,7 @@ try {
     $_SESSION['usuario_email'] = $usuario['email'];
     $_SESSION['usuario_tipo'] = $usuario['tipo_acesso'];
 
-    // Contrato único: { sucesso, usuario: { id, nome, email, telefone, cidade, endereco, tipo_acesso } }
+    // Contrato único: { sucesso, usuario: { id, nome, email, telefone, cidade, endereco, tipo_acesso, foto_perfil } }
     responder(200, [
         'sucesso' => true,
         'usuario' => $usuario

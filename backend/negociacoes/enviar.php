@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
 require_once __DIR__ . '/../lib/negociacoes.php';
+require_once __DIR__ . '/../lib/notificacoes.php';
 
 // POST: anuncio_id, comprador_id (só o vendedor informa), mensagem,
 //       tipo = texto | proposta e valor (obrigatório quando tipo = proposta).
@@ -68,11 +69,32 @@ try {
 
     $stmt = $pdo->prepare(SQL_MENSAGEM . ' WHERE id = :id');
     $stmt->execute([':id' => (int) $pdo->lastInsertId()]);
+    $enviada = $stmt->fetch();
+
+    // Aviso para quem recebe. Mensagens seguidas da mesma conversa viram UM aviso (grupo).
+    $destinatario = $usuarioId === (int) $conversa['vendedor_id'] ? (int) $conversa['comprador_id'] : (int) $conversa['vendedor_id'];
+    $link = 'negociacoes.html?anuncio=' . (int) $conversa['anuncio_id'];
+
+    if ($destinatario === (int) $conversa['vendedor_id']) {
+        $link .= '&comprador=' . (int) $conversa['comprador_id'];
+    }
+
+    $remetente = nome_curto($pdo, $usuarioId);
+    $produto = $conversa['produto']['nome'] ?? 'produto';
+
+    if ($tipo === 'proposta') {
+        notificar($pdo, $destinatario, 'proposta', 'Nova proposta de ' . $remetente,
+            'R$ ' . number_format((float) $valor, 2, ',', '.') . ' por ' . $produto . '.', $link);
+    } else {
+        notificar($pdo, $destinatario, 'mensagem', 'Nova mensagem de ' . $remetente,
+            $produto . ': "' . mb_strimwidth($texto, 0, 80, '…') . '"', $link,
+            'chat:' . (int) $conversa['anuncio_id'] . ':' . (int) $conversa['comprador_id']);
+    }
 
     responder(201, [
         'sucesso'  => true,
         'mensagem' => $tipo === 'proposta' ? 'Proposta enviada.' : 'Mensagem enviada.',
-        'enviada'  => formatar_mensagem($stmt->fetch(), $usuarioId),
+        'enviada'  => formatar_mensagem($enviada, $usuarioId),
     ]);
 } catch (Throwable $erro) {
     error_log('[MARKETPLACE_NEGOCIACOES_ENVIAR] ' . $erro->getMessage());

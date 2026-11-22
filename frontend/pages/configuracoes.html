@@ -13,13 +13,15 @@
     />
 
     <link rel="stylesheet" href="../css/tokens.css" />
-    <link rel="stylesheet" href="../css/configuracoes.css?v=3" />
+    <link rel="stylesheet" href="../css/configuracoes.css?v=4" />
 
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
-      <link rel="stylesheet" href="../css/responsivo.css?v=2">
+      <link rel="stylesheet" href="../css/responsivo.css?v=3">
+      <link rel="stylesheet" href="../css/notificacoes.css?v=1">
+      <link rel="stylesheet" href="../css/tema-escuro.css?v=2">
 </head>
 
   <body>
@@ -167,7 +169,21 @@
 
                 <p id="tituloTipo">Produtor</p>
 
-                <button type="button" id="trocarFoto">Alterar foto</button>
+                <div class="foto-acoes">
+                  <button type="button" id="trocarFoto">
+                    <i class="bi bi-camera-fill" aria-hidden="true"></i> Alterar foto
+                  </button>
+
+                  <button type="button" id="removerFoto" class="btn-remover-foto" hidden>
+                    <i class="bi bi-trash3" aria-hidden="true"></i> Remover foto
+                  </button>
+                </div>
+
+                <input type="file" id="inputFoto" accept="image/jpeg,image/png,image/webp" hidden />
+
+                <p class="foto-ajuda">JPG, PNG ou WEBP de até 3 MB.</p>
+
+                <p id="mensagemFoto" role="status" aria-live="polite"></p>
               </div>
             </div>
 
@@ -251,6 +267,7 @@
                   type="password"
                   id="senhaAtual"
                   name="senha_atual"
+                  autocomplete="current-password"
                   required
                 />
               </div>
@@ -262,8 +279,12 @@
                   type="password"
                   id="novaSenha"
                   name="nova_senha"
+                  autocomplete="new-password"
+                  minlength="6"
                   required
                 />
+
+                <small class="campo-dica">Mínimo de 6 caracteres.</small>
               </div>
 
               <div class="campo">
@@ -273,9 +294,16 @@
                   type="password"
                   id="confirmarSenha"
                   name="confirmar_senha"
+                  autocomplete="new-password"
                   required
                 />
               </div>
+
+              <label class="mostrar-senhas">
+                <input type="checkbox" id="mostrarSenhas" /> Mostrar senhas
+              </label>
+
+              <p id="mensagemSenha" role="status" aria-live="polite"></p>
 
               <button type="submit" id="btnSalvarSenha" class="btn-principal">
                 Atualizar senha
@@ -291,36 +319,47 @@
             <form id="formPreferencias" method="post">
               <div class="switch-card">
                 <div>
-                  <strong>Notificações</strong>
+                  <strong id="rotuloNotificacoes">Notificações</strong>
 
-                  <p>Receber notificações do sistema.</p>
+                  <p>Receber avisos de pedidos e negociações no sistema.</p>
                 </div>
 
-                <checkbox
-                  id="notificacoes"
-                  name="notificacoes"
-                  defaultChecked
-                />
+                <label class="interruptor">
+                  <input type="checkbox" role="switch" id="notificacoes" name="notificacoes"
+                    aria-labelledby="rotuloNotificacoes" checked />
+                  <span class="interruptor-trilho" aria-hidden="true"></span>
+                  <span class="interruptor-texto" aria-hidden="true"></span>
+                </label>
               </div>
 
               <div class="switch-card">
                 <div>
-                  <strong>E-mails</strong>
+                  <strong id="rotuloEmails">E-mails</strong>
 
                   <p>Receber novidades por e-mail.</p>
                 </div>
 
-                <checkbox id="emails" name="emails" defaultChecked />
+                <label class="interruptor">
+                  <input type="checkbox" role="switch" id="emails" name="emails"
+                    aria-labelledby="rotuloEmails" checked />
+                  <span class="interruptor-trilho" aria-hidden="true"></span>
+                  <span class="interruptor-texto" aria-hidden="true"></span>
+                </label>
               </div>
 
               <div class="switch-card">
                 <div>
-                  <strong>Modo escuro automático</strong>
+                  <strong id="rotuloTemaAuto">Modo escuro automático</strong>
 
-                  <p>Ativar automaticamente.</p>
+                  <p>Segue o tema do seu celular ou computador (claro de dia, escuro à noite, se ele estiver configurado assim).</p>
                 </div>
 
-                <checkbox id="temaAutomatico" name="tema_automatico" />
+                <label class="interruptor">
+                  <input type="checkbox" role="switch" id="temaAutomatico" name="tema_automatico"
+                    aria-labelledby="rotuloTemaAuto" />
+                  <span class="interruptor-trilho" aria-hidden="true"></span>
+                  <span class="interruptor-texto" aria-hidden="true"></span>
+                </label>
               </div>
 
               <div class="switch-card">
@@ -342,6 +381,8 @@
 
                 <a href="gestao-fazenda.html?tour=1" class="btn-principal btn-tour">Ver tour da Gestão</a>
               </div>
+
+              <p id="mensagemPreferencias" role="status" aria-live="polite"></p>
 
               <button
                 type="submit"
@@ -388,12 +429,12 @@
 
     <!-- MODAL EXCLUIR CONTA -->
 
-    <div class="modal" id="modalExcluirConta">
+    <div class="modal" id="modalExcluirConta" role="alertdialog" aria-modal="true" aria-labelledby="tituloExcluirConta">
       <div class="modal-box">
         <div class="modal-header">
-          <h2>Excluir conta</h2>
+          <h2 id="tituloExcluirConta">Excluir conta</h2>
 
-          <button type="button" id="fecharModalExcluir">
+          <button type="button" id="fecharModalExcluir" aria-label="Fechar">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -402,9 +443,17 @@
           <i class="bi bi-exclamation-triangle-fill alerta"></i>
 
           <p>
-            Tem certeza que deseja excluir sua conta? Esta ação não poderá ser
+            Tem certeza que deseja excluir sua conta? Seus dados pessoais e sua foto
+            serão apagados e seus produtos saem da vitrine. Esta ação não poderá ser
             desfeita.
           </p>
+
+          <div class="campo campo-excluir">
+            <label for="senhaExcluir">Digite sua senha para confirmar</label>
+            <input type="password" id="senhaExcluir" autocomplete="current-password" />
+          </div>
+
+          <p id="mensagemExcluir" class="msg-erro" role="alert"></p>
         </div>
 
         <div class="modal-actions">
@@ -423,7 +472,9 @@
       <i class="bi bi-moon-stars-fill"></i>
     </button>
 
-    <script src="../js/menu.js?v=2"></script>
-    <script src="../js/configuracoes.js?v=3"></script>
+    <script src="../js/menu.js?v=3"></script>
+    <script src="../js/notificacoes.js?v=1"></script>
+    <script src="../js/preferencias.js?v=1"></script>
+    <script src="../js/configuracoes.js?v=4"></script>
   </body>
 </html>

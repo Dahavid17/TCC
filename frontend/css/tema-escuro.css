@@ -1,0 +1,228 @@
+/* =============================================================
+   TEMA-ESCURO.CSS — contraste do modo escuro em todas as páginas internas
+   Carregar DEPOIS do CSS da página e do responsivo.css.
+
+   Problema: as páginas usam as cores do tema claro (--texto, --suave e o verde escuro
+   --verde) como cor de TEXTO. No fundo quase preto do modo escuro esses textos ficavam
+   com contraste de 1,1:1 a 2,2:1 (praticamente invisíveis). O mínimo recomendado
+   (WCAG AA) é 4,5:1.
+   ============================================================= */
+
+/* 1. Variáveis de texto passam a tons claros: tudo que usa var(--texto)/var(--suave)
+      (abas, selects, nomes, legendas, valores) fica legível de uma vez. */
+body.dark {
+    --texto: #f1f4ef;
+    --suave: #b9c3b6;
+    --borda: #34432f;
+    color: var(--texto);
+}
+
+/* 2. Verde de destaque legível no escuro (o --verde #31572c continua nos FUNDOS de botões). */
+body.dark .logo,
+body.dark .logo i,
+body.dark .logo span,
+body.dark .conteudo h1,
+body.dark .page-header h1,
+body.dark .conteudo h2:not(.plano-cabeca h2),
+body.dark #tituloNome,
+body.dark .produto-info strong,
+body.dark .produto-card strong,
+body.dark .status-card span,
+body.dark .card-acao p,
+body.dark a.ver-todos,
+body.dark .secao-header a,
+body.dark .conteudo a:not([class*="btn"]):not(.sidebar a) {
+    color: #a9c46c;
+}
+
+/* 3. Topo: nome e tipo da conta */
+body.dark #btnPerfil,
+body.dark #nomeUsuario,
+body.dark #nome-usuario {
+    color: #f1f4ef;
+}
+
+body.dark #tipoUsuario,
+body.dark #tipo-usuario {
+    color: #b9c3b6;
+}
+
+/* 4. Menu interno de Configurações: abas sempre visíveis e a ativa bem marcada */
+body.dark .config-menu .menu-item {
+    color: #e8ece6;
+    border: 2px solid transparent;
+}
+
+body.dark .config-menu .menu-item i {
+    color: #a9c46c;
+}
+
+body.dark .config-menu .menu-item:hover {
+    background: #263626;
+    color: #ffffff;
+    border-color: #4f772d;
+}
+
+body.dark .config-menu .menu-item.ativo {
+    background: #90a955;
+    color: #101411;
+    font-weight: 800;
+    border-color: #b7cf7e;
+}
+
+body.dark .config-menu .menu-item.ativo i {
+    color: #101411;
+}
+
+/* Tema claro: a aba ativa também ganha mais presença (antes ficava "apagada") */
+.config-menu .menu-item.ativo {
+    background: var(--verde);
+    color: #fff;
+    font-weight: 800;
+}
+
+.config-menu .menu-item.ativo i {
+    color: #fff;
+}
+
+/* 5. Campos e filtros (selects, inputs) */
+body.dark select,
+body.dark input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+body.dark textarea {
+    background-color: #18201a;
+    color: #f1f4ef;
+    border-color: #3d4d38;
+}
+
+body.dark select option {
+    background: #18201a;
+    color: #f1f4ef;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder {
+    color: #8f9a8c;
+}
+
+/* 6. Etiquetas de situação (Disponível / Indisponível / Baixo estoque) */
+body.dark .status.disponivel {
+    background: #1f3a22;
+    color: #9fe0a5;
+}
+
+body.dark .status.indisponivel {
+    background: #3d1f1d;
+    color: #ffb4ab;
+}
+
+/* 7a. Botões principais: no escuro o verde escuro (#31572c) some no fundo quase preto.
+       Passam a verde claro com texto escuro (o mesmo da aba ativa), em todas as páginas. */
+body.dark .btn-principal,
+body.dark .btn-primario,
+body.dark .btn-conectar,
+body.dark .btn-grande,
+body.dark .btn-escolher,
+body.dark .btn-explorar,
+body.dark .btn-voltar,
+body.dark .btn-comprar,
+body.dark #trocarFoto,
+body.dark #btnAtualizarEstoque,
+body.dark #salvarEstoque,
+body.dark #irNegociacao,
+body.dark #btnAbrirModalProduto,
+body.dark #salvarProduto,
+body.dark #compraConfirmar,
+body.dark #btnEnviar,
+body.dark #enviarProposta,
+body.dark #btnAtualizarStatus,
+body.dark #btnFecharPedido,
+body.dark #temaBtn {
+    background: #90a955;
+    color: #101411;
+    border-color: #90a955;
+    font-weight: 800;
+}
+
+body.dark .btn-principal i,
+body.dark .btn-primario i,
+body.dark .btn-conectar i,
+body.dark .btn-grande i,
+body.dark .btn-escolher i,
+body.dark #trocarFoto i,
+body.dark #btnEnviar i,
+body.dark #temaBtn i {
+    color: #101411;
+}
+
+body.dark .btn-principal:hover,
+body.dark .btn-primario:hover,
+body.dark .btn-conectar:hover,
+body.dark .btn-grande:hover,
+body.dark .btn-escolher:hover,
+body.dark .btn-explorar:hover,
+body.dark .btn-voltar:hover,
+body.dark .btn-comprar:hover,
+body.dark #trocarFoto:hover,
+body.dark #btnAtualizarEstoque:hover,
+body.dark #salvarEstoque:hover,
+body.dark #irNegociacao:hover,
+body.dark #btnAbrirModalProduto:hover,
+body.dark #salvarProduto:hover,
+body.dark #compraConfirmar:hover,
+body.dark #btnEnviar:hover,
+body.dark #enviarProposta:hover,
+body.dark #btnAtualizarStatus:hover,
+body.dark #btnFecharPedido:hover,
+body.dark #temaBtn:hover {
+    background: #b2cc72;
+}
+
+/* Botões com "degrau" 3D: sombra em verde médio para continuar parecendo botão */
+body.dark .btn-grande,
+body.dark .btn-escolher {
+    box-shadow: 0 6px 0 #5d7a2e;
+}
+
+body.dark .btn-conectar {
+    box-shadow: 0 5px 0 #5d7a2e;
+}
+
+/* Botões desativados continuam legíveis */
+body.dark .btn-principal:disabled,
+body.dark .btn-primario:disabled,
+body.dark .btn-escolher:disabled,
+body.dark .btn-grande:disabled {
+    background: #6f8442;
+    color: #101411;
+}
+
+/* 7b. Botões contornados e secundários: contorno claro para não sumirem no fundo */
+body.dark .btn-secundario,
+body.dark .btn-ver-3d,
+body.dark .btn-ouvir,
+body.dark .btn-trocar-plano {
+    border-color: #a9c46c;
+}
+
+/* 8. Gestão da Fazenda: textos de estado com contraste */
+body.dark .auto-estado {
+    color: #c9d1c7;
+}
+
+body.dark .auto-card.ligado .auto-estado,
+body.dark .kpi-situacao {
+    color: #8fdc94;
+}
+
+body.dark .kpi.fora .kpi-situacao {
+    color: #ffc66b;
+}
+
+body.dark .visao-3d-estado {
+    color: #3a4a36;
+}
+
+/* 9. Foco do teclado sempre visível no escuro */
+body.dark :focus-visible {
+    outline-color: #f2a516;
+}

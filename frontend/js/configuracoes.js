@@ -59,7 +59,201 @@ document.addEventListener("DOMContentLoaded", () => {
     // O tour da Gestão da Fazenda só faz sentido para quem acessa essa área.
     const cartaoTourGestao = document.getElementById("cartaoTourGestao");
     if (cartaoTourGestao) cartaoTourGestao.hidden = !["produtor", "admin"].includes(usuario.tipo_acesso);
+
+    mostrarFoto(usuario.foto_perfil ?? null);
   }
+
+  /* ---------- FOTO DE PERFIL ---------- */
+
+  const btnTrocarFoto = document.getElementById("trocarFoto");
+  const btnRemoverFoto = document.getElementById("removerFoto");
+  const inputFoto = document.getElementById("inputFoto");
+  const mensagemFoto = document.getElementById("mensagemFoto");
+  const TAMANHO_MAX_FOTO = 3 * 1024 * 1024;
+
+  function mostrarFoto(caminho) {
+    window.aplicarFotoPerfil?.(caminho);
+    if (btnRemoverFoto) btnRemoverFoto.hidden = !caminho;
+  }
+
+  function avisoFoto(texto, sucesso = false) {
+    mensagemFoto.textContent = texto;
+    mensagemFoto.className = sucesso ? "msg-sucesso" : "msg-erro";
+  }
+
+  async function enviarFoto(dados, rotuloEnvio) {
+    const rotuloOriginal = btnTrocarFoto.innerHTML;
+
+    btnTrocarFoto.disabled = true;
+    btnRemoverFoto.disabled = true;
+    btnTrocarFoto.innerHTML = `<i class="bi bi-arrow-repeat" aria-hidden="true"></i> ${rotuloEnvio}`;
+    avisoFoto("");
+
+    try {
+      const resposta = await fetch("../../backend/usuarios/foto.php", {
+        method: "POST",
+        credentials: "same-origin",
+        body: dados
+      });
+      const resultado = await resposta.json();
+
+      if (!resposta.ok || !resultado.sucesso) {
+        throw new Error(resultado.mensagem || "Não foi possível salvar a foto.");
+      }
+
+      mostrarFoto(resultado.foto_perfil);
+      avisoFoto(resultado.mensagem, true);
+    } catch (erro) {
+      console.error("Foto de perfil:", erro);
+      avisoFoto(erro.message || "Não foi possível salvar a foto.");
+    } finally {
+      btnTrocarFoto.disabled = false;
+      btnRemoverFoto.disabled = false;
+      btnTrocarFoto.innerHTML = rotuloOriginal;
+      inputFoto.value = "";
+    }
+  }
+
+  btnTrocarFoto?.addEventListener("click", () => inputFoto.click());
+
+  inputFoto?.addEventListener("change", () => {
+    const arquivo = inputFoto.files[0];
+    if (!arquivo) return;
+
+    if (!["image/jpeg", "image/png", "image/webp"].includes(arquivo.type)) {
+      avisoFoto("Escolha uma foto JPG, PNG ou WEBP.");
+      inputFoto.value = "";
+      return;
+    }
+
+    if (arquivo.size > TAMANHO_MAX_FOTO) {
+      avisoFoto("A foto deve ter no máximo 3 MB.");
+      inputFoto.value = "";
+      return;
+    }
+
+    const dados = new FormData();
+    dados.append("foto", arquivo);
+    enviarFoto(dados, "Enviando...");
+  });
+
+  btnRemoverFoto?.addEventListener("click", () => {
+    const dados = new FormData();
+    dados.append("acao", "remover");
+    enviarFoto(dados, "Removendo...");
+  });
+
+  /* ---------- SENHA ---------- */
+
+  const formSenha = document.getElementById("formSenha");
+  const mensagemSenha = document.getElementById("mensagemSenha");
+  const camposSenha = ["senhaAtual", "novaSenha", "confirmarSenha"].map(id => document.getElementById(id));
+
+  document.getElementById("mostrarSenhas")?.addEventListener("change", (e) => {
+    camposSenha.forEach(campo => { campo.type = e.target.checked ? "text" : "password"; });
+  });
+
+  formSenha?.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+
+    const [atual, nova, confirmar] = camposSenha.map(campo => campo.value);
+    const avisar = (texto, sucesso = false) => {
+      mensagemSenha.textContent = texto;
+      mensagemSenha.className = sucesso ? "msg-sucesso" : "msg-erro";
+    };
+
+    if (!atual || !nova || !confirmar) return avisar("Preencha os três campos.");
+    if (nova.length < 6) return avisar("A nova senha deve ter no mínimo 6 caracteres.");
+    if (nova !== confirmar) return avisar("A nova senha e a confirmação não são iguais.");
+
+    const botao = document.getElementById("btnSalvarSenha");
+    botao.disabled = true;
+    botao.textContent = "Salvando...";
+    avisar("");
+
+    try {
+      const dados = new FormData(formSenha);
+      const resposta = await fetch("../../backend/usuarios/senha.php", {
+        method: "POST",
+        credentials: "same-origin",
+        body: dados
+      });
+      const resultado = await resposta.json();
+
+      if (!resposta.ok || !resultado.sucesso) {
+        throw new Error(resultado.mensagem || "Não foi possível atualizar a senha.");
+      }
+
+      formSenha.reset();
+      camposSenha.forEach(campo => { campo.type = "password"; });
+      avisar(resultado.mensagem, true);
+    } catch (erro) {
+      avisar(erro.message || "Não foi possível atualizar a senha.");
+    } finally {
+      botao.disabled = false;
+      botao.textContent = "Atualizar senha";
+    }
+  });
+
+  /* ---------- PREFERÊNCIAS (salvas no servidor) ---------- */
+
+  const formPreferencias = document.getElementById("formPreferencias");
+  const mensagemPreferencias = document.getElementById("mensagemPreferencias");
+  const PREFERENCIAS = {
+    notificacoes: { campo: "notificacoes", padrao: "sim" },
+    emails: { campo: "emails", padrao: "sim" },
+    tema_automatico: { campo: "temaAutomatico", padrao: "nao" }
+  };
+
+  async function carregarPreferencias(usuario) {
+    if (!window.PreferenciasUsuario) return;
+
+    await PreferenciasUsuario.carregar(usuario);
+
+    Object.entries(PREFERENCIAS).forEach(([chave, { campo, padrao }]) => {
+      const valor = PreferenciasUsuario.obter(chave) || padrao;
+      document.getElementById(campo).checked = valor === "sim";
+    });
+  }
+
+  function aplicarTemaAutomatico(ligado) {
+    try {
+      if (ligado) localStorage.setItem("marketplace:tema-auto", "1");
+      else localStorage.removeItem("marketplace:tema-auto");
+    } catch (erro) { /* sem armazenamento */ }
+
+    if (ligado && window.matchMedia) {
+      const escuro = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.body.classList.toggle("dark", escuro);
+      try { localStorage.setItem("marketplace:tema", escuro ? "dark" : "light"); } catch (erro) { /* */ }
+      atualizarIconeTema();
+    }
+  }
+
+  formPreferencias?.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+
+    const botao = document.getElementById("btnSalvarPreferencias");
+    botao.disabled = true;
+    botao.textContent = "Salvando...";
+
+    try {
+      for (const [chave, { campo }] of Object.entries(PREFERENCIAS)) {
+        await PreferenciasUsuario.definir(chave, document.getElementById(campo).checked ? "sim" : "nao");
+      }
+
+      aplicarTemaAutomatico(document.getElementById("temaAutomatico").checked);
+
+      mensagemPreferencias.textContent = "Preferências salvas!";
+      mensagemPreferencias.className = "msg-sucesso";
+    } catch (erro) {
+      mensagemPreferencias.textContent = "Não foi possível salvar. Tente novamente.";
+      mensagemPreferencias.className = "msg-erro";
+    } finally {
+      botao.disabled = false;
+      botao.textContent = "Salvar preferências";
+    }
+  });
 
   const btnSalvarTipo = document.getElementById("btnSalvarTipo");
 
@@ -117,6 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       atualizarInterface(dados.usuario);
+      carregarPreferencias(dados.usuario);
 
     } catch (erro) {
       console.error("Erro ao carregar perfil:", erro);
@@ -226,6 +421,14 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarIconeTema();
 
   temaBtn?.addEventListener("click", () => {
+    // Escolher o tema na mão desliga o modo automático.
+    const temaAuto = document.getElementById("temaAutomatico");
+    if (temaAuto?.checked) {
+      temaAuto.checked = false;
+      aplicarTemaAutomatico(false);
+      window.PreferenciasUsuario?.definir("tema_automatico", "nao");
+    }
+
     const escuro = document.body.classList.toggle("dark");
 
     localStorage.setItem(
@@ -249,16 +452,65 @@ document.addEventListener("DOMContentLoaded", () => {
   const fecharModal = document.getElementById("fecharModalExcluir");
   const cancelarExcluir = document.getElementById("cancelarExcluir");
 
+  const senhaExcluir = document.getElementById("senhaExcluir");
+  const mensagemExcluir = document.getElementById("mensagemExcluir");
+  const confirmarExcluir = document.getElementById("confirmarExcluir");
+
   function ocultarModal() {
     modal?.classList.remove("ativo");
+    senhaExcluir.value = "";
+    mensagemExcluir.textContent = "";
   }
 
   btnExcluir?.addEventListener("click", () => {
     modal?.classList.add("ativo");
+    senhaExcluir.focus();
   });
 
   fecharModal?.addEventListener("click", ocultarModal);
   cancelarExcluir?.addEventListener("click", ocultarModal);
+
+  modal?.addEventListener("click", (e) => {
+    if (e.target === modal) ocultarModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal?.classList.contains("ativo")) ocultarModal();
+  });
+
+  confirmarExcluir?.addEventListener("click", async () => {
+    if (!senhaExcluir.value) {
+      mensagemExcluir.textContent = "Digite sua senha para confirmar.";
+      senhaExcluir.focus();
+      return;
+    }
+
+    confirmarExcluir.disabled = true;
+    confirmarExcluir.textContent = "Excluindo...";
+    mensagemExcluir.textContent = "";
+
+    try {
+      const dados = new FormData();
+      dados.append("senha", senhaExcluir.value);
+
+      const resposta = await fetch("../../backend/usuarios/excluir_conta.php", {
+        method: "POST",
+        credentials: "same-origin",
+        body: dados
+      });
+      const resultado = await resposta.json();
+
+      if (!resposta.ok || !resultado.sucesso) {
+        throw new Error(resultado.mensagem || "Não foi possível excluir a conta.");
+      }
+
+      window.location.href = "login-marketplace.html";
+    } catch (erro) {
+      mensagemExcluir.textContent = erro.message;
+      confirmarExcluir.disabled = false;
+      confirmarExcluir.textContent = "Excluir conta";
+    }
+  });
 
   // Carrega os dados da conta ao abrir a página.
   carregarPerfil();

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
+require_once __DIR__ . '/../lib/notificacoes.php';
 
 // POST: id, status — aplica uma transição permitida ao papel do usuário. Cancelar devolve o estoque.
 exigir_metodo('POST');
@@ -50,6 +51,27 @@ try {
         ->execute([':status' => $novoStatus, ':id' => $pedidoId]);
 
     $pdo->commit();
+
+    // Avisa a outra parte do pedido sobre a mudança.
+    $textos = [
+        'negociacao' => 'está em negociação',
+        'preparo'    => 'está sendo preparado',
+        'entregue'   => 'foi entregue',
+        'cancelado'  => 'foi cancelado',
+    ];
+
+    if (isset($textos[$novoStatus])) {
+        $outraParte = $papel === 'vendedor' ? (int) $pedido['comprador_id'] : (int) $pedido['vendedor_id'];
+
+        notificar(
+            $pdo,
+            $outraParte,
+            'pedido_status',
+            'Pedido #' . $pedidoId . ' ' . $textos[$novoStatus],
+            nome_curto($pdo, $usuarioId) . ' atualizou o pedido #' . $pedidoId . '.',
+            'pedidos.html'
+        );
+    }
 
     responder(200, ['sucesso' => true, 'mensagem' => 'Pedido atualizado.']);
 } catch (Throwable $erro) {

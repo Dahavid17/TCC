@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
+require_once __DIR__ . '/../lib/notificacoes.php';
 
 // POST: anuncio_id, quantidade — o estoque é reservado (reduzido) na criação.
 exigir_metodo('POST');
@@ -58,6 +59,17 @@ try {
         ]);
 
     $pdo->commit();
+
+    // Aviso no sino do vendedor (depois do commit: falhar aqui não desfaz o pedido).
+    notificar(
+        $pdo,
+        (int) $produto['vendedor_id'],
+        'pedido_novo',
+        'Novo pedido recebido!',
+        nome_curto($pdo, $usuarioId) . ' pediu ' . $quantidade . ' x ' . $produto['titulo']
+            . ' (R$ ' . number_format((float) $total, 2, ',', '.') . ').',
+        'pedidos.html'
+    );
 
     responder(201, ['sucesso' => true, 'mensagem' => 'Pedido realizado com sucesso!', 'pedido_id' => $pedidoId]);
 } catch (Throwable $erro) {

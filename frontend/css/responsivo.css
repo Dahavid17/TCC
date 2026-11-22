@@ -661,3 +661,11 @@ body.dark .sidebar a.ativo {
     outline: 4px solid #f2a516;
     outline-offset: 2px;
 }
+
+/* Foto de perfil no avatar (menu.js aplica em todas as páginas internas). */
+.avatar.com-foto {
+    background-size: cover;
+    background-position: center;
+    color: transparent !important;
+    font-size: 0 !important;
+}

@@ -13,6 +13,10 @@ const PREFERENCIAS_PERMITIDAS = [
     'tour:painel' => ['visto'],
     'tour:gestao' => ['visto'],
     'plano'       => ['essencial', 'pro'],
+    // Configurações > Preferências
+    'notificacoes'    => ['sim', 'nao'],
+    'emails'          => ['sim', 'nao'],
+    'tema_automatico' => ['sim', 'nao'],
 ];
 
 $usuarioId = exigir_sessao();

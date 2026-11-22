@@ -1,0 +1,309 @@
+/* =============================================================
+   NOTIFICACOES.CSS — sino do topo, painel e aviso flutuante (js/notificacoes.js)
+   ============================================================= */
+
+.sino {
+    position: relative;
+}
+
+.sino-contador {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    border: 2px solid #fff;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 18px;
+    text-align: center;
+    animation: sino-pulso 1.6s ease-in-out 3;
+}
+
+.sino-contador[hidden] {
+    display: none;
+}
+
+@keyframes sino-pulso {
+    50% { transform: scale(1.2); }
+}
+
+/* ---------- Painel ---------- */
+
+.painel-notificacoes {
+    position: fixed;
+    z-index: 3000;
+    width: min(400px, calc(100vw - 24px));
+    max-height: min(560px, calc(100vh - 100px));
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--borda);
+    border-radius: 20px;
+    background: var(--branco);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .22);
+    overflow: hidden;
+}
+
+.painel-notificacoes[hidden] {
+    display: none;
+}
+
+.painel-notificacoes-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--borda);
+}
+
+.painel-notificacoes-topo h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 19px;
+    color: var(--verde);
+}
+
+.btn-marcar-todas {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 2px solid var(--verde);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--verde);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-marcar-todas[hidden] {
+    display: none;
+}
+
+.btn-marcar-todas:hover {
+    background: #eef5e8;
+}
+
+.lista-notificacoes {
+    list-style: none;
+    margin: 0;
+    padding: 6px;
+    overflow-y: auto;
+}
+
+.item-notificacao {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border: none;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--texto);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.item-notificacao:hover,
+.item-notificacao:focus-visible {
+    background: #f3f7ef;
+}
+
+.item-notificacao.nao-lida {
+    background: #eef5e8;
+}
+
+.item-notificacao.nao-lida .item-notificacao-texto strong::before {
+    content: "";
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: #d32f2f;
+    vertical-align: middle;
+}
+
+.item-notificacao-icone {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: var(--verde);
+    color: #fff;
+    font-size: 20px;
+}
+
+.item-notificacao-icone.tipo-pedido_status { background: #1e88c9; }
+.item-notificacao-icone.tipo-mensagem      { background: #7b5cd6; }
+.item-notificacao-icone.tipo-proposta      { background: #c77d0a; }
+
+.item-notificacao-texto {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+}
+
+.item-notificacao-texto strong {
+    font-size: 15px;
+}
+
+.item-notificacao-texto span {
+    font-size: 14px;
+    color: var(--suave);
+    overflow-wrap: anywhere;
+}
+
+.item-notificacao-texto small {
+    font-size: 12px;
+    color: var(--suave);
+}
+
+.item-notificacao-texto small b {
+    color: #d32f2f;
+}
+
+.notificacoes-vazio {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 34px 20px;
+    text-align: center;
+    color: var(--suave);
+}
+
+.notificacoes-vazio i {
+    font-size: 34px;
+    color: var(--verde-claro);
+}
+
+.notificacoes-vazio strong {
+    color: var(--texto);
+}
+
+/* ---------- Aviso flutuante ---------- */
+
+.toast-notificacao {
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    z-index: 3200;
+    width: min(380px, calc(100vw - 32px));
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border: 2px solid var(--verde-claro);
+    border-radius: 16px;
+    background: var(--branco);
+    color: var(--texto);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, .25);
+    animation: toast-entrar .3s ease;
+}
+
+.toast-notificacao[hidden] {
+    display: none;
+}
+
+.toast-notificacao .item-notificacao-texto {
+    flex: 1;
+}
+
+.toast-abrir {
+    align-self: center;
+    padding: 8px 14px;
+    border-radius: 10px;
+    background: var(--verde);
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.toast-fechar {
+    border: none;
+    background: transparent;
+    color: var(--suave);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@keyframes toast-entrar {
+    from { opacity: 0; transform: translateY(16px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sino-contador,
+    .toast-notificacao {
+        animation: none;
+    }
+}
+
+/* ---------- Modo escuro ---------- */
+
+body.dark .sino-contador {
+    border-color: #18201a;
+}
+
+body.dark .painel-notificacoes,
+body.dark .toast-notificacao {
+    background: #18201a;
+    border-color: #34432f;
+    color: #f1f4ef;
+}
+
+body.dark .painel-notificacoes-topo h2 {
+    color: #a9c46c;
+}
+
+body.dark .btn-marcar-todas {
+    border-color: #a9c46c;
+    color: #a9c46c;
+}
+
+body.dark .btn-marcar-todas:hover {
+    background: #263626;
+}
+
+body.dark .item-notificacao:hover,
+body.dark .item-notificacao:focus-visible {
+    background: #222d22;
+}
+
+body.dark .item-notificacao.nao-lida {
+    background: #243321;
+}
+
+body.dark .toast-abrir {
+    background: #90a955;
+    color: #101411;
+}
+
+/* ---------- Celular ---------- */
+
+@media (max-width: 599px) {
+    .painel-notificacoes {
+        left: 12px;
+        right: 12px !important;
+        width: auto;
+    }
+
+    .toast-notificacao {
+        right: 16px;
+        bottom: 84px;
+    }
+}

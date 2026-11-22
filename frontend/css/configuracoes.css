@@ -607,3 +607,227 @@ body.dark .campo select {
   border-color: #33402f;
   color: #fff;
 }
+
+/* ---------- FOTO DE PERFIL ---------- */
+
+.avatar.gigante {
+  width: 110px;
+  height: 110px;
+  font-size: 40px;
+  flex-shrink: 0;
+  border: 4px solid #eef5e8;
+}
+
+.foto-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#trocarFoto,
+.btn-remover-foto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#trocarFoto {
+  border: 2px solid var(--verde);
+  background: var(--verde);
+  color: #fff;
+}
+
+#trocarFoto:hover {
+  background: var(--verde-medio);
+}
+
+#trocarFoto:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.btn-remover-foto {
+  border: 2px solid #d9b2ad;
+  background: #fff;
+  color: #9a3b32;
+}
+
+.btn-remover-foto[hidden] {
+  display: none;
+}
+
+.foto-ajuda {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--suave);
+}
+
+#mensagemFoto:not(:empty),
+#mensagemSenha:not(:empty),
+#mensagemPreferencias:not(:empty) {
+  margin: 10px 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ---------- SENHA ---------- */
+
+.campo-dica {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--suave);
+}
+
+.mostrar-senhas {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 12px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.mostrar-senhas input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--verde);
+}
+
+/* ---------- INTERRUPTORES (Preferências) ---------- */
+
+.interruptor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+.interruptor input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.interruptor-trilho {
+  position: relative;
+  width: 60px;
+  height: 34px;
+  border-radius: 999px;
+  background: #b9bfb6;
+  transition: background 0.2s;
+}
+
+.interruptor-trilho::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s;
+}
+
+.interruptor input:checked + .interruptor-trilho {
+  background: var(--verde);
+}
+
+.interruptor input:checked + .interruptor-trilho::after {
+  transform: translateX(26px);
+}
+
+.interruptor input:focus-visible + .interruptor-trilho {
+  outline: 4px solid #f2a516;
+  outline-offset: 3px;
+}
+
+/* Texto "Ligado/Desligado" ao lado, para não depender só da cor */
+.interruptor-texto {
+  min-width: 82px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #6b6b6b;
+}
+
+.interruptor-texto::before {
+  content: "Desligado";
+}
+
+.interruptor input:checked ~ .interruptor-texto {
+  color: var(--verde);
+}
+
+.interruptor input:checked ~ .interruptor-texto::before {
+  content: "Ligado";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interruptor-trilho,
+  .interruptor-trilho::after {
+    transition: none;
+  }
+}
+
+/* ---------- EXCLUIR CONTA ---------- */
+
+.campo-excluir {
+  margin-top: 18px;
+  text-align: left;
+}
+
+.campo-excluir input {
+  width: 100%;
+}
+
+#mensagemExcluir:empty {
+  display: none;
+}
+
+body.dark .btn-remover-foto {
+  background: transparent;
+  border-color: #8c4a43;
+  color: #f0a39b;
+}
+
+body.dark .foto-ajuda,
+body.dark .campo-dica {
+  color: #b5c0b7;
+}
+
+body.dark .interruptor-texto {
+  color: #b5c0b7;
+}
+
+body.dark .interruptor input:checked ~ .interruptor-texto {
+  color: var(--verde-claro);
+}
+
+body.dark .interruptor input:checked + .interruptor-trilho {
+  background: var(--verde-claro);
+}
+
+@media (max-width: 560px) {
+  .switch-card {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .interruptor {
+    margin-left: 0;
+  }
+}
