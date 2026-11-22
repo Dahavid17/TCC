@@ -21,6 +21,7 @@ if (empty($_SESSION['usuario_id'])) {
 
 try {
     require_once __DIR__ . '/../config/conexao.php';
+    require_once __DIR__ . '/../lib/verificacao_email.php';
 
     $id = (int) $_SESSION['usuario_id'];
 
@@ -51,6 +52,18 @@ try {
         responder(401, [
             'sucesso' => false,
             'mensagem' => 'Usuário não encontrado. Entre novamente.'
+        ]);
+    }
+
+    // Quem já estava logado antes da verificação existir também precisa confirmar o e-mail.
+    if (!email_verificado($pdo, $id)) {
+        session_unset();
+        $_SESSION['verificar_usuario_id'] = $id;
+
+        responder(401, [
+            'sucesso'           => false,
+            'precisa_verificar' => true,
+            'mensagem'          => 'Confirme seu e-mail para continuar. Entre de novo com seu e-mail e senha.'
         ]);
     }
 

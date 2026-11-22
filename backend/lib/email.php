@@ -15,6 +15,7 @@ declare(strict_types=1);
 const EMAIL_SITE = 'https://buzzcodex.com.br';
 const EMAIL_REMETENTE_PADRAO = 'avisos@buzzcodex.com.br';
 const EMAIL_NOME_REMETENTE = 'MarketPlace Rural';
+const CODIGO_EMAIL_VALIDADE_MINUTOS = 15; // código de confirmação (backend/lib/verificacao_email.php)
 
 function config_email(): array
 {
@@ -47,10 +48,21 @@ function usuario_quer_emails(PDO $pdo, int $usuarioId): bool
 }
 
 // Monta o e-mail em HTML (letras grandes, botão bem visível) e a versão só texto.
-function montar_email(string $nome, string $titulo, string $mensagem, ?string $link): array
+// Com $codigo: e-mail de confirmação, mostra o código bem grande no lugar do botão.
+function montar_email(string $nome, string $titulo, string $mensagem, ?string $link, ?string $codigo = null): array
 {
     $h = fn(string $t): string => htmlspecialchars($t, ENT_QUOTES, 'UTF-8');
     $url = $link ? EMAIL_SITE . '/frontend/pages/' . $link : EMAIL_SITE . '/frontend/pages/inicio.html';
+    $validade = 'O código vale por ' . CODIGO_EMAIL_VALIDADE_MINUTOS . ' minutos. Se não foi você que pediu, é só ignorar este e-mail: nada muda na sua conta.';
+
+    $acao = $codigo === null
+        ? '<a href="' . $h($url) . '" style="display:inline-block;background:#31572c;color:#ffffff;text-decoration:none;font-size:18px;font-weight:bold;padding:16px 28px;border-radius:12px">Abrir no MarketPlace Rural</a>'
+        : '<div style="display:inline-block;background:#f6faf2;border:2px solid #31572c;padding:14px 26px;font-family:Consolas,Menlo,monospace;font-size:36px;font-weight:bold;letter-spacing:10px;color:#31572c">' . $h($codigo) . '</div>';
+
+    $rodape = $codigo === null
+        ? 'Você recebeu este aviso porque tem uma conta no MarketPlace Rural. Para não receber mais e-mails, '
+          . 'entre em <b>Configurações &rsaquo; Preferências</b> e desligue <b>E-mails</b>.<br>'
+        : $h($validade) . '<br>';
 
     $html = '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>'
         . '<body style="margin:0;padding:0;background:#f5f0e6;font-family:Arial,Helvetica,sans-serif;color:#202820">'
@@ -61,25 +73,26 @@ function montar_email(string $nome, string $titulo, string $mensagem, ?string $l
         . '<p style="margin:0 0 8px;font-size:18px">Olá, ' . $h($nome) . '!</p>'
         . '<h1 style="margin:0 0 12px;font-size:24px;color:#31572c">' . $h($titulo) . '</h1>'
         . '<p style="margin:0 0 24px;font-size:18px;line-height:1.5">' . $h($mensagem) . '</p>'
-        . '<a href="' . $h($url) . '" style="display:inline-block;background:#31572c;color:#ffffff;text-decoration:none;font-size:18px;font-weight:bold;padding:16px 28px;border-radius:12px">Abrir no MarketPlace Rural</a>'
+        . $acao
         . '</td></tr>'
         . '<tr><td style="padding:18px 28px;background:#f6faf2;font-size:13px;line-height:1.5;color:#667064">'
-        . 'Você recebeu este aviso porque tem uma conta no MarketPlace Rural. Para não receber mais e-mails, '
-        . 'entre em <b>Configurações &rsaquo; Preferências</b> e desligue <b>E-mails</b>.<br>'
+        . $rodape
         . 'Projeto de TCC Buzz Codex &mdash; SESI/SENAI.</td></tr>'
         . '</table></td></tr></table></body></html>';
 
-    $texto = "Olá, {$nome}!\n\n{$titulo}\n\n{$mensagem}\n\nAbrir no MarketPlace Rural: {$url}\n\n"
-        . "Para não receber mais e-mails, entre em Configurações > Preferências e desligue E-mails.\n";
+    $texto = $codigo === null
+        ? "Olá, {$nome}!\n\n{$titulo}\n\n{$mensagem}\n\nAbrir no MarketPlace Rural: {$url}\n\n"
+          . "Para não receber mais e-mails, entre em Configurações > Preferências e desligue E-mails.\n"
+        : "Olá, {$nome}!\n\n{$titulo}\n\n{$mensagem}\n\nSEU CÓDIGO: {$codigo}\n\n{$validade}\n";
 
     return ['html' => $html, 'texto' => $texto];
 }
 
 // Envia de fato (multipart: texto + HTML). Devolve true se o servidor aceitou o e-mail.
-function enviar_email_agora(string $para, string $nome, string $assunto, string $titulo, string $mensagem, ?string $link): bool
+function enviar_email_agora(string $para, string $nome, string $assunto, string $titulo, string $mensagem, ?string $link, ?string $codigo = null): bool
 {
     $config = config_email();
-    $corpo = montar_email($nome, $titulo, $mensagem, $link);
+    $corpo = montar_email($nome, $titulo, $mensagem, $link, $codigo);
     $fronteira = 'mr-' . bin2hex(random_bytes(8));
     $remetente = $config['remetente'];
 
@@ -104,6 +117,26 @@ function enviar_email_agora(string $para, string $nome, string $assunto, string 
     return mail($para, $assuntoCodificado, $mensagemMime, implode("\r\n", $cabecalhos), '-f' . $remetente);
 }
 
+// Código de confirmação: enviado na hora (a tela precisa saber se o servidor aceitou).
+function enviar_email_codigo(string $para, string $nome, string $codigo): bool
+{
+    try {
+        return enviar_email_agora(
+            $para,
+            $nome,
+            "Seu código: {$codigo} — MarketPlace Rural",
+            'Confirme seu e-mail',
+            'Digite o código abaixo na tela do MarketPlace Rural para confirmar que este e-mail é seu.',
+            null,
+            $codigo
+        );
+    } catch (Throwable $erro) {
+        error_log('[MARKETPLACE_EMAIL] ' . $erro->getMessage());
+
+        return false;
+    }
+}
+
 // Agenda o e-mail para depois da resposta (o usuário não espera o envio).
 function enviar_email_aviso(PDO $pdo, int $usuarioId, string $titulo, string $mensagem, ?string $link): void
 {
@@ -112,8 +145,14 @@ function enviar_email_aviso(PDO $pdo, int $usuarioId, string $titulo, string $me
             return;
         }
 
-        $stmt = $pdo->prepare('SELECT nome, email FROM usuarios WHERE id = :id');
-        $stmt->execute([':id' => $usuarioId]);
+        // Só e-mails confirmados com o código recebem avisos (ver backend/lib/verificacao_email.php).
+        try {
+            $stmt = $pdo->prepare('SELECT nome, email FROM usuarios WHERE id = :id AND email_verificado = 1');
+            $stmt->execute([':id' => $usuarioId]);
+        } catch (PDOException $semColuna) {
+            return; // verificação ainda não existe no banco: ninguém confirmou ainda
+        }
+
         $usuario = $stmt->fetch();
 
         // Contas excluídas ficam com e-mail @contas.invalid: nunca recebem nada.

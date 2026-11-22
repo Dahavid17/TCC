@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (data.sucesso) {
                     window.location.href = 'inicio.html';
+                } else if (data.precisa_verificar && window.VerificacaoEmail) {
+                    // Senha certa, mas o e-mail ainda não foi confirmado (ver verificacao-email.js).
+                    btnSubmit.disabled = false;
+                    btnSubmit.textContent = 'Entrar na plataforma';
+                    VerificacaoEmail.abrir({ email: data.email, etapa: 'enviar' });
                 } else {
                     // Perfil diferente do tipo da conta: já deixa o correto selecionado.
                     if (data.tipo_conta) {

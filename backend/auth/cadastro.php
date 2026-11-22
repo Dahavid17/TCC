@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+// Cria a conta e já envia o código de confirmação: a conta só entra no painel depois que a pessoa
+// digita o código que chegou no e-mail (backend/lib/verificacao_email.php).
+
+session_start();
+
 header('Content-Type: application/json; charset=utf-8');
 
 function responder(int $status, array $dados): never
@@ -16,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../lib/verificacao_email.php';
 
 $nome            = trim($_POST['nome'] ?? '');
 $email           = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -46,10 +52,19 @@ if (mb_strlen($nome) > 150 || mb_strlen($email) > 150 || mb_strlen($telefone) > 
     responder(422, ['sucesso' => false, 'mensagem' => 'Algum campo excede o tamanho permitido.']);
 }
 
+// Domínio que não recebe e-mail (ex.: gmail.com.br) é recusado antes de criar a conta.
+$problemaEmail = problema_no_email($email);
+
+if ($problemaEmail !== null) {
+    responder(422, ['sucesso' => false, 'mensagem' => $problemaEmail]);
+}
+
 try {
+    garantir_verificacao_email($pdo);
+
     $stmt = $pdo->prepare(
-        'INSERT INTO usuarios (nome, email, telefone, endereco, senha_hash, tipo_acesso)
-         VALUES (:nome, :email, :telefone, :endereco, :senha_hash, :tipo_acesso)'
+        'INSERT INTO usuarios (nome, email, telefone, endereco, senha_hash, tipo_acesso, email_verificado)
+         VALUES (:nome, :email, :telefone, :endereco, :senha_hash, :tipo_acesso, 0)'
     );
     $stmt->execute([
         ':nome'        => $nome,
@@ -60,7 +75,20 @@ try {
         ':tipo_acesso' => $tipoAcesso,
     ]);
 
-    responder(201, ['sucesso' => true, 'mensagem' => 'Cadastro realizado com sucesso!']);
+    // Conta criada, mas ainda sem acesso: fica aguardando o código.
+    $usuarioId = (int) $pdo->lastInsertId();
+    session_regenerate_id(true);
+    $_SESSION['verificar_usuario_id'] = $usuarioId;
+
+    [$enviado, $mensagemCodigo] = enviar_codigo_verificacao($pdo, $usuarioId, $email);
+
+    responder(201, [
+        'sucesso'           => true,
+        'precisa_verificar' => true,
+        'codigo_enviado'    => $enviado,
+        'email'             => $email,
+        'mensagem'          => $enviado ? 'Conta criada! ' . $mensagemCodigo : 'Conta criada, mas ' . lcfirst($mensagemCodigo),
+    ]);
 } catch (PDOException $e) {
     if ($e->getCode() === '23000') {
         responder(409, ['sucesso' => false, 'mensagem' => 'Este e-mail já está cadastrado.']);

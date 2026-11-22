@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require_once __DIR__ . '/../config/conexao.php';
+require_once __DIR__ . '/../lib/verificacao_email.php';
 
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $senha = $_POST['senha'] ?? '';
@@ -51,6 +52,22 @@ try {
     }
 
     session_regenerate_id(true);
+
+    // Senha certa, mas o e-mail ainda não foi confirmado com o código: não entra no painel.
+    // A tela de login mostra o passo "Confirme seu e-mail" (dá para trocar por um e-mail real ali).
+    if (!email_verificado($pdo, (int) $usuario['id'])) {
+        unset($_SESSION['usuario_id'], $_SESSION['usuario_nome'], $_SESSION['usuario_email'], $_SESSION['usuario_tipo']);
+        $_SESSION['verificar_usuario_id'] = (int) $usuario['id'];
+
+        responder(403, [
+            'sucesso'           => false,
+            'precisa_verificar' => true,
+            'email'             => $usuario['email'],
+            'mensagem'          => 'Falta confirmar seu e-mail para entrar.',
+        ]);
+    }
+
+    unset($_SESSION['verificar_usuario_id']);
 
     $_SESSION['usuario_id']    = (int) $usuario['id'];
     $_SESSION['usuario_nome']  = $usuario['nome'];

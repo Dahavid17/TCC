@@ -37,10 +37,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const data = await response.json();
 
-                if (data.sucesso) {
+                if (data.sucesso && data.precisa_verificar && window.VerificacaoEmail) {
+                    // Conta criada: agora a pessoa digita o código que chegou no e-mail.
+                    mensagemForm.style.color = 'green';
+                    mensagemForm.textContent = 'Conta criada! Falta só confirmar o e-mail.';
+                    btnSubmit.textContent = 'Conta criada';
+                    VerificacaoEmail.abrir({
+                        email: data.email,
+                        etapa: 'codigo',
+                        mensagem: data.codigo_enviado ? 'Conta criada! Agora é só digitar o código.' : data.mensagem,
+                        codigoEnviado: data.codigo_enviado,
+                    });
+                } else if (data.sucesso) {
                     mensagemForm.style.color = 'green';
                     mensagemForm.textContent = data.mensagem + " Redirecionando para o login...";
-                    // Redireciona após 2 segundos
                     setTimeout(() => {
                         window.location.href = 'login-marketplace.html';
                     }, 2000);
