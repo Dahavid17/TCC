@@ -9,6 +9,8 @@ declare(strict_types=1);
 // Regras:
 //  - Nunca quebra a ação principal: qualquer erro aqui só vai para o log.
 //  - Respeita Configurações > Preferências > Notificações (preferência "notificacoes" = "nao").
+//  - Pedido novo, mudança de status e proposta também vão por e-mail (backend/lib/email.php),
+//    respeitando a preferência "E-mails".
 //  - Agrupa mensagens: várias mensagens não lidas da mesma conversa viram UM aviso atualizado.
 // Tabela: banco/migracoes/008_notificacoes.sql (criada aqui se ainda não existir).
 
@@ -50,11 +52,24 @@ function usuario_quer_notificacoes(PDO $pdo, int $usuarioId): bool
     }
 }
 
+// Tipos que também vão por e-mail (mensagens comuns de chat ficam só no sino, para não lotar a caixa).
+const TIPOS_COM_EMAIL = ['pedido_novo', 'pedido_status', 'proposta'];
+
 // $grupo (opcional): avisos não lidos do mesmo grupo são atualizados em vez de repetidos.
 function notificar(PDO $pdo, int $usuarioId, string $tipo, string $titulo, string $mensagem, ?string $link = null, ?string $grupo = null): void
 {
+    if (!in_array($tipo, TIPOS_NOTIFICACAO, true)) {
+        return;
+    }
+
+    // E-mail: independente do sino, segue a preferência "E-mails" (ver backend/lib/email.php).
+    if (in_array($tipo, TIPOS_COM_EMAIL, true)) {
+        require_once __DIR__ . '/email.php';
+        enviar_email_aviso($pdo, $usuarioId, $titulo, $mensagem, $link);
+    }
+
     try {
-        if (!in_array($tipo, TIPOS_NOTIFICACAO, true) || !usuario_quer_notificacoes($pdo, $usuarioId)) {
+        if (!usuario_quer_notificacoes($pdo, $usuarioId)) {
             return;
         }
 
