@@ -194,7 +194,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         <p>${escapeHtml(produto.descricao) || "Sem descrição."}</p>
 
-                        <strong>R$ ${produto.preco.toFixed(2)}</strong>
+                        ${produto.em_promocao
+                            ? `<div class="precos"><s class="preco-antigo">R$ ${produto.preco_base.toFixed(2)}</s><strong class="preco-promocao">R$ ${produto.preco.toFixed(2)}</strong><span class="selo-mini">Promoção</span></div>`
+                            : `<strong>R$ ${produto.preco.toFixed(2)}</strong>`}
 
                         <div class="produto-meta">
 
@@ -341,6 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         dados.append("nome", nome);
         dados.append("categoria", document.getElementById("categoriaProduto").value);
         dados.append("preco", document.getElementById("precoProduto").value);
+        dados.append("preco_promocional", document.getElementById("precoPromocional").value);
         dados.append("estoque", document.getElementById("estoqueProduto").value);
         dados.append("descricao", document.getElementById("descricaoProduto").value.trim());
 
@@ -400,7 +403,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             document.getElementById("nomeProduto").value = produto.nome;
             document.getElementById("categoriaProduto").value = produto.categoria;
-            document.getElementById("precoProduto").value = produto.preco;
+            // preco_base = preço normal; preco já vem com a promoção aplicada.
+            document.getElementById("precoProduto").value = produto.preco_base;
+            document.getElementById("precoPromocional").value = produto.preco_promocional ?? "";
             document.getElementById("estoqueProduto").value = produto.estoque;
             document.getElementById("descricaoProduto").value = produto.descricao;
 

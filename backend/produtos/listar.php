@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
 
-// GET ?escopo=meus (padrão) | catalogo  [&categoria=...] [&busca=...]
+// GET ?escopo=meus (padrão) | catalogo | destaques  [&categoria=...] [&busca=...]
+// destaques = produtos marcados como destaque ou em promoção (promoção primeiro, depois os mais vendidos).
 exigir_metodo('GET');
 $usuarioId = exigir_sessao();
 
@@ -14,9 +15,15 @@ try {
     $categoria = $_GET['categoria'] ?? '';
     $busca = trim((string) ($_GET['busca'] ?? ''));
 
+    $ordem = 'a.data_criacao DESC, a.id DESC';
+
     if ($escopo === 'catalogo') {
         $where = ["a.status = 'ativo'"];
         $params = [];
+    } elseif ($escopo === 'destaques') {
+        $where = ["a.status = 'ativo'", '(a.destaque = 1 OR (a.preco_promocional IS NOT NULL AND a.preco_promocional < a.preco))'];
+        $params = [];
+        $ordem = '(a.preco_promocional IS NOT NULL AND a.preco_promocional < a.preco) DESC, vendidos DESC, a.id DESC';
     } else {
         $where = ['a.vendedor_id = :usuario', "a.status <> 'inativo'"];
         $params = [':usuario' => $usuarioId];
@@ -36,7 +43,7 @@ try {
     }
 
     $stmt = $pdo->prepare(
-        SQL_PRODUTO . ' WHERE ' . implode(' AND ', $where) . ' ORDER BY a.data_criacao DESC, a.id DESC'
+        SQL_PRODUTO . ' WHERE ' . implode(' AND ', $where) . ' ORDER BY ' . $ordem
     );
     $stmt->execute($params);
 

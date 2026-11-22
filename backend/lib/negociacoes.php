@@ -14,7 +14,7 @@ const SQL_MENSAGEM = 'SELECT id, remetente_id, tipo, mensagem, valor_proposta,
 function identificar_conversa(PDO $pdo, int $usuarioId, int $anuncioId, ?int $compradorId): array
 {
     $stmt = $pdo->prepare(
-        'SELECT a.id, a.titulo, a.preco, a.status, a.vendedor_id,
+        'SELECT a.id, a.titulo, ' . SQL_PRECO_VENDA . ' AS preco, a.status, a.vendedor_id,
                 (SELECT f.url_imagem FROM anuncios_fotos f
                   WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS imagem
            FROM anuncios a

@@ -620,3 +620,41 @@ body.dark #tipoUsuario{
     }
 
 }
+/* Promoção nos cartões de Meus Produtos e no formulário */
+.precos{
+    display:flex;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:4px 10px;
+    margin:14px 0;
+}
+
+.precos strong{ margin:0; }
+
+.preco-antigo{
+    color:var(--suave);
+    font-size:15px;
+    font-weight:600;
+    text-decoration:line-through;
+    text-decoration-color:#c0392b;
+    text-decoration-thickness:2px;
+}
+
+.selo-mini{
+    padding:3px 8px;
+    background:#c0392b;
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.campo-ajuda{
+    display:block;
+    margin-top:6px;
+    color:var(--suave);
+    font-size:13px;
+}
+
+body.dark .preco-antigo{ color:#b5c0b7; text-decoration-color:#ff6b5e; }
+body.dark .campo-ajuda{ color:#b5c0b7; }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
 
-// POST multipart: nome, categoria, preco, estoque, descricao, imagem (opcional)
+// POST multipart: nome, categoria, preco, preco_promocional (opcional), estoque, descricao, imagem (opcional)
 exigir_metodo('POST');
 $usuarioId = exigir_sessao();
 
@@ -21,8 +21,8 @@ try {
     $pdo->beginTransaction();
 
     $stmt = $pdo->prepare(
-        'INSERT INTO anuncios (vendedor_id, titulo, descricao, categoria, preco, quantidade_estoque, localizacao, status)
-         VALUES (:vendedor, :titulo, :descricao, :categoria, :preco, :estoque, :localizacao, \'ativo\')'
+        'INSERT INTO anuncios (vendedor_id, titulo, descricao, categoria, preco, preco_promocional, quantidade_estoque, localizacao, status)
+         VALUES (:vendedor, :titulo, :descricao, :categoria, :preco, :promo, :estoque, :localizacao, \'ativo\')'
     );
     $stmt->execute([
         ':vendedor'    => $usuarioId,
@@ -30,6 +30,7 @@ try {
         ':descricao'   => $dados['descricao'],
         ':categoria'   => $dados['categoria'],
         ':preco'       => $dados['preco'],
+        ':promo'       => $dados['preco_promocional'],
         ':estoque'     => $dados['estoque'],
         ':localizacao' => $localizacao,
     ]);

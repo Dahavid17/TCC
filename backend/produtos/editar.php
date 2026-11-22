@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/api.php';
 
-// POST multipart: id, nome, categoria, preco, estoque, descricao, imagem (opcional: substitui a atual)
+// POST multipart: id, nome, categoria, preco, preco_promocional (opcional), estoque, descricao, imagem (opcional: substitui a atual)
 exigir_metodo('POST');
 $usuarioId = exigir_sessao();
 
@@ -34,13 +34,14 @@ try {
     $pdo->prepare(
         'UPDATE anuncios
             SET titulo = :titulo, descricao = :descricao, categoria = :categoria,
-                preco = :preco, quantidade_estoque = :estoque
+                preco = :preco, preco_promocional = :promo, quantidade_estoque = :estoque
           WHERE id = :id AND vendedor_id = :usuario'
     )->execute([
         ':titulo'    => $dados['titulo'],
         ':descricao' => $dados['descricao'],
         ':categoria' => $dados['categoria'],
         ':preco'     => $dados['preco'],
+        ':promo'     => $dados['preco_promocional'],
         ':estoque'   => $dados['estoque'],
         ':id'        => $produtoId,
         ':usuario'   => $usuarioId,

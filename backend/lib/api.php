@@ -7,11 +7,18 @@ const CATEGORIAS_PRODUTO = ['hortalicas', 'frutas', 'graos', 'laticinios', 'carn
 const PASTA_FOTOS_PRODUTO = 'uploads/produtos/';
 const TAMANHO_MAX_FOTO = 3 * 1024 * 1024;
 
-const SQL_PRODUTO = "SELECT a.id, a.titulo AS nome, a.categoria, a.preco,
-        a.quantidade_estoque AS estoque, a.descricao, a.status,
+// Promoção: vale quando preco_promocional existe e é menor que o preço base.
+const SQL_PRECO_VENDA = 'CASE WHEN a.preco_promocional IS NOT NULL AND a.preco_promocional < a.preco
+        THEN a.preco_promocional ELSE a.preco END';
+
+const SQL_PRODUTO = "SELECT a.id, a.titulo AS nome, a.categoria, a.preco, a.preco_promocional,
+        a.destaque, a.quantidade_estoque AS estoque, a.descricao, a.status,
         a.vendedor_id, u.nome AS vendedor_nome,
         (SELECT f.url_imagem FROM anuncios_fotos f
-          WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS imagem
+          WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS imagem,
+        (SELECT COALESCE(SUM(i.quantidade), 0) FROM pedido_itens i
+           JOIN pedidos p ON p.id = i.pedido_id
+          WHERE i.anuncio_id = a.id AND p.status <> 'cancelado') AS vendidos
     FROM anuncios a
     JOIN usuarios u ON u.id = a.vendedor_id";
 
@@ -45,13 +52,25 @@ function exigir_sessao(): int
     return (int) $_SESSION['usuario_id'];
 }
 
+// "preco" é sempre o valor cobrado (o da promoção, se houver).
+// "preco_base" é o preço normal, que aparece riscado quando há promoção.
 function normalizar_produto(array $linha): array
 {
+    $base = (float) $linha['preco'];
+    $promo = $linha['preco_promocional'] !== null ? (float) $linha['preco_promocional'] : null;
+    $emPromocao = $promo !== null && $promo < $base;
+
     return [
         'id'            => (int) $linha['id'],
         'nome'          => $linha['nome'],
         'categoria'     => $linha['categoria'],
-        'preco'         => (float) $linha['preco'],
+        'preco'         => $emPromocao ? $promo : $base,
+        'preco_base'    => $base,
+        'preco_promocional' => $emPromocao ? $promo : null,
+        'em_promocao'   => $emPromocao,
+        'desconto'      => $emPromocao && $base > 0 ? (int) round((1 - $promo / $base) * 100) : 0,
+        'destaque'      => (int) $linha['destaque'] === 1,
+        'vendidos'      => (int) $linha['vendidos'],
         'estoque'       => (int) $linha['estoque'],
         'descricao'     => $linha['descricao'] ?? '',
         'status'        => $linha['status'],
@@ -90,10 +109,22 @@ function validar_dados_produto(): array
         responder(422, ['sucesso' => false, 'mensagem' => 'A descrição pode ter no máximo 5000 caracteres.']);
     }
 
+    // Preço em promoção (opcional): vazio = sem promoção.
+    $promo = str_replace(',', '.', trim((string) ($_POST['preco_promocional'] ?? '')));
+    $precoPromocional = null;
+
+    if ($promo !== '') {
+        if (!is_numeric($promo) || (float) $promo <= 0 || (float) $promo >= (float) $preco) {
+            responder(422, ['sucesso' => false, 'mensagem' => 'O preço em promoção precisa ser menor que o preço normal. Deixe vazio para tirar a promoção.']);
+        }
+        $precoPromocional = number_format((float) $promo, 2, '.', '');
+    }
+
     return [
         'titulo'    => $nome,
         'categoria' => $categoria,
         'preco'     => number_format((float) $preco, 2, '.', ''),
+        'preco_promocional' => $precoPromocional,
         'estoque'   => $estoque,
         'descricao' => $descricao,
     ];

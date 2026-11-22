@@ -21,7 +21,8 @@ try {
     $pdo->beginTransaction();
 
     // Trava a linha do produto para que dois pedidos simultâneos não vendam o mesmo estoque.
-    $stmt = $pdo->prepare('SELECT id, vendedor_id, titulo, preco, quantidade_estoque, status FROM anuncios WHERE id = :id FOR UPDATE');
+    // "preco" já vem com a promoção aplicada (ver SQL_PRECO_VENDA em lib/api.php).
+    $stmt = $pdo->prepare('SELECT a.id, a.vendedor_id, a.titulo, ' . SQL_PRECO_VENDA . ' AS preco, a.quantidade_estoque, a.status FROM anuncios a WHERE a.id = :id FOR UPDATE');
     $stmt->execute([':id' => $anuncioId]);
     $produto = $stmt->fetch();
 

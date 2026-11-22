@@ -14,7 +14,7 @@ try {
         "SELECT g.anuncio_id, g.comprador_id, g.vendedor_id, g.nao_lidas, g.propostas_enviadas,
                 m.mensagem AS ultima_texto, m.tipo AS ultima_tipo, m.valor_proposta AS ultima_valor,
                 m.remetente_id AS ultima_remetente, UNIX_TIMESTAMP(m.data_hora) AS ultima_em,
-                a.titulo AS produto_nome, a.preco AS produto_preco, a.status AS produto_status,
+                a.titulo AS produto_nome, " . SQL_PRECO_VENDA . " AS produto_preco, a.status AS produto_status,
                 (SELECT f.url_imagem FROM anuncios_fotos f
                   WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS produto_imagem,
                 uc.nome AS comprador_nome, uv.nome AS vendedor_nome,

@@ -1076,3 +1076,92 @@ body.dark #tipoUsuario {
     }
 
 }
+/* =============================================================
+   PROMOÇÃO E SELOS (vitrine.js — Início e aba Produtos)
+   Preço normal riscado de vermelho, preço novo em destaque ao lado.
+   ============================================================= */
+
+.selo-produto {
+
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .3px;
+    text-transform: uppercase;
+
+    color: #fff;
+
+}
+
+.selo-promocao { background: #c0392b; }
+
+.selo-vendido { background: var(--verde); }
+
+.produto-card.em-promocao { border-color: #c0392b; }
+
+.precos {
+
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+
+    margin: 14px 0;
+
+}
+
+.produto-info .precos strong { margin: 0; }
+
+.preco-antigo {
+
+    color: var(--suave);
+    font-size: 15px;
+    font-weight: 600;
+
+    text-decoration: line-through;
+    text-decoration-color: #c0392b;
+    text-decoration-thickness: 2px;
+
+}
+
+.produto-info strong.preco-promocao { font-size: 22px; }
+
+body.dark .preco-antigo { color: #b5c0b7; text-decoration-color: #ff6b5e; }
+
+body.dark .selo-promocao { background: #d64535; }
+
+body.dark .produto-card.em-promocao { border-color: #d64535; }
+
+/* =============================================================
+   ABA PRODUTOS (produtos.html)
+   ============================================================= */
+
+.pagina-titulo h1 {
+
+    margin: 0 0 6px;
+
+    font-family: var(--fonte-display);
+
+    color: var(--verde);
+
+}
+
+.pagina-titulo p { color: var(--suave); font-size: 16px; }
+
+.filtros-produtos { margin-top: 24px; }
+
+.lista-categorias button.filtro-promocao { border-color: #c0392b; color: #c0392b; font-weight: 700; }
+
+.lista-categorias button.filtro-promocao.ativa { background: #c0392b; border-color: #c0392b; color: #fff; }
+
+.contagem-produtos { margin: 18px 0 14px; color: var(--suave); font-weight: 600; }
