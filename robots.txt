@@ -1,0 +1,11 @@
+# Buzz Codex — buzzcodex.com.br
+# Páginas públicas podem ser indexadas; a parte interna (API, envios e dados) não.
+User-agent: *
+Disallow: /backend/
+Disallow: /uploads/
+Disallow: /banco/
+Disallow: /database/
+Disallow: /dev/
+Disallow: /tests/
+
+Sitemap: https://buzzcodex.com.br/sitemap.xml
