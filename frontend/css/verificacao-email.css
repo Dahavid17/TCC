@@ -220,3 +220,26 @@ body.dark .verif-dica {
   .verif-caixa h2 { font-size: 23px; }
   .verif-codigo { font-size: 28px; letter-spacing: 8px; }
 }
+
+/* Aviso de Spam, no alto da etapa do código (bem visível, antes do campo) */
+.verif-alerta-spam {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  background: #fdecea;
+  border-left: 4px solid var(--erro);
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #6b1f17;
+}
+
+.verif-alerta-spam i { font-size: 20px; color: var(--erro); margin-top: 1px; }
+
+.verif-alerta-spam p { margin: 0; }
+
+body.dark .verif-alerta-spam { background: #3a1d1a; color: #ffd9d4; }
+
+body.dark .verif-alerta-spam i { color: #ff8a80; }

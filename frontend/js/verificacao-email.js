@@ -127,16 +127,21 @@
                   <label class="verif-rotulo" for="verifEmail">Seu e-mail</label>
                   <input class="verif-campo" id="verifEmail" type="email" autocomplete="email" inputmode="email" placeholder="nome@gmail.com">
                   <p class="verif-ajuda">Se este e-mail estiver errado ou não existir, troque aqui por um e-mail que você consegue abrir.</p>
+                  <p class="verif-ajuda"><i class="bi bi-info-circle"></i> O código pode chegar na pasta <b>Spam</b> ou <b>Lixo eletrônico</b>.</p>
                   <button type="button" class="verif-btn" id="verifEnviar"><i class="bi bi-send"></i> Enviar código</button>
                 </div>
 
                 <div class="verif-etapa" data-etapa="codigo" hidden>
                   <p class="verif-texto">Enviamos um código para<br><strong class="verif-email-atual"></strong></p>
+                  <div class="verif-alerta-spam" role="note">
+                    <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                    <p><b>Não achou o e-mail?</b> Olhe também a pasta <b>Spam</b> ou <b>Lixo eletrônico</b>. Se estiver lá, marque como <b>"Não é spam"</b> para os próximos chegarem na Caixa de entrada.</p>
+                  </div>
                   <label class="verif-rotulo" for="verifCodigo">Código de 6 números</label>
                   <input class="verif-campo verif-codigo" id="verifCodigo" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="000000">
                   <button type="button" class="verif-btn" id="verifConfirmar"><i class="bi bi-check-lg"></i> Confirmar</button>
                   <button type="button" class="verif-btn secundario" id="verifReenviar"><i class="bi bi-arrow-repeat"></i> Reenviar código</button>
-                  <p class="verif-dica"><i class="bi bi-lightbulb"></i> Não chegou? Espere 1 minuto e olhe também a pasta <b>Spam</b> ou <b>Lixo eletrônico</b>.</p>
+                  <p class="verif-dica"><i class="bi bi-lightbulb"></i> O e-mail pode levar até 1 minuto. Remetente: <b>avisos@buzzcodex.com.br</b>.</p>
                   <button type="button" class="verif-link" id="verifTrocar">Usar outro e-mail</button>
                 </div>
 

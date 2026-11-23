@@ -96,12 +96,18 @@ function enviar_email_agora(string $para, string $nome, string $assunto, string 
     $fronteira = 'mr-' . bin2hex(random_bytes(8));
     $remetente = $config['remetente'];
 
+    // Cabeçalhos completos e com o próprio domínio ajudam o Gmail/Outlook a não mandar para o Spam
+    // (o servidor ainda assina com DKIM; SPF e DMARC ficam no DNS de buzzcodex.com.br).
+    $dominio = substr(strrchr($remetente, '@'), 1) ?: 'buzzcodex.com.br';
+
     $cabecalhos = [
         'From: =?UTF-8?B?' . base64_encode(EMAIL_NOME_REMETENTE) . "?= <{$remetente}>",
         "Reply-To: {$remetente}",
+        'Date: ' . date(DATE_RFC2822),
+        'Message-ID: <' . bin2hex(random_bytes(12)) . '.' . time() . "@{$dominio}>",
         'MIME-Version: 1.0',
         "Content-Type: multipart/alternative; boundary=\"{$fronteira}\"",
-        'X-Mailer: MarketPlaceRural',
+        'Auto-Submitted: auto-generated',
     ];
 
     $mensagemMime = "--{$fronteira}\r\n"
