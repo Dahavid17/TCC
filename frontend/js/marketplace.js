@@ -52,4 +52,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  /* ── VÍDEO COM LAZY LOADING ────────────────────────────── */
+  // O arquivo só é solicitado quando o vídeo está perto da tela.
+  const video = document.getElementById("videoApresentacao");
+
+  if (video) {
+    const carregarVideo = () => {
+      video.querySelectorAll("source[data-src]").forEach(source => {
+        source.src = source.dataset.src;
+        source.removeAttribute("data-src");
+      });
+      video.preload = "metadata";
+      video.load();
+    };
+
+    if ("IntersectionObserver" in window) {
+      const observador = new IntersectionObserver((entradas) => {
+        if (entradas.some(entrada => entrada.isIntersecting)) {
+          carregarVideo();
+          observador.disconnect();
+        }
+      }, { rootMargin: "300px" });
+      observador.observe(video);
+    } else {
+      carregarVideo();
+    }
+  }
+
 });

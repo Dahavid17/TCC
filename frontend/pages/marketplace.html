@@ -7,7 +7,7 @@
   <title>MarketPlace Rural — Conectando o Campo ao Mercado</title>
   <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
   <link rel="stylesheet" href="../css/tokens.css">
-  <link rel="stylesheet" href="../css/marketplace.css">
+  <link rel="stylesheet" href="../css/marketplace.css?v=2">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
@@ -25,6 +25,7 @@
     <nav id="menu">
       <a href="#sobre">Sobre</a>
       <a href="#recursos">Recursos</a>
+      <a href="#como-funciona">Como funciona</a>
       <a href="#produtos">Produtos</a>
       <a href="#publico">Público</a>
       <a href="login-marketplace.html" class="btn-login">Entrar</a>
@@ -104,6 +105,80 @@
           <p>Acompanhamento dos pedidos desde a compra até a entrega.</p>
         </div>
       </div>
+    </section>
+
+    <section id="como-funciona" class="section">
+      <span class="section-tag">Passo a passo</span>
+      <h2>Como funciona</h2>
+
+      <div class="steps-grid">
+        <figure class="step-card">
+          <img
+            src="../../assets/img/passos/passo-cadastre.svg"
+            alt="Formulário de cadastro ao lado de uma caixa de hortaliças"
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+          <figcaption>
+            <span class="step-num">1</span>
+            <h3>Cadastre seus produtos</h3>
+            <p>O produtor informa o que tem, o preço e a quantidade em estoque.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="step-card">
+          <img
+            src="../../assets/img/passos/passo-negocie.svg"
+            alt="Conversa entre produtor e comprador com uma etiqueta de preço"
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+          <figcaption>
+            <span class="step-num">2</span>
+            <h3>Negocie direto</h3>
+            <p>Comprador e produtor combinam valores e prazos, sem intermediários.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="step-card">
+          <img
+            src="../../assets/img/passos/passo-receba.svg"
+            alt="Caminhão de entrega e confirmação do pedido"
+            width="600"
+            height="400"
+            loading="lazy"
+            decoding="async"
+          >
+          <figcaption>
+            <span class="step-num">3</span>
+            <h3>Receba o pedido</h3>
+            <p>Acompanhe cada pedido até a entrega e confirme o recebimento.</p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <figure class="video-box">
+        <video
+          id="videoApresentacao"
+          controls
+          playsinline
+          preload="none"
+          width="1080"
+          height="1920"
+          poster="../../assets/img/passos/video-poster-vertical.jpg"
+          aria-describedby="videoLegenda"
+        >
+          <source data-src="../../assets/video/marketplace-como-funciona.mp4?v=2" type="video/mp4">
+          Seu navegador não suporta vídeo HTML5.
+        </video>
+        <figcaption id="videoLegenda">
+          Em menos de um minuto: veja como o MarketPlace Rural conecta o campo ao mercado.
+        </figcaption>
+      </figure>
     </section>
 
     <section id="produtos" class="section">
@@ -191,6 +266,6 @@
     <i class="bi bi-moon-stars-fill"></i>
   </button>
 
-  <script src="../js/marketplace.js"></script>
+  <script src="../js/marketplace.js?v=2"></script>
 </body>
 </html>

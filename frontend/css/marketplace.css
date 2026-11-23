@@ -249,6 +249,90 @@ main {
   font-size: 14px;
 }
 
+/* ── Como funciona (passos + vídeo) ──────────────────────── */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.step-card {
+  overflow: hidden;
+  background: var(--branco);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra-sm);
+  transition: transform .25s;
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+}
+
+.step-card img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
+.step-card figcaption {
+  padding: 22px;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--verde);
+  color: white;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.step-card h3 {
+  color: var(--verde);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.step-card p {
+  color: var(--suave);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* vídeo vertical (9:16), centralizado abaixo dos passos */
+.video-box {
+  max-width: 400px;
+  margin: 40px auto 0;
+  overflow: hidden;
+  background: var(--branco);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--borda);
+  box-shadow: var(--sombra);
+}
+
+.video-box video {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
+  display: block;
+  background: #101411;
+}
+
+.video-box figcaption {
+  padding: 18px 24px;
+  color: var(--suave);
+  font-size: 14px;
+  text-align: center;
+}
+
 /* ── Produtos ────────────────────────────────────────────── */
 .products-grid {
   display: grid;
@@ -442,9 +526,20 @@ body.dark .product-card p {
 }
 
 body.dark .card,
-body.dark .product-card {
+body.dark .product-card,
+body.dark .step-card,
+body.dark .video-box {
   background: #18201a;
   border-color: #2a382c;
+}
+
+body.dark .step-card h3 {
+  color: #ffffff;
+}
+
+body.dark .step-card p,
+body.dark .video-box figcaption {
+  color: #b5c0b7;
 }
 
 body.dark .tags span {
@@ -568,7 +663,8 @@ body.dark .btn-secondary {
     gap: 28px;
   }
 
-  .products-grid {
+  .products-grid,
+  .steps-grid {
     grid-template-columns: 1fr;
   }
 }
