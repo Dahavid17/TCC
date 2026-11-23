@@ -18,6 +18,7 @@ try {
                 (SELECT f.url_imagem FROM anuncios_fotos f
                   WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS produto_imagem,
                 uc.nome AS comprador_nome, uv.nome AS vendedor_nome,
+                uc.foto_perfil AS comprador_foto, uv.foto_perfil AS vendedor_foto,
                 EXISTS (SELECT 1 FROM pedidos p
                           JOIN pedido_itens i ON i.pedido_id = p.id
                          WHERE p.comprador_id = g.comprador_id AND p.vendedor_id = g.vendedor_id
@@ -48,6 +49,7 @@ try {
             'contraparte'         => [
                 'id'   => (int) ($papel === 'vendedor' ? $c['comprador_id'] : $c['vendedor_id']),
                 'nome' => $papel === 'vendedor' ? $c['comprador_nome'] : $c['vendedor_nome'],
+                'foto' => $papel === 'vendedor' ? $c['comprador_foto'] : $c['vendedor_foto'],
             ],
             'produto'             => [
                 'id'     => (int) $c['anuncio_id'],

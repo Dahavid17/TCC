@@ -55,7 +55,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         if (!resposta.ok || !resultado.sucesso) {
-            throw new Error(resultado.mensagem || "Erro ao comunicar com o servidor.");
+            const erro = new Error(resultado.mensagem || "Erro ao comunicar com o servidor.");
+            erro.dados = resultado; // ex.: proprio_produto (aviso "Opa! Esse produto é seu")
+            throw erro;
         }
 
         return resultado;
@@ -75,6 +77,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function inicial(nome) {
         return escapeHtml((nome || "?").trim().charAt(0).toUpperCase());
+    }
+
+    // Foto de perfil de quem está do outro lado da conversa (ou a inicial, se não tiver foto).
+    function avatarHtml(pessoa) {
+        if (!pessoa?.foto) return `<div class="avatar">${inicial(pessoa?.nome)}</div>`;
+
+        return `<div class="avatar com-foto" style="background-image:url('../../${escapeHtml(pessoa.foto)}')">${inicial(pessoa.nome)}</div>`;
+    }
+
+    function aplicarFoto(elemento, pessoa) {
+        elemento.textContent = (pessoa?.nome || "-").charAt(0).toUpperCase();
+        elemento.classList.toggle("com-foto", Boolean(pessoa?.foto));
+        elemento.style.backgroundImage = pessoa?.foto ? `url("../../${pessoa.foto}")` : "";
     }
 
     // "em" chega em segundos (Unix); mostra só a hora quando é de hoje.
@@ -199,7 +214,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <button class="conversa-item${ativa ? " ativa" : ""}" type="button"
                         data-anuncio="${c.anuncio_id}" data-comprador="${c.comprador_id}">
 
-                    <div class="avatar">${inicial(c.contraparte.nome)}</div>
+                    ${avatarHtml(c.contraparte)}
 
                     <div class="conversa-info">
                         <div class="conversa-topo">
@@ -315,8 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("nomeConversa").textContent = conversa.contraparte.nome;
         document.getElementById("statusConversa").textContent =
             `${papel}: ${produto.nome} · ${dinheiro(produto.preco)}${situacao}`;
-        document.getElementById("avatarConversa").textContent =
-            (conversa.contraparte.nome || "?").charAt(0).toUpperCase();
+        aplicarFoto(document.getElementById("avatarConversa"), conversa.contraparte);
     }
 
     async function abrirConversa(anuncioId, compradorId = null) {
@@ -378,9 +392,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (erro.message === "Sessão expirada") return;
 
-            document.getElementById("nomeConversa").textContent = "Conversa indisponível";
+            aplicarFoto(document.getElementById("avatarConversa"), null);
             document.getElementById("statusConversa").textContent = "";
-            document.getElementById("avatarConversa").textContent = "-";
+
+            // Clicou em Negociar no próprio produto: aviso amigável em vez de erro.
+            if (erro.dados?.proprio_produto) {
+                document.getElementById("nomeConversa").textContent = "Este produto é seu";
+                mostrarAvisoChat("bi-emoji-smile", "Você é o vendedor deste produto",
+                    "Quando um comprador clicar em Negociar, a conversa aparece aqui na lista.");
+                window.AvisoProprioProduto?.abrir(erro.dados.produto);
+                history.replaceState(null, "", location.pathname);
+                return;
+            }
+
+            document.getElementById("nomeConversa").textContent = "Conversa indisponível";
             mostrarAvisoChat("bi-exclamation-circle", "Não foi possível abrir a conversa", erro.message);
         }
     }

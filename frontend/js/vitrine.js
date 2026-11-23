@@ -72,7 +72,12 @@
                     <p>${escapeHtml(NOMES_CATEGORIA[produto.categoria] || produto.categoria)} · ${escapeHtml(produto.vendedor_nome)}</p>
                     ${precoHtml(produto)}
                     ${meu
-                        ? `<button class="btn-comprar" data-ir="meus-produtos.html">Seu produto</button>`
+                        ? `<div class="produto-acoes">
+                               <button class="btn-comprar" data-ir="meus-produtos.html">Seu produto</button>
+                               <button class="btn-negociar" data-proprio="${produto.id}">
+                                   <i class="bi bi-chat-dots"></i> Negociar
+                               </button>
+                           </div>`
                         : `<div class="produto-acoes">
                                ${produto.estoque === 0
                                    ? `<button class="btn-comprar" disabled>Esgotado</button>`
@@ -216,6 +221,15 @@
             const favoritar = e.target.closest("[data-favoritar]");
             if (favoritar) {
                 alternarFavorito(Number(favoritar.dataset.favoritar), favoritar);
+                return;
+            }
+
+            // Negociar no próprio produto: aviso "Opa! Esse produto é seu" (aviso-proprio-produto.js).
+            const proprio = e.target.closest("[data-proprio]");
+            if (proprio) {
+                const produto = produtos.find(p => p.id === Number(proprio.dataset.proprio));
+                if (window.AvisoProprioProduto) window.AvisoProprioProduto.abrir(produto);
+                else window.location.href = "meus-produtos.html";
                 return;
             }
 

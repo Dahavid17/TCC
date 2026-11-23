@@ -31,7 +31,18 @@ function identificar_conversa(PDO $pdo, int $usuarioId, int $anuncioId, ?int $co
 
     if ($usuarioId === $vendedorId) {
         if ($compradorId === null || $compradorId === $vendedorId) {
-            responder(422, ['sucesso' => false, 'mensagem' => 'Este produto é seu. A conversa começa quando um comprador enviar uma mensagem.']);
+            // A tela mostra o aviso "Opa! Esse produto é seu" (frontend/js/aviso-proprio-produto.js).
+            responder(422, [
+                'sucesso'         => false,
+                'proprio_produto' => true,
+                'mensagem'        => 'Este produto é seu. A conversa começa quando um comprador enviar uma mensagem.',
+                'produto'         => [
+                    'id'     => (int) $anuncio['id'],
+                    'nome'   => $anuncio['titulo'],
+                    'preco'  => (float) $anuncio['preco'],
+                    'imagem' => $anuncio['imagem'],
+                ],
+            ]);
         }
 
         $papel = 'vendedor';
@@ -50,7 +61,7 @@ function identificar_conversa(PDO $pdo, int $usuarioId, int $anuncioId, ?int $co
         responder(404, ['sucesso' => false, 'mensagem' => 'Conversa não encontrada.']);
     }
 
-    $stmt = $pdo->prepare('SELECT id, nome FROM usuarios WHERE id = :id');
+    $stmt = $pdo->prepare('SELECT id, nome, foto_perfil FROM usuarios WHERE id = :id');
     $stmt->execute([':id' => $papel === 'vendedor' ? $compradorId : $vendedorId]);
     $contraparte = $stmt->fetch();
 
@@ -64,7 +75,7 @@ function identificar_conversa(PDO $pdo, int $usuarioId, int $anuncioId, ?int $co
         'vendedor_id'  => $vendedorId,
         'papel'        => $papel,
         'existe'       => $existe,
-        'contraparte'  => ['id' => (int) $contraparte['id'], 'nome' => $contraparte['nome']],
+        'contraparte'  => ['id' => (int) $contraparte['id'], 'nome' => $contraparte['nome'], 'foto' => $contraparte['foto_perfil']],
         'produto'      => [
             'id'     => (int) $anuncio['id'],
             'nome'   => $anuncio['titulo'],
