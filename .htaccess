@@ -1,2 +1,11 @@
 RewriteEngine On
 RewriteRule ^home\.html$ / [R=301,L]
+
+# Páginas, estilos e scripts: o navegador sempre confere com o servidor se mudou
+# (resposta rápida "304 Não modificado" quando não mudou). Assim ninguém fica com
+# a versão antiga do site depois de uma publicação, sem precisar de Ctrl+F5.
+<IfModule mod_headers.c>
+    <FilesMatch "\.(html|css|js)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+</IfModule>
