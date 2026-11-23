@@ -16,6 +16,7 @@ Para voltar atrás, veja **COMO-PUBLICAR.md → "Voltar uma versão"**.
 
 | Data | Tag | Commit | O que mudou | Backup no servidor |
 |---|---|---|---|---|
+| 23/11 | `publicado-2026-11-23-cache` | `9d3b431` | `.htaccess`: páginas, CSS e JS vão com "Cache-Control: no-cache" (ninguém fica com versão antiga depois de publicar, sem Ctrl+F5) | `backup-cache-2026-11-23` |
 | 23/11 | `publicado-2026-11-23-perfil` | `1280e22` | Perfil: cidade vem preenchida (usa o endereço do cadastro), foto não some ao salvar, nome completo no Início e na aba Produtos | `backup-perfil-2026-11-23` |
 | 23/11 | `publicado-2026-11-23-seo` | `661a409` | SEO: nome "Buzz Codex" no Google, `robots.txt`, `sitemap.xml` (publicado por outra sessão) | `backup-seo-2026-11-23` |
 | 23/11 | `publicado-2026-11-23-chat` | `c97d162` | Chat mostra a foto de perfil; aviso "Opa! Esse produto é seu" com o mascote Broto | `backup-chat-2026-11-23` |
