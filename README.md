@@ -122,6 +122,13 @@ Visite:
 
 ---
 
+# 🗂️ Versões e publicação
+
+- [docs/HISTORICO-DE-VERSOES.md](docs/HISTORICO-DE-VERSOES.md): o que foi publicado, quando, em qual commit e onde está o backup.
+- [docs/COMO-PUBLICAR.md](docs/COMO-PUBLICAR.md): passo a passo para publicar no cPanel e para voltar uma versão.
+
+---
+
 # 📄 Licença
 
 Projeto desenvolvido exclusivamente para fins acadêmicos como Trabalho de Conclusão de Curso (TCC).
