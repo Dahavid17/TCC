@@ -2,7 +2,7 @@
 // Cuida do preço com promoção, do coração de favorito e da janela "Fazer pedido".
 // A página precisa ter o #modalCompra (mesmo HTML do inicio.html).
 //
-// Uso:
+// Uso (pode haver mais de uma lista na mesma página):
 //   const vitrine = Vitrine.criar({ lista: elemento, usuarioId, favoritosIds, aoComprar });
 //   vitrine.mostrar(produtos, "Mensagem quando a lista está vazia");
 
@@ -85,6 +85,93 @@
             </article>`;
     }
 
+    async function postar(caminho, dados) {
+        const resposta = await fetch(API + caminho, { method: "POST", body: dados });
+        const resultado = await resposta.json();
+
+        if (resposta.status === 401) {
+            window.location.href = "login-marketplace.html";
+            throw new Error("Sessão expirada");
+        }
+        if (!resposta.ok || !resultado.sucesso) {
+            throw new Error(resultado.mensagem || "Erro ao comunicar com o servidor.");
+        }
+        return resultado;
+    }
+
+    // Uma página pode ter mais de uma lista (Início: destaques + produtos).
+    // Todas usam a mesma janela "Fazer pedido" e se redesenham juntas ao favoritar.
+    const vitrines = [];
+
+    /* ---------- Janela "Fazer pedido" (montada uma vez só por página) ---------- */
+
+    let compra = null; // { produto, aoComprar }
+
+    function prepararCompra() {
+        if (prepararCompra.feito) return;
+        prepararCompra.feito = true;
+
+        const modalCompra = document.getElementById("modalCompra");
+        const inputQuantidade = document.getElementById("compraQuantidade");
+        const btnConfirmar = document.getElementById("compraConfirmar");
+
+        const atualizarTotal = () => {
+            const qtd = Number(inputQuantidade.value);
+            document.getElementById("compraTotal").textContent =
+                dinheiro(Number.isInteger(qtd) && qtd > 0 ? qtd * compra.produto.preco : 0);
+        };
+
+        const fechar = () => {
+            modalCompra.classList.remove("ativo");
+            compra = null;
+        };
+
+        prepararCompra.abrir = (produto, aoComprar) => {
+            compra = { produto, aoComprar };
+
+            const preco = produto.em_promocao
+                ? `${dinheiro(produto.preco)} por unidade (promoção, antes ${dinheiro(produto.preco_base)})`
+                : `${dinheiro(produto.preco)} por unidade`;
+
+            document.getElementById("compraNome").textContent = produto.nome;
+            document.getElementById("compraInfo").textContent =
+                `${preco} · ${produto.estoque} em estoque · Vendedor: ${produto.vendedor_nome}`;
+            inputQuantidade.max = produto.estoque;
+            inputQuantidade.value = 1;
+            atualizarTotal();
+
+            modalCompra.classList.add("ativo");
+        };
+
+        inputQuantidade.addEventListener("input", atualizarTotal);
+        document.getElementById("compraCancelar").addEventListener("click", fechar);
+        modalCompra.addEventListener("click", e => {
+            if (e.target === modalCompra) fechar();
+        });
+
+        btnConfirmar.addEventListener("click", async () => {
+            if (!compra) return;
+
+            const { produto, aoComprar } = compra;
+            const dados = new FormData();
+            dados.append("anuncio_id", produto.id);
+            dados.append("quantidade", inputQuantidade.value);
+
+            btnConfirmar.disabled = true;
+
+            try {
+                const resultado = await postar("pedidos/criar.php", dados);
+                fechar();
+                await aoComprar?.();
+                alert(resultado.mensagem);
+            } catch (error) {
+                if (error.message !== "Sessão expirada") alert(error.message);
+            } finally {
+                btnConfirmar.disabled = false;
+            }
+        });
+    }
+
     function criar({ lista, usuarioId, favoritosIds, aoComprar }) {
         let produtos = [];
         let vazio = "Nenhum produto encontrado.";
@@ -98,21 +185,7 @@
                 : produtos.map(p => cartaoHtml(p, usuarioId, favoritosIds)).join("");
         }
 
-        async function postar(caminho, dados) {
-            const resposta = await fetch(API + caminho, { method: "POST", body: dados });
-            const resultado = await resposta.json();
-
-            if (resposta.status === 401) {
-                window.location.href = "login-marketplace.html";
-                throw new Error("Sessão expirada");
-            }
-            if (!resposta.ok || !resultado.sucesso) {
-                throw new Error(resultado.mensagem || "Erro ao comunicar com o servidor.");
-            }
-            return resultado;
-        }
-
-        // Grava no banco e só então atualiza o coração na tela.
+        // Grava no banco e só então atualiza o coração na tela (em todas as listas).
         async function alternarFavorito(id, botao) {
             const adicionar = !favoritosIds.has(id);
             const dados = new FormData();
@@ -124,77 +197,14 @@
             try {
                 await postar("favoritos/atualizar.php", dados);
                 adicionar ? favoritosIds.add(id) : favoritosIds.delete(id);
-                mostrar(produtos);
+                vitrines.forEach(v => v.redesenhar());
             } catch (error) {
                 if (error.message !== "Sessão expirada") alert(error.message);
                 botao.disabled = false;
             }
         }
 
-        /* ---------- Janela "Fazer pedido" ---------- */
-
-        const modalCompra = document.getElementById("modalCompra");
-        const inputQuantidade = document.getElementById("compraQuantidade");
-        const btnConfirmar = document.getElementById("compraConfirmar");
-        let produtoCompra = null;
-
-        function atualizarTotalCompra() {
-            const qtd = Number(inputQuantidade.value);
-            document.getElementById("compraTotal").textContent =
-                dinheiro(Number.isInteger(qtd) && qtd > 0 ? qtd * produtoCompra.preco : 0);
-        }
-
-        function fecharCompra() {
-            modalCompra.classList.remove("ativo");
-            produtoCompra = null;
-        }
-
-        function abrirCompra(id) {
-            produtoCompra = produtos.find(p => p.id === id);
-            if (!produtoCompra) return;
-
-            const preco = produtoCompra.em_promocao
-                ? `${dinheiro(produtoCompra.preco)} por unidade (promoção, antes ${dinheiro(produtoCompra.preco_base)})`
-                : `${dinheiro(produtoCompra.preco)} por unidade`;
-
-            document.getElementById("compraNome").textContent = produtoCompra.nome;
-            document.getElementById("compraInfo").textContent =
-                `${preco} · ${produtoCompra.estoque} em estoque · Vendedor: ${produtoCompra.vendedor_nome}`;
-            inputQuantidade.max = produtoCompra.estoque;
-            inputQuantidade.value = 1;
-            atualizarTotalCompra();
-
-            modalCompra.classList.add("ativo");
-        }
-
-        inputQuantidade.addEventListener("input", atualizarTotalCompra);
-        document.getElementById("compraCancelar").addEventListener("click", fecharCompra);
-        modalCompra.addEventListener("click", e => {
-            if (e.target === modalCompra) fecharCompra();
-        });
-
-        btnConfirmar.addEventListener("click", async () => {
-            if (!produtoCompra) return;
-
-            const dados = new FormData();
-            dados.append("anuncio_id", produtoCompra.id);
-            dados.append("quantidade", inputQuantidade.value);
-
-            btnConfirmar.disabled = true;
-
-            try {
-                const resultado = await postar("pedidos/criar.php", dados);
-                fecharCompra();
-                await aoComprar?.();
-                alert(resultado.mensagem);
-            } catch (error) {
-                if (error.message !== "Sessão expirada") alert(error.message);
-            } finally {
-                btnConfirmar.disabled = false;
-            }
-        });
-
-        /* ---------- Cliques nos cartões ---------- */
+        prepararCompra();
 
         lista.addEventListener("click", e => {
             const irPara = e.target.closest("[data-ir]");
@@ -210,10 +220,15 @@
             }
 
             const comprar = e.target.closest("[data-comprar]");
-            if (comprar) abrirCompra(Number(comprar.dataset.comprar));
+            if (comprar) {
+                const produto = produtos.find(p => p.id === Number(comprar.dataset.comprar));
+                if (produto) prepararCompra.abrir(produto, aoComprar);
+            }
         });
 
-        return { mostrar };
+        const vitrine = { mostrar, redesenhar: () => mostrar(produtos) };
+        vitrines.push(vitrine);
+        return vitrine;
     }
 
     window.Vitrine = { criar, dinheiro, escapeHtml, precoHtml, NOMES_CATEGORIA };

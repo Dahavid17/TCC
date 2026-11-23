@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const API = "../../backend/";
     const DESTAQUES = 8;
+    const GERAIS = 12; // "Produtos" no Início; a lista completa fica na aba Produtos
 
     /* ==========================================================
        API
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     document.getElementById("nome-usuario").textContent = primeiroNome;
-    document.getElementById("letra-avatar").textContent = primeiroNome.charAt(0).toUpperCase();
+    document.getElementById("avatarUsuario").textContent = primeiroNome.charAt(0).toUpperCase();
 
     const tipo = usuarioLogado.tipo_acesso || "";
     document.getElementById("tipo-usuario").textContent =
@@ -103,11 +104,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         lista: listaProdutos,
         usuarioId: usuarioLogado.id,
         favoritosIds,
-        aoComprar: async () => {
-            await carregarDados();
-            renderizarProdutos();
-        }
+        aoComprar: recarregar
     });
+
+    const secaoGerais = document.getElementById("secaoProdutosGerais");
+    const vitrineGeral = Vitrine.criar({
+        lista: document.getElementById("listaProdutosGerais"),
+        usuarioId: usuarioLogado.id,
+        favoritosIds,
+        aoComprar: recarregar
+    });
+
+    async function recarregar() {
+        await carregarDados();
+        renderizarProdutos();
+    }
 
     async function carregarDados() {
 
@@ -159,9 +170,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     /* ==========================================================
        PRODUTOS EM DESTAQUE
-       Sem pesquisa: só os destaques (promoções e mais vendidos).
-       Com pesquisa ou categoria: procura em todos os produtos.
-       A lista completa fica na aba Produtos (produtos.html).
+       Sem pesquisa: "Produtos em destaque" (promoções e mais vendidos) e,
+       logo abaixo, "Produtos" com os demais (sem repetir os destaques).
+       Com pesquisa ou categoria: uma lista só, procurando em todos os produtos.
+       A lista completa (com os destaques) fica na aba Produtos (produtos.html).
     ========================================================== */
 
     function renderizarProdutos() {
@@ -169,9 +181,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const termo = campoBusca.value.trim().toLowerCase();
         const filtrando = termo !== "" || categoriaAtiva !== "";
 
+        secaoGerais.hidden = filtrando;
+
         if (!filtrando) {
+            const mostrados = destaques.slice(0, DESTAQUES);
+            const idsDestaque = new Set(mostrados.map(p => p.id));
+
             tituloProdutos.textContent = "Produtos em destaque";
-            vitrine.mostrar(destaques.slice(0, DESTAQUES), "Ainda não há produtos em destaque.");
+            vitrine.mostrar(mostrados, "Ainda não há produtos em destaque.");
+            vitrineGeral.mostrar(
+                catalogo.filter(p => !idsDestaque.has(p.id)).slice(0, GERAIS),
+                "Os outros produtos aparecem aqui assim que forem cadastrados."
+            );
             return;
         }
 

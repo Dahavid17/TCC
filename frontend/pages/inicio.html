@@ -42,7 +42,7 @@
             <div class="perfil">
                 <button type="button" id="btnPerfil">
                     <!-- IDs atualizados para bater com o inicio.js -->
-                    <div class="avatar" id="letra-avatar">U</div>
+                    <div class="avatar" id="avatarUsuario">U</div>
                     <div>
                         <span id="nome-usuario">Carregando...</span>
                         <small id="tipo-usuario">Produtor</small>
@@ -164,10 +164,20 @@
         <section class="produtos">
             <div class="section-header">
                 <h2>Produtos em destaque</h2>
-                <a href="produtos.html">Ver todos os produtos</a>
             </div>
             <div class="grid-produtos" id="listaProdutos">
                 <!-- Os produtos são inseridos pelo inicio.js a partir do banco -->
+            </div>
+        </section>
+
+        <!-- PRODUTOS EM GERAL (os que não estão em destaque; a lista completa fica na aba Produtos) -->
+        <section class="produtos produtos-gerais" id="secaoProdutosGerais">
+            <div class="section-header">
+                <h2>Produtos</h2>
+                <a href="produtos.html">Ver todos os produtos</a>
+            </div>
+            <div class="grid-produtos" id="listaProdutosGerais">
+                <!-- Preenchido pelo inicio.js -->
             </div>
         </section>
 
@@ -223,7 +233,7 @@
     <script src="../js/notificacoes.js?v=1"></script>
     <script src="../js/preferencias.js?v=1"></script>
     <script src="../js/onboarding.js?v=5"></script>
-    <script src="../js/vitrine.js?v=1"></script>
-    <script src="../js/inicio.js?v=8"></script>
+    <script src="../js/vitrine.js?v=2"></script>
+    <script src="../js/inicio.js?v=9"></script>
 </body>
 </html>
