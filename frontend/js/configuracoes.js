@@ -25,7 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nomePerfil) nomePerfil.value = usuario.nome ?? "";
     if (emailPerfil) emailPerfil.value = usuario.email ?? "";
     if (telefonePerfil) telefonePerfil.value = usuario.telefone ?? "";
-    if (cidadePerfil) cidadePerfil.value = usuario.cidade ?? "";
+    // No cadastro a pessoa preenche "Endereço" (não "Cidade"). Se a cidade ainda estiver
+    // vazia, já mostramos o endereço do cadastro para ela não precisar digitar de novo.
+    if (cidadePerfil) cidadePerfil.value = usuario.cidade || usuario.endereco || "";
     if (usuarioId) usuarioId.value = usuario.id ?? "";
 
     const nome = usuario.nome || "Usuário";
@@ -60,7 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartaoTourGestao = document.getElementById("cartaoTourGestao");
     if (cartaoTourGestao) cartaoTourGestao.hidden = !["produtor", "admin"].includes(usuario.tipo_acesso);
 
-    mostrarFoto(usuario.foto_perfil ?? null);
+    // Só mexe na foto quando a resposta traz o campo (nunca apaga a foto por engano).
+    if ("foto_perfil" in usuario) mostrarFoto(usuario.foto_perfil);
   }
 
   /* ---------- FOTO DE PERFIL ---------- */

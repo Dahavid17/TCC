@@ -72,16 +72,18 @@ document.addEventListener("DOMContentLoaded", async () => {
        SAUDAÇÃO, NOME E AVATAR (dados da sessão)
     ========================================================== */
 
-    const primeiroNome = usuarioLogado.nome.split(" ")[0];
+    // Nome completo, igual ao das outras páginas (ex.: "Davi Senai", não só "Davi").
+    const nomeCompleto = (usuarioLogado.nome || "").trim();
+    const primeiroNome = nomeCompleto.split(" ")[0];
     const hora = new Date().getHours();
     const saudacao = hora >= 5 && hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
 
     const titulo = document.querySelector(".hero-content h1");
     if (titulo) {
-        titulo.textContent = `${saudacao}, ${primeiroNome}! 👋`;
+        titulo.textContent = `${saudacao}, ${nomeCompleto}! 👋`;
     }
 
-    document.getElementById("nome-usuario").textContent = primeiroNome;
+    document.getElementById("nome-usuario").textContent = nomeCompleto;
     document.getElementById("avatarUsuario").textContent = primeiroNome.charAt(0).toUpperCase();
 
     const tipo = usuarioLogado.tipo_acesso || "";

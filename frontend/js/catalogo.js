@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const primeiroNome = usuario.nome.split(" ")[0];
     const tipo = usuario.tipo_acesso || "";
-    document.getElementById("nomeUsuario").textContent = primeiroNome;
+    document.getElementById("nomeUsuario").textContent = usuario.nome; // nome completo, como nas outras páginas
     document.getElementById("tipoUsuario").textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
     const avatar = document.getElementById("avatarUsuario");
     avatar.textContent = primeiroNome.charAt(0).toUpperCase(); // menu.js troca pela foto, se houver

@@ -81,17 +81,27 @@ try {
 
     $_SESSION['usuario_nome'] = $nome;
 
+    // Devolve o perfil como está no banco (mesmo formato do sessao.php), incluindo a
+    // foto de perfil: antes ela não vinha aqui e a tela achava que a foto tinha sumido.
+    $consulta = 'SELECT id, nome, email, telefone, cidade, endereco, tipo_acesso, foto_perfil
+                   FROM usuarios WHERE id = :id LIMIT 1';
+
+    try {
+        $stmt = $pdo->prepare($consulta);
+        $stmt->execute([':id' => $id]);
+    } catch (PDOException $semColunaFoto) {
+        $stmt = $pdo->prepare(str_replace(', foto_perfil', '', $consulta));
+        $stmt->execute([':id' => $id]);
+    }
+
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    $usuario['id'] = $id;
+    $usuario['foto_perfil'] = $usuario['foto_perfil'] ?? null;
+
     responder(200, [
         'sucesso' => true,
         'mensagem' => 'Perfil atualizado com sucesso!',
-        'usuario' => [
-            'id' => $id,
-            'nome' => $nome,
-            'email' => $_SESSION['usuario_email'] ?? '',
-            'telefone' => $telefone,
-            'cidade' => $cidade,
-            'tipo_acesso' => $_SESSION['usuario_tipo'] ?? ''
-        ]
+        'usuario' => $usuario
     ]);
 
 } catch (Throwable $erro) {
