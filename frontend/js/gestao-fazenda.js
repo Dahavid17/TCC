@@ -1112,7 +1112,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         iniciarAtualizacao();
 
-        // Primeiro acesso à aba (ou ?tour=1): o Broto apresenta a Gestão da Fazenda.
+        // Primeiro acesso à aba (ou ?tour=1): o Bento apresenta a Gestão da Fazenda.
         window.iniciarOnboarding?.(usuarioSessao, "gestao");
     }
 

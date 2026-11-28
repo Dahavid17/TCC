@@ -1,4 +1,4 @@
-// Onboarding do primeiro acesso: o mascote Broto apresenta o sistema em poucos passos.
+// Onboarding do primeiro acesso: o mascote Bento (Border Collie fazendeiro) apresenta o sistema em poucos passos.
 // Há um roteiro por página:
 //   "painel" -> inicio.js chama window.iniciarOnboarding(usuario)
 //   "gestao" -> gestao-fazenda.js chama window.iniciarOnboarding(usuario, "gestao")
@@ -9,7 +9,7 @@
 
 (function () {
 
-    const MASCOTE = "../../assets/img/mascote/broto.svg";
+    const MASCOTE = "../../assets/img/mascote/bento.svg";
     const CELULAR = 600;
     const DESKTOP = 1025; // mesmo ponto em que o painel.css transforma o menu em gaveta
     const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -60,16 +60,19 @@
             },
             {
                 alvo: () => [document.getElementById("bannerPlano")],
+                mascote: "apontando",
                 titulo: "Seu plano",
                 texto: "Aqui aparece o plano que você escolheu e o que ele inclui. Para mudar, toque em “Trocar de plano”. Enquanto nenhum ESP32 estiver enviando leituras, o painel mostra dados de EXEMPLO."
             },
             {
                 alvo: () => [document.querySelector(".cards-resumo")],
+                mascote: "anotando",
                 titulo: "Sua propriedade em números",
                 texto: "Logo abaixo da propriedade fica o resumo: propriedades, talhões, safras ativas e quantos dispositivos IoT estão ligados ao seu perfil."
             },
             {
                 alvo: () => [document.getElementById("btnConectarEsp")],
+                mascote: "digitando",
                 titulo: "Conecte seu ESP32",
                 texto: "Informe o código que aparece no monitor serial da placa. Eu gero um token só dela, e as leituras passam a chegar direto no seu perfil."
             },
@@ -77,6 +80,7 @@
                 alvo: () => temLeituras()
                     ? [document.querySelector("#gridSensores .sensor-card")]
                     : [document.getElementById("iotVazio")],
+                mascote: "apontando",
                 titulo: "Sensores ao vivo",
                 texto: () => temLeituras()
                     ? "Umidade do solo, temperatura, umidade do ar e luminosidade se atualizam sozinhas a cada 5 segundos. O selo “Ao vivo” mostra que a placa está transmitindo, e a lixeira apaga um sensor que você não usa."
@@ -84,6 +88,7 @@
             },
             {
                 alvo: () => [document.getElementById("secAutomacao")].filter(el => el && !el.classList.contains("hidden")),
+                mascote: "anotando",
                 titulo: "A fazenda se cuida sozinha",
                 texto: "Irrigação, ventilação e luz da estufa ligam e desligam sozinhas de acordo com os sensores. Se quiser, toque em “Ligar” ou “Desligar” para controlar você mesmo."
             },
@@ -106,23 +111,26 @@
 
         return [
             {
-                titulo: `Oi, ${nome}! Eu sou o Broto 🌱`,
+                titulo: `Oi, ${nome}! Eu sou o Bento`,
                 texto: "Vou te mostrar o MarketPlace Rural em poucos passos. Leva menos de um minuto.",
                 mascote: "acenando"
             },
             vende
                 ? {
                     alvo: () => [document.getElementById("btnNovoProduto")],
+                    mascote: "apontando",
                     titulo: "Cadastre seus produtos",
                     texto: "Comece por aqui: informe o que você produz, com preço, foto e estoque. Os compradores já veem tudo na vitrine."
                 }
                 : {
                     alvo: () => [document.querySelector(".categorias")],
+                    mascote: "apontando",
                     titulo: "Encontre o que precisa",
                     texto: "Explore os produtos do campo por categoria ou pesquise pelo nome na barra do topo."
                 },
             {
                 alvo: () => [document.querySelector(".acoes-rapidas")],
+                mascote: "anotando",
                 titulo: "Seu resumo em um só lugar",
                 texto: "Aqui você acompanha produtos, pedidos, negociações e estoque. Toque em um cartão para abrir a página."
             },
@@ -134,6 +142,7 @@
                         document.querySelector('.sidebar a[href="negociacoes.html"]')
                     ],
                 fixo: true,
+                mascote: "apontando",
                 titulo: "Pedidos e negociações",
                 texto: () => window.innerWidth < DESKTOP
                     ? "No menu você encontra Pedidos e Negociações: converse direto com a outra parte e acompanhe cada pedido até a entrega."
@@ -145,6 +154,7 @@
                     ? [document.querySelector(".menu-toggle, .btn-menu")]
                     : [document.querySelector('.sidebar a[href="gestao-fazenda.html"]')],
                 fixo: true,
+                mascote: "digitando",
                 titulo: "Gestão da Fazenda",
                 texto: () => (window.innerWidth < DESKTOP ? "No menu, em Gestão da Fazenda, você " : "Em Gestão da Fazenda você ")
                     + "acompanha sua propriedade e os sensores do campo ao vivo: conecte um ESP32 e veja umidade do solo, temperatura, umidade do ar e luminosidade em tempo real."
@@ -245,13 +255,88 @@
         }
 
         function posicionar() {
+            const r = posicionarBalao();
+            apontarParaAlvo(r);
+        }
+
+        // Pose "apontando": gira o braço do Bento até o centro do alvo destacado.
+        // O desenho do braço esquerdo aponta para a esquerda (0°) e o do direito para a direita.
+        function apontarParaAlvo(r) {
+
+            if (!mascote.classList.contains("pose-apontando")) return;
+
+            const svg = mascote.querySelector("svg");
+            if (!r || !svg) {
+                mascote.classList.remove("lado-esq", "lado-dir"); // sem alvo: braços parados
+                return;
+            }
+
+            const caixa = svg.getBoundingClientRect();
+            const escala = caixa.width / 200; // viewBox de 200 x 220
+            const alvoX = r.left + r.width / 2;
+            const alvoY = r.top + r.height / 2;
+            const esquerda = alvoX < caixa.left + 100 * escala;
+            const ombroX = caixa.left + (esquerda ? 70 : 130) * escala;
+            const ombroY = caixa.top + 136 * escala;
+
+            const direcao = Math.atan2(alvoY - ombroY, alvoX - ombroX) * 180 / Math.PI; // -180..180
+            let giro = esquerda ? direcao - 180 : direcao;
+            giro = ((giro + 540) % 360) - 180;
+            giro = esquerda ? Math.max(-60, Math.min(100, giro)) : Math.max(-100, Math.min(60, giro));
+
+            // Os olhos acompanham o braço.
+            const rad = (giro + (esquerda ? 180 : 0)) * Math.PI / 180;
+
+            mascote.classList.toggle("lado-esq", esquerda);
+            mascote.classList.toggle("lado-dir", !esquerda);
+            mascote.style.setProperty("--mira", giro.toFixed(1) + "deg");
+            mascote.style.setProperty("--olho-x", (Math.cos(rad) * 2.4).toFixed(2) + "px");
+            mascote.style.setProperty("--olho-y", (Math.sin(rad) * 2.4).toFixed(2) + "px");
+        }
+
+        // Troca a pose do Bento. No fim do tour ele faz uma pequena sequência:
+        // pulinhos de festa -> para e olha para a pessoa -> dá tchau -> fica contente.
+        let temporizadores = [];
+
+        function pararSequencia() {
+            temporizadores.forEach(clearTimeout);
+            temporizadores = [];
+        }
+
+        function definirPose(pose) {
+            mascote.className = mascote.className.replace(/\bpose-\S+/g, "").trim();
+            void mascote.offsetWidth; // reinicia as animações
+            mascote.classList.add("pose-" + pose);
+        }
+
+        function animarMascote(pose = "parado") {
+
+            pararSequencia();
+
+            if (pose !== "comemorando") {
+                definirPose(pose);
+                return;
+            }
+
+            if (reduzirMovimento) {
+                definirPose("tchau");
+                return;
+            }
+
+            const etapas = [["festejando", 0], ["olhando", 1900], ["tchau", 2900], ["contente", 5400]];
+            etapas.forEach(([etapa, atraso]) => {
+                temporizadores.push(setTimeout(() => definirPose(etapa), atraso));
+            });
+        }
+
+        function posicionarBalao() {
 
             const r = retanguloAlvo();
             tour.classList.toggle("sem-alvo", !r);
 
             if (!r) {
                 balao.style.top = balao.style.left = "";
-                return;
+                return r;
             }
 
             Object.assign(foco.style, {
@@ -263,7 +348,7 @@
 
             if (window.innerWidth < CELULAR) {
                 balao.style.top = balao.style.left = "";
-                return;
+                return r;
             }
 
             const espaco = 16;
@@ -284,6 +369,7 @@
 
             balao.style.top = Math.max(espaco, Math.min(top, window.innerHeight - alturaBalao - espaco)) + "px";
             balao.style.left = Math.max(espaco, Math.min(left, window.innerWidth - larguraBalao - espaco)) + "px";
+            return r;
         }
 
         function rolarParaAlvo(passo) {
@@ -328,9 +414,7 @@
 
             pontos.forEach((p, i) => p.classList.toggle("ativo", i === indice));
 
-            mascote.classList.remove("acenando", "comemorando");
-            void mascote.offsetWidth; // reinicia a animação
-            if (passo.mascote) mascote.classList.add(passo.mascote);
+            animarMascote(passo.mascote);
 
             btnVoltar.hidden = indice === 0 && !ultimo;
             btnVoltar.textContent = ultimo ? "Agora não" : "Voltar";
@@ -354,6 +438,7 @@
         }
 
         function fechar() {
+            pararSequencia();
             marcarVisto(usuario, roteiro);
             window.removeEventListener("scroll", acompanhar);
             window.removeEventListener("resize", acompanhar);
@@ -449,7 +534,7 @@
         botao.type = "button";
         botao.className = "btn-ver-tour";
         botao.innerHTML = '<i class="bi bi-question-circle-fill" aria-hidden="true"></i><span>Ver tour</span>';
-        botao.title = "Rever a apresentação desta página com o Broto";
+        botao.title = "Rever a apresentação desta página com o Bento";
         botao.addEventListener("click", () => abrirUmaVez(usuario, roteiro));
 
         destino.prepend(botao);

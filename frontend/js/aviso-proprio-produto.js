@@ -1,11 +1,11 @@
 // Aviso "Opa! Esse produto é seu" — aparece quando a pessoa clica em Negociar
-// num produto que ela mesma anunciou. O mascote Broto explica e dá uma dica.
+// num produto que ela mesma anunciou. O mascote Bento explica e dá uma dica.
 // Usado no Início, na aba Produtos (vitrine.js) e em Negociações (negociacoes.js).
 //
 // Uso: AvisoProprioProduto.abrir({ nome, preco, imagem });
 
 (function () {
-    const MASCOTE = "../../assets/img/mascote/broto.svg";
+    const MASCOTE = "../../assets/img/mascote/bento.svg";
 
     // Uma dica diferente a cada vez, para o vendedor aproveitar o momento.
     const DICAS = [
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="app-dica">
-                    <span class="app-dica-titulo">Dica do Broto</span>
+                    <span class="app-dica-titulo">Dica do Bento</span>
                     <p class="app-dica-texto" aria-live="polite"></p>
                     <button type="button" class="app-outra-dica"><i class="bi bi-shuffle"></i> Outra dica</button>
                 </div>

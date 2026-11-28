@@ -1,5 +1,5 @@
 /* =============================================================
-   ONBOARDING — tour do mascote Broto no primeiro acesso
+   ONBOARDING — tour do mascote Bento (cão fazendeiro) no primeiro acesso
    Usa os tokens e o visual de modal do painel (dashboard.css).
    ============================================================= */
 
@@ -31,7 +31,7 @@
 
 .tour-balao {
     position: fixed;
-    width: min(400px, calc(100vw - 32px));
+    width: min(430px, calc(100vw - 32px));
     padding: 24px;
     background: var(--branco);
     border-radius: var(--radius-lg);
@@ -53,7 +53,8 @@
 
 .tour-mascote {
     flex-shrink: 0;
-    width: 88px;
+    width: 112px;
+    margin: -6px 0 -10px -6px;
 }
 
 .tour-mascote svg {
@@ -179,29 +180,159 @@
 
 /* ---------- MASCOTE ANIMADO ---------- */
 
-.tour-mascote .broto-olhos {
+/* O Bento tem uma pose por passo do tour. O onboarding.js põe no .tour-mascote
+   uma classe pose-*: acenando, apontando, anotando, digitando e, no fim,
+   festejando -> olhando -> tchau -> (parado, contente). */
+
+/* Sempre: pisca, abana o rabo e inclina a cabeça de leve */
+.tour-mascote .mascote-olhos {
     transform-box: fill-box;
     transform-origin: center;
     animation: tour-piscar 4s infinite;
 }
 
-.tour-mascote .broto-braco {
+.tour-mascote .mascote-cabeca {
+    transform-box: fill-box;
+    transform-origin: 50% 90%;
+    animation: tour-inclinar 5s ease-in-out infinite;
+}
+
+.tour-mascote .mascote-rabo {
+    transform-box: fill-box;
+    transform-origin: 0% 100%;
+    animation: tour-abanar .9s ease-in-out infinite;
+}
+
+.tour-mascote .mascote-pupilas {
+    transition: transform .35s ease;
+}
+
+/* Qual braço/objeto aparece em cada pose (fora do tour vale o desenho padrão) */
+.tour-mascote .mascote-braco { display: none; }
+.tour-mascote .braco-direito { display: inline; }
+
+.tour-mascote.pose-acenando .mascote-braco,
+.tour-mascote.pose-tchau .mascote-braco { display: inline; }
+
+.tour-mascote.pose-acenando .braco-direito,
+.tour-mascote.pose-tchau .braco-direito { display: none; }
+
+.tour-mascote.pose-apontando.lado-esq .apontar-esq,
+.tour-mascote.pose-apontando.lado-dir .apontar-dir { display: inline; }
+
+.tour-mascote.pose-apontando.lado-esq .braco-esquerdo,
+.tour-mascote.pose-apontando.lado-dir .braco-direito { display: none; }
+
+.tour-mascote.pose-anotando .prop-caderneta,
+.tour-mascote.pose-digitando .prop-notebook,
+.tour-mascote.pose-festejando .braco-festa { display: inline; }
+
+.tour-mascote.pose-anotando :is(.braco-esquerdo, .braco-direito),
+.tour-mascote.pose-digitando :is(.braco-esquerdo, .braco-direito),
+.tour-mascote.pose-festejando :is(.braco-esquerdo, .braco-direito) { display: none; }
+
+/* ---- Acenando (oi) e tchau ---- */
+.tour-mascote .mascote-braco {
     transform-box: fill-box;
     transform-origin: 0% 100%;
 }
 
-.tour-mascote.acenando .broto-braco {
+.tour-mascote.pose-acenando .mascote-braco,
+.tour-mascote.pose-tchau .mascote-braco {
     animation: tour-acenar 1.2s ease-in-out 2;
 }
 
-.tour-mascote .broto-folhas {
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-    animation: tour-balancar 3s ease-in-out infinite;
+/* ---- Apontando: o braço gira até o alvo (--mira vem do onboarding.js) ---- */
+.tour-mascote .apontar-esq,
+.tour-mascote .apontar-dir {
+    transform-box: view-box;
+    transform: rotate(var(--mira, 0deg));
+    transition: transform .35s ease;
 }
 
-.tour-mascote.comemorando .broto-corpo {
+.tour-mascote .apontar-esq { transform-origin: 70px 136px; }
+.tour-mascote .apontar-dir { transform-origin: 130px 136px; }
+
+.tour-mascote .apontar-esq .apontar-cutucar { animation: tour-cutucar-esq .8s ease-in-out infinite; }
+.tour-mascote .apontar-dir .apontar-cutucar { animation: tour-cutucar-dir .8s ease-in-out infinite; }
+
+.tour-mascote.pose-apontando .mascote-pupilas {
+    transform: translate(var(--olho-x, 0px), var(--olho-y, 0px));
+}
+
+/* ---- Anotando na caderneta ---- */
+.tour-mascote.pose-anotando .mascote-pupilas { transform: translate(1px, 3px); }
+
+.tour-mascote.pose-anotando .mascote-cabeca {
+    animation: tour-concentrar 3s ease-in-out infinite;
+}
+
+.tour-mascote .caderneta-lapis {
+    animation: tour-escrever .5s ease-in-out infinite;
+}
+
+.tour-mascote .caderneta-escrita {
+    stroke-dasharray: 26;
+    animation: tour-tracar 2.4s ease-in-out infinite;
+}
+
+/* ---- Digitando no notebook ---- */
+.tour-mascote.pose-digitando .mascote-pupilas { transform: translate(0, 3px); }
+
+.tour-mascote.pose-digitando .mascote-cabeca {
+    animation: tour-concentrar 3s ease-in-out infinite;
+}
+
+.tour-mascote .notebook-pata-esq,
+.tour-mascote .notebook-pata-dir {
+    animation: tour-digitar .3s ease-in-out infinite alternate;
+}
+
+.tour-mascote .notebook-pata-dir { animation-delay: .15s; }
+
+/* ---- Fim do tour: pulinhos de festa ---- */
+.tour-mascote.pose-festejando .mascote-corpo {
     animation: tour-pulo .6s ease-in-out 3;
+}
+
+.tour-mascote.pose-festejando .mascote-rabo {
+    animation-duration: .35s;
+}
+
+.tour-mascote.pose-festejando .mascote-chapeu {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: tour-chapeu .6s ease-in-out 3;
+}
+
+.tour-mascote .festa-esq,
+.tour-mascote .festa-dir {
+    transform-box: view-box;
+    animation: tour-festa .3s ease-in-out infinite alternate;
+}
+
+.tour-mascote .festa-esq { transform-origin: 70px 136px; }
+.tour-mascote .festa-dir { transform-origin: 130px 136px; animation-direction: alternate-reverse; }
+
+.tour-mascote .festa-confete > * {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tour-confete .6s ease-out 3 both;
+}
+
+/* ...para, olha para a pessoa... */
+.tour-mascote.pose-olhando .mascote-cabeca {
+    animation: tour-olhar 1s ease-out forwards;
+}
+
+.tour-mascote.pose-olhando .mascote-olhos {
+    animation: tour-piscar-rapido .45s ease-in-out .45s 1;
+}
+
+/* ...e se despede, com o rabo ainda contente */
+.tour-mascote.pose-tchau .mascote-rabo,
+.tour-mascote.pose-contente .mascote-rabo {
+    animation-duration: .5s;
 }
 
 @keyframes tour-entrar {
@@ -214,15 +345,67 @@
     96%           { transform: scaleY(.1); }
 }
 
+@keyframes tour-piscar-rapido {
+    0%, 100% { transform: scaleY(1); }
+    50%      { transform: scaleY(.1); }
+}
+
 @keyframes tour-acenar {
     0%, 100% { transform: rotate(0); }
     25%      { transform: rotate(-18deg); }
     75%      { transform: rotate(14deg); }
 }
 
-@keyframes tour-balancar {
-    0%, 100% { transform: rotate(-3deg); }
-    50%      { transform: rotate(3deg); }
+@keyframes tour-inclinar {
+    0%, 60%, 100% { transform: rotate(0); }
+    70%, 85%      { transform: rotate(-6deg); }
+}
+
+@keyframes tour-concentrar {
+    0%, 100% { transform: rotate(3deg); }
+    50%      { transform: rotate(5deg); }
+}
+
+@keyframes tour-olhar {
+    0%   { transform: rotate(0); }
+    45%  { transform: rotate(-10deg); }
+    100% { transform: rotate(-7deg); }
+}
+
+@keyframes tour-abanar {
+    0%, 100% { transform: rotate(-10deg); }
+    50%      { transform: rotate(14deg); }
+}
+
+@keyframes tour-cutucar-esq {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(-3px); }
+}
+
+@keyframes tour-cutucar-dir {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(3px); }
+}
+
+@keyframes tour-escrever {
+    0%, 100% { transform: translate(0, 0); }
+    33%      { transform: translate(-2px, 1px); }
+    66%      { transform: translate(2px, -.5px); }
+}
+
+@keyframes tour-tracar {
+    0%        { stroke-dashoffset: 26; }
+    70%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes tour-digitar {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-3px); }
+}
+
+@keyframes tour-chapeu {
+    0%, 100% { transform: translateY(0) rotate(0); }
+    50%      { transform: translateY(-6px) rotate(-5deg); }
 }
 
 @keyframes tour-pulo {
@@ -230,12 +413,23 @@
     50%      { transform: translateY(-10px); }
 }
 
+@keyframes tour-festa {
+    from { transform: rotate(-8deg); }
+    to   { transform: rotate(8deg); }
+}
+
+@keyframes tour-confete {
+    0%   { opacity: 0; transform: translateY(8px) scale(.4); }
+    40%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-8px) scale(1.1) rotate(90deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .tour-balao,
-    .tour-mascote *,
-    .tour-mascote.acenando .broto-braco,
-    .tour-mascote.comemorando .broto-corpo {
-        animation: none;
+    .tour-mascote,
+    .tour-mascote * {
+        animation: none !important;
+        transition: none !important;
     }
 
     .tour-foco {
@@ -258,7 +452,8 @@
     }
 
     .tour-mascote {
-        width: 64px;
+        width: 80px;
+        margin: -4px 0 -6px -4px;
     }
 
     .tour-balao h2 {
