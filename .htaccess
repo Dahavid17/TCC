@@ -1,6 +1,22 @@
 RewriteEngine On
 RewriteRule ^home\.html$ / [R=301,L]
 
+# Páginas de erro personalizadas (pasta /erros). O Apache mostra a página no
+# próprio endereço que deu erro e mantém o código HTTP certo (404, 500...).
+ErrorDocument 400 /erros/400.html
+ErrorDocument 401 /erros/401.html
+ErrorDocument 403 /erros/403.html
+ErrorDocument 404 /erros/404.html
+ErrorDocument 405 /erros/405.html
+ErrorDocument 408 /erros/408.html
+ErrorDocument 413 /erros/413.html
+ErrorDocument 429 /erros/429.html
+ErrorDocument 500 /erros/500.html
+ErrorDocument 502 /erros/502.html
+ErrorDocument 503 /erros/503.html
+ErrorDocument 504 /erros/504.html
+ErrorDocument 505 /erros/505.html
+
 # Páginas, estilos e scripts: o navegador sempre confere com o servidor se mudou
 # (resposta rápida "304 Não modificado" quando não mudou). Assim ninguém fica com
 # a versão antiga do site depois de uma publicação, sem precisar de Ctrl+F5.

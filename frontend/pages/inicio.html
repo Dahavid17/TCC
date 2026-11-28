@@ -1,241 +1,435 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Painel do MarketPlace Rural. Gerencie produtos, pedidos e negociações em um único lugar.">
-    <title>Painel | MarketPlace Rural</title>
-    
+
+    <meta name="description"
+        content="Painel do MarketPlace Rural. Encontre produtos do campo, acompanhe pedidos e negocie diretamente.">
+    <meta name="theme-color" content="#1f3a1d">
+
+    <title>Início | MarketPlace Rural</title>
+
     <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
-    <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/dashboard.css?v=3">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../css/responsivo.css?v=3">
+    <link rel="preconnect" href="https://images.unsplash.com">
+
+    <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+    <link rel="stylesheet" href="../css/painel.css?v=20261125">
+    <link rel="stylesheet" href="../css/dashboard.css?v=20261125">
     <link rel="stylesheet" href="../css/notificacoes.css?v=1">
-    <link rel="stylesheet" href="../css/tema-escuro.css?v=2">
     <link rel="stylesheet" href="../css/aviso-proprio-produto.css?v=1">
     <link rel="stylesheet" href="../css/onboarding.css?v=3">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="../js/painel.js?v=20261125"></script>
+
 </head>
+
 <body>
 
-    <!-- HEADER -->
-    <header class="topbar">
-        <a href="inicio.html" class="logo">
-            <i class="bi bi-flower1"></i>
-            <span>MarketPlace Rural</span>
-        </a>
+    <!-- ============ HEADER ============ -->
 
-        <form class="search-form" id="formPesquisa">
+    <header class="topbar" id="topbar">
+
+        <div class="topbar-esquerda">
+
+            <button type="button" class="icon-btn menu-toggle" id="btnMenu" aria-label="Abrir menu">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <a href="inicio.html" class="logo">
+                <i class="bi bi-flower1"></i>
+                <span>MarketPlace Rural</span>
+            </a>
+
+        </div>
+
+        <form class="search-form" id="formPesquisa" role="search" autocomplete="off">
+
             <div class="search-box">
+
                 <i class="bi bi-search"></i>
-                <input type="search" id="pesquisa" name="pesquisa" placeholder="Pesquisar produtos...">
+
+                <input type="search" id="pesquisa" name="pesquisa" placeholder="Buscar produtos, produtores ou cidades"
+                    aria-label="Pesquisar produtos">
+
             </div>
+
         </form>
 
         <div class="top-actions">
-            <button type="button" class="icon-btn" id="btnNotificacoes">
+
+            <button type="button" class="icon-btn" id="btnNotificacoes" aria-label="Notificações">
                 <i class="bi bi-bell"></i>
             </button>
-            <button type="button" class="icon-btn" id="btnMensagens">
+
+            <button type="button" class="icon-btn" id="btnMensagens" aria-label="Negociações">
                 <i class="bi bi-chat-dots"></i>
+                <span class="contador" id="contadorMensagens" hidden>0</span>
             </button>
-            
+
             <div class="perfil">
-                <button type="button" id="btnPerfil">
-                    <!-- IDs atualizados para bater com o inicio.js -->
-                    <div class="avatar" id="avatarUsuario">U</div>
-                    <div>
-                        <span id="nome-usuario">Carregando...</span>
-                        <small id="tipo-usuario">Produtor</small>
+
+                <button type="button" id="btnPerfil" aria-label="Meu perfil">
+
+                    <div class="avatar" id="avatarUsuario">?</div>
+
+                    <div class="perfil-info">
+                        <span id="nomeUsuario">Carregando...</span>
+                        <small id="tipoUsuario">&nbsp;</small>
                     </div>
+
                 </button>
+
             </div>
+
         </div>
+
     </header>
 
-    <!-- MENU LATERAL -->
-    <aside class="sidebar">
+    <!-- ============ MENU LATERAL ============ -->
+
+    <aside class="sidebar" id="sidebar" aria-label="Menu principal">
+
         <nav>
-            <a href="inicio.html" class="ativo">
-                <i class="bi bi-house"></i>
-                <span>Inicio</span>
+
+            <a href="inicio.html" class="ativo" aria-current="page">
+                <i class="bi bi-house-door"></i>
+                <span>Início</span>
             </a>
+
             <a href="produtos.html">
                 <i class="bi bi-shop"></i>
                 <span>Produtos</span>
             </a>
-            <a href="meus-produtos.html">
+
+            <a href="meus-produtos.html" data-perfil="Produtor">
                 <i class="bi bi-box-seam"></i>
                 <span>Meus Produtos</span>
             </a>
+
             <a href="pedidos.html">
                 <i class="bi bi-cart-check"></i>
                 <span>Pedidos</span>
             </a>
+
             <a href="negociacoes.html">
                 <i class="bi bi-chat-left-text"></i>
                 <span>Negociações</span>
             </a>
-            <a href="estoque.html">
+
+            <a href="estoque.html" data-perfil="Produtor">
                 <i class="bi bi-clipboard-data"></i>
                 <span>Estoque</span>
             </a>
+
             <a href="favoritos.html">
                 <i class="bi bi-heart"></i>
                 <span>Favoritos</span>
             </a>
+
             <a href="configuracoes.html">
                 <i class="bi bi-gear"></i>
                 <span>Configurações</span>
             </a>
-            <a href="../../backend/auth/logout.php">
+
+            <a href="../../backend/auth/logout.php" class="sair" id="linkSair">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sair</span>
             </a>
+
         </nav>
+
     </aside>
 
-    <!-- CONTEÚDO -->
+    <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+    <!-- ============ CONTEÚDO ============ -->
+
     <main class="conteudo">
-        
-        <!-- BANNER -->
-        <section class="hero">
-            <!-- Vídeo de fundo (Mixkit, licença gratuita); sem som e em loop -->
-            <video class="hero-video" autoplay muted loop playsinline aria-hidden="true"
-                   poster="../../assets/img/banners/banner-inicio.svg">
-                <source src="../../assets/video/banner-estufa.mp4" type="video/mp4">
-            </video>
-            <!-- Adicionada a classe hero-content para o JS encontrar o h1 -->
-            <div class="hero-texto hero-content">
-                <span class="tag">MarketPlace Rural</span>
-                <!-- O JS vai substituir esse texto pelo nome real e a saudação da hora -->
-                <h1>Olá, Carregando... </h1>
+
+        <!-- HERO -->
+
+        <section class="hero" id="secaoHero">
+
+            <div class="hero-texto">
+
+                <span class="tag" id="saudacaoUsuario">
+                    <span id="saudacaoPeriodo">Olá</span>, <span id="nomeHero">Usuário</span>!
+                </span>
+
+                <h1>Produtos frescos.<br><em>Negócios mais fortes.</em></h1>
+
                 <p>
-                    Venda produtos do campo, acompanhe pedidos e negocie diretamente com compradores em um único ambiente.
+                    Encontre produtos do campo, conecte-se com produtores e faça
+                    seus negócios de forma simples e direta.
                 </p>
+
                 <div class="hero-botoes">
-                    <button type="button" id="btnNovoProduto">Cadastrar Produto</button>
-                    <button type="button" id="btnExplorar">Explorar Produtos</button>
+
+                    <button type="button" id="btnExplorar">
+                        <i class="bi bi-search"></i> Explorar produtos
+                    </button>
+
+                    <button type="button" id="btnNovoProduto" data-perfil="Produtor">
+                        <i class="bi bi-plus-lg"></i> Adicionar produto
+                    </button>
+
                 </div>
+
+                <ul class="hero-pontos" aria-label="Como a plataforma ajuda">
+                    <li><i class="bi bi-chat-square-text"></i> Negociação direta com quem produz</li>
+                    <li><i class="bi bi-truck"></i> Pedidos acompanhados por status</li>
+                    <li><i class="bi bi-heart"></i> Favoritos salvos na sua conta</li>
+                </ul>
+
             </div>
+
+            <div class="hero-imagem">
+
+                <img src="https://images.unsplash.com/photo-1560493676-04071c5f467b?auto=format&fit=crop&w=1000&q=75"
+                    alt="Lavoura com fileiras de plantio sob céu azul" data-fallback="banner"
+                    width="1000" height="1100">
+
+                <a href="negociacoes.html" class="hero-chip">
+                    <span class="hero-chip-icone"><i class="bi bi-chat-dots"></i></span>
+                    <span>
+                        <strong>Negociações</strong>
+                        <small>Converse e envie propostas</small>
+                    </span>
+                    <i class="bi bi-arrow-up-right"></i>
+                </a>
+
+            </div>
+
         </section>
 
-        <!-- AÇÕES RÁPIDAS -->
-        <section class="acoes-rapidas">
-            <div class="card-acao" id="cardProdutos">
-                <i class="bi bi-box-seam"></i>
-                <h3>Produtos</h3>
-                <p id="totalProdutos">0</p>
+        <!-- RESUMO DO USUÁRIO (renderizado pelo JavaScript) -->
+
+        <section class="bloco" aria-labelledby="tituloResumo">
+
+            <div class="section-header">
+                <div>
+                    <span class="section-tag">Seu painel</span>
+                    <h2 id="tituloResumo">Resumo da sua conta</h2>
+                </div>
             </div>
-            <!-- Corrigido o espaço no id "card Pedidos" -->
-            <div class="card-acao" id="cardPedidos">
-                <i class="bi bi-cart-check"></i>
-                <h3>Pedidos</h3>
-                <p id="totalPedidos">0</p>
-            </div>
-            <div class="card-acao" id="cardNegociacoes">
-                <i class="bi bi-chat-dots"></i>
-                <h3>Negociações</h3>
-                <p id="totalNegociacoes">0</p>
-            </div>
-            <div class="card-acao" id="cardEstoque">
-                <i class="bi bi-clipboard-data"></i>
-                <h3>Estoque</h3>
-                <p id="totalEstoque">0</p>
-            </div>
+
+            <div class="acoes-rapidas" id="resumoUsuario" aria-label="Resumo"></div>
+
         </section>
 
         <!-- CATEGORIAS -->
-        <section class="categorias">
+
+        <section class="categorias bloco" id="secaoCategorias" aria-labelledby="tituloCategorias">
+
             <div class="section-header">
-                <h2>Categorias</h2>
-                <a href="produtos.html">Ver todos os produtos</a>
+                <div>
+                    <span class="section-tag">Categorias</span>
+                    <h2 id="tituloCategorias">Encontre por categoria</h2>
+                </div>
+                <p class="section-sub">Toque de novo na categoria para remover o filtro.</p>
             </div>
-            <div class="lista-categorias">
-                <button data-categoria="hortalicas">Hortaliças</button>
-                <button data-categoria="frutas">Frutas</button>
-                <button data-categoria="graos">Grãos</button>
-                <button data-categoria="laticinios">Laticínios</button>
-                <button data-categoria="carnes">Carnes</button>
-                <button data-categoria="flores">Flores</button>
-            </div>
+
+            <div class="lista-categorias" id="listaCategorias"></div>
+
         </section>
 
-        <!-- PRODUTOS -->
-        <section class="produtos">
+        <!-- PRODUTOS EM DESTAQUE -->
+
+        <section class="produtos bloco" id="secaoProdutos" aria-labelledby="tituloDestaques">
+
             <div class="section-header">
-                <h2>Produtos em destaque</h2>
+
+                <div>
+                    <span class="section-tag">Vitrine</span>
+                    <h2 id="tituloDestaques">Produtos em destaque</h2>
+                </div>
+
+                <a href="produtos.html" id="linkVerTodos">Ver todos <i class="bi bi-arrow-right"></i></a>
+
             </div>
-            <div class="grid-produtos" id="listaProdutos">
-                <!-- Os produtos são inseridos pelo inicio.js a partir do banco -->
-            </div>
+
+            <div class="grid-produtos" id="listaProdutos"></div>
+
         </section>
 
-        <!-- PRODUTOS EM GERAL (os que não estão em destaque; a lista completa fica na aba Produtos) -->
-        <section class="produtos produtos-gerais" id="secaoProdutosGerais">
+        <!-- DEMAIS PRODUTOS (sem repetir os destaques; a lista completa fica na aba Produtos) -->
+
+        <section class="produtos bloco" id="secaoProdutosGerais" aria-labelledby="tituloGerais">
+
             <div class="section-header">
-                <h2>Produtos</h2>
-                <a href="produtos.html">Ver todos os produtos</a>
+
+                <div>
+                    <span class="section-tag">Catálogo</span>
+                    <h2 id="tituloGerais">Mais produtos</h2>
+                </div>
+
+                <a href="produtos.html">Ver catálogo completo <i class="bi bi-arrow-right"></i></a>
+
             </div>
-            <div class="grid-produtos" id="listaProdutosGerais">
-                <!-- Preenchido pelo inicio.js -->
-            </div>
+
+            <div class="grid-produtos" id="listaProdutosGerais"></div>
+
         </section>
 
-        <!-- PEDIDOS -->
-        <section class="pedidos">
+        <!-- OPORTUNIDADES E NEGOCIAÇÕES -->
+
+        <section class="oportunidades bloco" aria-labelledby="tituloOportunidades">
+
             <div class="section-header">
-                <h2>Resumo dos pedidos</h2>
-            </div>
-            <div class="status-grid">
-                <!-- Corrigido os espaços nos IDs -->
-                <div class="status-card">
-                    <span id="pedidosRecebidos">0</span>
-                    <p>Recebidos</p>
-                </div>
-                <div class="status-card">
-                    <span id="pedidosNegociacao">0</span>
-                    <p>Em negociação</p>
-                </div>
-                <div class="status-card">
-                    <span id="pedidosPreparacao">0</span>
-                    <p>Em preparo</p>
-                </div>
-                <div class="status-card">
-                    <span id="pedidosEntregues">0</span>
-                    <p>Entregues</p>
+                <div>
+                    <span class="section-tag">Oportunidades</span>
+                    <h2 id="tituloOportunidades">Negociações e movimentações</h2>
                 </div>
             </div>
+
+            <div class="oportunidades-grid">
+
+                <div class="atividades painel-card" id="secaoAtividades">
+
+                    <div class="painel-card-topo">
+                        <h3><i class="bi bi-activity"></i> Atividade recente</h3>
+                    </div>
+
+                    <ul class="lista-atividades" id="listaAtividades"></ul>
+
+                </div>
+
+                <div class="negociar-card">
+
+                    <span class="negociar-icone"><i class="bi bi-chat-square-text"></i></span>
+
+                    <h3>Negocie direto com quem produz</h3>
+
+                    <p>
+                        Converse pela plataforma, envie sua proposta de valor e acompanhe
+                        cada pedido até a entrega.
+                    </p>
+
+                    <div class="negociar-acoes">
+                        <a href="negociacoes.html" class="btn-claro">
+                            Abrir negociações <i class="bi bi-arrow-right"></i>
+                        </a>
+                        <a href="pedidos.html" class="btn-contorno-claro">
+                            Ver pedidos
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
         </section>
+
+        <!-- COMO FUNCIONA -->
+
+        <section class="como-funciona bloco" aria-labelledby="tituloComo">
+
+            <div class="section-header">
+                <div>
+                    <span class="section-tag">Como funciona</span>
+                    <h2 id="tituloComo">Do anúncio à entrega</h2>
+                </div>
+            </div>
+
+            <ol class="passos">
+                <li>
+                    <span class="passo-icone"><i class="bi bi-search"></i></span>
+                    <h3>Encontre ou anuncie</h3>
+                    <p>Compradores buscam por nome e categoria; produtores cadastram seus produtos com preço e quantidade.</p>
+                </li>
+                <li>
+                    <span class="passo-icone"><i class="bi bi-chat-square-text"></i></span>
+                    <h3>Negocie direto</h3>
+                    <p>As duas partes conversam pela plataforma e trocam propostas, sem intermediários.</p>
+                </li>
+                <li>
+                    <span class="passo-icone"><i class="bi bi-truck"></i></span>
+                    <h3>Acompanhe o pedido</h3>
+                    <p>Cada pedido mostra seu status: recebido, em negociação, em preparo e entregue.</p>
+                </li>
+            </ol>
+
+        </section>
+
+        <!-- FOOTER -->
+
+        <footer class="rodape" id="rodape">
+
+            <div class="rodape-marca">
+
+                <div class="logo logo-pequeno">
+                    <i class="bi bi-flower1"></i>
+                    <span>MarketPlace Rural</span>
+                </div>
+
+                <p>Conectando o campo ao seu negócio.</p>
+
+            </div>
+
+            <nav class="rodape-links" aria-label="Links institucionais">
+                <a href="marketplace.html#sobre">Sobre a plataforma</a>
+                <a href="marketplace.html#como-funciona">Como funciona</a>
+                <a href="configuracoes.html">Minha conta</a>
+                <a href="privacidade.html">Privacidade</a>
+                <a href="termos.html">Termos de Uso</a>
+                <a href="cookies.html">Cookies</a>
+                <a href="acessibilidade.html">Acessibilidade</a>
+            </nav>
+
+        </footer>
 
     </main>
 
-    <!-- MODAL DE COMPRA -->
-    <div class="modal" id="modalCompra">
-        <div class="modal-box">
-            <h2 id="compraNome">Produto</h2>
-            <p id="compraInfo"></p>
-            <label for="compraQuantidade">Quantidade</label>
-            <input type="number" id="compraQuantidade" min="1" value="1">
+    <!-- ============ MODAL: FAZER PEDIDO ============ -->
+
+    <div class="modal" id="modalCompra" aria-hidden="true">
+
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="compraNome">
+
+            <div class="modal-header">
+                <h2 id="compraNome">Produto</h2>
+                <button type="button" id="compraFechar" aria-label="Fechar">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+
+            <p class="compra-info" id="compraInfo"></p>
+
+            <div class="campo">
+                <label for="compraQuantidade">Quantidade</label>
+                <input type="number" id="compraQuantidade" min="1" value="1">
+            </div>
+
             <p class="compra-total">Total: <strong id="compraTotal">R$ 0,00</strong></p>
-            <div class="modal-acoes">
+
+            <div class="modal-actions">
                 <button type="button" id="compraCancelar">Cancelar</button>
                 <button type="button" id="compraConfirmar">Fazer pedido</button>
             </div>
+
         </div>
+
     </div>
 
     <button id="temaBtn" aria-label="Alternar tema">
         <i class="bi bi-moon-stars-fill"></i>
     </button>
 
-    <!-- Corrigido para apontar para o arquivo inicio.js atualizado -->
-    <script src="../js/menu.js?v=3"></script>
+    <script src="../js/tema-transicao.js?v=20261125"></script>
+    <script src="../js/menu.js?v=20261125"></script>
     <script src="../js/notificacoes.js?v=1"></script>
     <script src="../js/preferencias.js?v=1"></script>
-    <script src="../js/onboarding.js?v=5"></script>
+    <script src="../js/onboarding.js?v=20261125"></script>
     <script src="../js/aviso-proprio-produto.js?v=1"></script>
-    <script src="../js/vitrine.js?v=3"></script>
-    <script src="../js/inicio.js?v=10"></script>
+    <script src="../js/vitrine.js?v=20261125"></script>
+    <script src="../js/dashboard.js?v=20261125"></script>
+
+  <script src="../js/aviso-cookies.js?v=1"></script>
 </body>
+
 </html>

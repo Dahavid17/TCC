@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1f3a1d">
+
+    <title>Gestão da Fazenda | MarketPlace Rural</title>
+
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
+    <link rel="manifest" href="gestao-rural.webmanifest">
+
+    <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+    <link rel="stylesheet" href="../css/painel.css?v=20261125">
+    <link rel="stylesheet" href="../css/modulos.css?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <script src="../js/painel.js?v=20261125"></script>
+    <link rel="stylesheet" href="../css/notificacoes.css?v=1">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <a href="inicio.html" class="logo">
+            <i class="bi bi-flower1"></i>
+            <span>MarketPlace Rural</span>
+        </a>
+        <div class="top-actions">
+            <button type="button" class="icon-btn" id="btnNotificacoes" aria-label="Notificações"><i class="bi bi-bell"></i></button>
+            <button type="button" class="icon-btn" id="btnMensagens" aria-label="Negociações">
+                <i class="bi bi-chat-dots"></i>
+            </button>
+            <div class="perfil">
+                <button type="button" id="btnPerfil" aria-label="Abrir configurações da conta">
+                    <div class="avatar" id="avatarUsuario">U</div>
+                    <div>
+                        <span id="nomeUsuario">Usuário</span>
+                        <small id="tipoUsuario"></small>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav>
+            <a href="inicio.html"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="meus-produtos.html"><i class="bi bi-box-seam"></i><span>Meus Produtos</span></a>
+            <a href="pedidos.html"><i class="bi bi-cart-check"></i><span>Pedidos</span></a>
+            <a href="negociacoes.html"><i class="bi bi-chat-left-text"></i><span>Negociações</span></a>
+            <a href="estoque.html"><i class="bi bi-clipboard-data"></i><span>Estoque</span></a>
+            <a href="favoritos.html"><i class="bi bi-heart"></i><span>Favoritos</span></a>
+            <a href="gestao-fazenda.html" class="ativo"><i class="bi bi-tree"></i><span>Gestão da Fazenda</span></a>
+            <a href="configuracoes.html"><i class="bi bi-gear"></i><span>Configurações</span></a>
+            <a href="../../backend/auth/logout.php"><i class="bi bi-box-arrow-right"></i><span>Sair</span></a>
+        </nav>
+    </aside>
+
+    <main class="conteudo">
+
+        <section class="page-header">
+            <div>
+                <h1>Gestão da Fazenda</h1>
+                <p>Propriedades, talhões, safras, diário de campo, agenda, finanças, documentos e silos em um só lugar.</p>
+            </div>
+            <button type="button" id="btnAtualizarTudo"><i class="bi bi-arrow-repeat"></i> Atualizar</button>
+        </section>
+
+        <p class="mr-plano-atual hidden" id="planoAtual"></p>
+
+        <div class="mr-offline hidden" id="avisoOffline" role="status">
+            <i class="bi bi-wifi-off"></i>
+            <span id="avisoOfflineTexto">Você está sem internet. Os registros do diário de campo ficam salvos neste aparelho e são enviados quando a conexão voltar.</span>
+        </div>
+
+        <section class="mr-contexto">
+            <div class="campo">
+                <label for="filtroFazenda">Propriedade</label>
+                <select id="filtroFazenda"><option value="">Todas as propriedades</option></select>
+            </div>
+        </section>
+
+        <!-- Mesmas abas da gestao-fazenda.html (lá, "Monitoramento IoT" é a aba ativa). -->
+        <nav class="mr-abas" role="tablist" aria-label="Módulos da Gestão da Fazenda">
+            <a href="gestao-fazenda.html"><i class="bi bi-broadcast"></i> Monitoramento IoT</a>
+            <button type="button" role="tab" data-aba="dashboard" data-recurso="dashboard_gestao" aria-selected="true"><i class="bi bi-speedometer2"></i> Dashboard</button>
+            <button type="button" role="tab" data-aba="propriedades" aria-selected="false"><i class="bi bi-map"></i> Propriedades e talhões</button>
+            <button type="button" role="tab" data-aba="safras" aria-selected="false"><i class="bi bi-flower3"></i> Safras</button>
+            <button type="button" role="tab" data-aba="diario" aria-selected="false"><i class="bi bi-journal-text"></i> Diário de campo</button>
+            <button type="button" role="tab" data-aba="agenda" aria-selected="false"><i class="bi bi-calendar-check"></i> Agenda</button>
+            <button type="button" role="tab" data-aba="financeiro" aria-selected="false"><i class="bi bi-cash-coin"></i> Financeiro</button>
+            <button type="button" role="tab" data-aba="documentos" data-recurso="documentos" aria-selected="false"><i class="bi bi-folder2-open"></i> Documentos</button>
+            <button type="button" role="tab" data-aba="silos" data-recurso="silos" aria-selected="false"><i class="bi bi-database"></i> Silos (IoT)</button>
+            <button type="button" role="tab" data-aba="relatorios" data-recurso="relatorios" aria-selected="false"><i class="bi bi-file-earmark-bar-graph"></i> Relatórios</button>
+        </nav>
+
+        <!-- Mostrado no lugar de uma aba que o plano atual não libera. -->
+        <section class="mr-painel mr-convite-pro" id="aba-bloqueada" role="tabpanel" hidden>
+            <div class="mr-card">
+                <h3><i class="bi bi-stars"></i> <span id="bloqueadaTitulo">Função do Plano Pro</span></h3>
+                <p id="bloqueadaTexto">Esta função faz parte do Plano Pro da Gestão da Fazenda.</p>
+                <ul class="mr-lista" style="margin:14px 0">
+                    <li><i class="bi bi-speedometer2"></i><div><strong>Dashboard da gestão</strong><small>Produção, finanças, agenda, cotações e ranking de talhões num painel só.</small></div></li>
+                    <li><i class="bi bi-folder2-open"></i><div><strong>Documentos</strong><small>Notas fiscais, contratos e laudos organizados por fazenda, talhão e safra.</small></div></li>
+                    <li><i class="bi bi-database"></i><div><strong>Silos, bags e reservatórios</strong><small>Nível, volume e peso medidos pelo ESP32, com alertas.</small></div></li>
+                    <li><i class="bi bi-file-earmark-bar-graph"></i><div><strong>Relatórios</strong><small>Financeiro, safras, talhões e diário em PDF e Excel com um clique.</small></div></li>
+                </ul>
+                <a class="btn-principal" href="planos.html"><i class="bi bi-arrow-up-circle"></i> Conhecer o Plano Pro</a>
+            </div>
+        </section>
+
+        <!-- ═══════════ DASHBOARD ═══════════ -->
+        <section class="mr-painel" id="aba-dashboard" role="tabpanel">
+            <div class="mr-barra">
+                <h2>Visão geral</h2>
+                <div class="mr-acoes">
+                    <select id="dashPeriodo" class="btn-sec" aria-label="Período do resumo financeiro">
+                        <option value="ano">Este ano</option>
+                        <option value="12m">Últimos 12 meses</option>
+                        <option value="tudo">Todo o período</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mr-kpis" id="dashProducao"></div>
+            <div class="mr-kpis" id="dashFinanceiro"></div>
+            <div class="mr-grid-2">
+                <div class="mr-card">
+                    <h3><i class="bi bi-bar-chart"></i> Receita x despesa x lucro</h3>
+                    <div class="mr-grafico"><canvas id="graficoDashFinanceiro"></canvas></div>
+                </div>
+                <div class="mr-card">
+                    <h3><i class="bi bi-trophy"></i> Ranking de talhões <small>produtividade (sc/ha)</small></h3>
+                    <div class="mr-ranking" id="dashRanking"></div>
+                </div>
+            </div>
+            <div class="mr-grid-3">
+                <div class="mr-card">
+                    <h3><i class="bi bi-calendar-event"></i> Próximas tarefas</h3>
+                    <ul class="mr-lista" id="dashAgenda"></ul>
+                </div>
+                <div class="mr-card">
+                    <h3><i class="bi bi-bell"></i> Alertas</h3>
+                    <ul class="mr-lista" id="dashAlertas"></ul>
+                </div>
+                <div class="mr-card">
+                    <h3><i class="bi bi-graph-up-arrow"></i> Cotações e tendências <small>plataforma</small></h3>
+                    <div class="mr-tabela"><table><thead><tr><th>Produto</th><th class="num">Médio</th><th class="num">30 dias</th></tr></thead><tbody id="dashCotacoes"></tbody></table></div>
+                    <a href="mercado.html" class="mr-ajuda">Ver inteligência de mercado →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ PROPRIEDADES E TALHÕES ═══════════ -->
+        <section class="mr-painel" id="aba-propriedades" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Propriedades</h2>
+                <div class="mr-acoes"><button type="button" class="btn-principal" data-novo="fazenda"><i class="bi bi-plus-lg"></i> Nova propriedade</button></div>
+            </div>
+            <div class="mr-grid-3" id="listaFazendas"></div>
+
+            <div class="mr-barra">
+                <h2>Talhões</h2>
+                <div class="mr-acoes"><button type="button" class="btn-principal" data-novo="talhao"><i class="bi bi-bounding-box"></i> Novo talhão</button></div>
+            </div>
+            <div class="mr-card">
+                <h3><i class="bi bi-map"></i> Mapa dos talhões</h3>
+                <div class="mr-mapa" id="mapaTalhoes"></div>
+                <p class="mr-mapa-dica">Desenhe cada talhão no cadastro para vê-lo aqui. Clique em uma área para ver os dados.</p>
+            </div>
+            <div class="mr-card mr-tabela">
+                <table>
+                    <thead><tr><th>Talhão</th><th>Propriedade</th><th class="num">Área (ha)</th><th>Cultura atual</th><th class="num">Custos acumulados</th><th class="num">R$/ha</th><th class="num">Produtividade</th><th class="num">Lucro</th><th></th></tr></thead>
+                    <tbody id="tabelaTalhoes"></tbody>
+                    <tfoot id="rodapeTalhoes"></tfoot>
+                </table>
+            </div>
+        </section>
+
+        <!-- ═══════════ SAFRAS ═══════════ -->
+        <section class="mr-painel" id="aba-safras" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Safras</h2>
+                <div class="mr-acoes"><button type="button" class="btn-principal" data-novo="safra"><i class="bi bi-plus-lg"></i> Nova safra</button></div>
+            </div>
+            <div class="mr-card">
+                <h3><i class="bi bi-bar-chart-line"></i> Comparativo entre safras <small>produtividade, custos e lucro</small></h3>
+                <div class="mr-grid-2">
+                    <div class="mr-grafico"><canvas id="graficoSafrasProdutividade"></canvas></div>
+                    <div class="mr-grafico"><canvas id="graficoSafrasFinanceiro"></canvas></div>
+                </div>
+            </div>
+            <div class="mr-safras" id="listaSafras"></div>
+        </section>
+
+        <!-- ═══════════ DIÁRIO DE CAMPO ═══════════ -->
+        <section class="mr-painel" id="aba-diario" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Diário de campo</h2>
+                <div class="mr-acoes">
+                    <button type="button" class="btn-sec hidden" id="btnSincronizar"><i class="bi bi-cloud-upload"></i> Enviar <b id="qtdPendentes">0</b> registro(s) offline</button>
+                    <button type="button" class="btn-principal" data-novo="operacao"><i class="bi bi-plus-lg"></i> Registrar operação</button>
+                </div>
+            </div>
+            <div class="mr-contexto">
+                <div class="campo"><label for="diarioTalhao">Talhão</label><select id="diarioTalhao"><option value="">Todos</option></select></div>
+                <div class="campo"><label for="diarioTipo">Operação</label><select id="diarioTipo"><option value="">Todas</option></select></div>
+                <div class="campo"><label for="diarioDe">De</label><input type="date" id="diarioDe"></div>
+                <div class="campo"><label for="diarioAte">Até</label><input type="date" id="diarioAte"></div>
+            </div>
+            <div class="mr-card mr-tabela">
+                <table>
+                    <thead><tr><th>Data</th><th>Operação</th><th>Talhão</th><th>Produto / insumo</th><th class="num">Dosagem</th><th class="num">Área (ha)</th><th>Responsável</th><th class="num">Custo</th><th></th></tr></thead>
+                    <tbody id="tabelaOperacoes"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ═══════════ AGENDA ═══════════ -->
+        <section class="mr-painel" id="aba-agenda" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Agenda rural</h2>
+                <div class="mr-acoes">
+                    <button type="button" class="btn-sec" id="btnPermitirNotificacoes"><i class="bi bi-bell"></i> Avisar neste aparelho</button>
+                    <button type="button" class="btn-principal" data-novo="evento"><i class="bi bi-plus-lg"></i> Novo compromisso</button>
+                </div>
+            </div>
+            <div class="mr-kpis" id="agendaResumo"></div>
+            <div class="mr-contexto">
+                <div class="campo"><label for="agendaStatus">Situação</label>
+                    <select id="agendaStatus"><option value="pendente">Pendentes</option><option value="concluido">Concluídos</option><option value="">Todos</option></select></div>
+                <div class="campo"><label for="agendaTipo">Tipo</label><select id="agendaTipo"><option value="">Todos</option></select></div>
+            </div>
+            <ul class="mr-lista" id="listaAgenda"></ul>
+        </section>
+
+        <!-- ═══════════ FINANCEIRO ═══════════ -->
+        <section class="mr-painel" id="aba-financeiro" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Gestão financeira</h2>
+                <div class="mr-acoes">
+                    <button type="button" class="btn-sec" data-novo="receita"><i class="bi bi-plus-circle"></i> Receita</button>
+                    <button type="button" class="btn-principal" data-novo="despesa"><i class="bi bi-dash-circle"></i> Despesa</button>
+                </div>
+            </div>
+            <div class="mr-contexto">
+                <div class="campo"><label for="finSafra">Safra</label><select id="finSafra"><option value="">Todas</option></select></div>
+                <div class="campo"><label for="finTalhao">Talhão</label><select id="finTalhao"><option value="">Todos</option></select></div>
+                <div class="campo"><label for="finDe">De</label><input type="date" id="finDe"></div>
+                <div class="campo"><label for="finAte">Até</label><input type="date" id="finAte"></div>
+            </div>
+            <div class="mr-kpis" id="finIndicadores"></div>
+            <div class="mr-grid-2">
+                <div class="mr-card"><h3><i class="bi bi-graph-up"></i> Fluxo de caixa</h3><div class="mr-grafico"><canvas id="graficoFluxo"></canvas></div></div>
+                <div class="mr-card"><h3><i class="bi bi-pie-chart"></i> Composição de custos</h3><div class="mr-grafico"><canvas id="graficoComposicao"></canvas></div></div>
+            </div>
+            <div class="mr-card mr-tabela">
+                <table>
+                    <thead><tr><th>Data</th><th>Tipo</th><th>Categoria</th><th>Descrição</th><th>Talhão / safra</th><th class="num">Valor</th><th></th></tr></thead>
+                    <tbody id="tabelaLancamentos"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ═══════════ DOCUMENTOS ═══════════ -->
+        <section class="mr-painel" id="aba-documentos" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Documentos</h2>
+                <div class="mr-acoes"><button type="button" class="btn-principal" data-novo="documento"><i class="bi bi-upload"></i> Enviar documento</button></div>
+            </div>
+            <div class="mr-docs">
+                <div class="mr-card">
+                    <h3><i class="bi bi-folder2"></i> Pastas</h3>
+                    <div class="mr-pastas" id="arvorePastas"></div>
+                </div>
+                <div class="mr-card">
+                    <div class="mr-contexto">
+                        <div class="campo"><label for="docTipo">Tipo</label><select id="docTipo"><option value="">Todos</option></select></div>
+                        <div class="campo"><label for="docBusca">Buscar</label><input type="search" id="docBusca" placeholder="Nome do documento"></div>
+                    </div>
+                    <div class="mr-tabela"><table>
+                        <thead><tr><th>Documento</th><th>Tipo</th><th>Pasta</th><th>Validade</th><th class="num">Tamanho</th><th></th></tr></thead>
+                        <tbody id="tabelaDocumentos"></tbody>
+                    </table></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ SILOS ═══════════ -->
+        <section class="mr-painel" id="aba-silos" role="tabpanel" hidden>
+            <div class="mr-barra">
+                <h2>Silos, bags e reservatórios</h2>
+                <div class="mr-acoes"><button type="button" class="btn-principal" data-novo="silo"><i class="bi bi-plus-lg"></i> Novo armazenamento</button></div>
+            </div>
+            <div class="mr-silos" id="listaSilos"></div>
+            <details class="mr-card">
+                <summary><strong>Como ligar um ESP32 ao silo</strong></summary>
+                <p class="mr-ajuda" style="margin-top:10px">Conecte a placa em <a href="gestao-fazenda.html">Gestão da Fazenda</a> (ela recebe um token), informe o código da placa no cadastro do silo e envie as leituras para <code>backend/iot/armazenamento_receber.php</code> com o cabeçalho <code>X-Token-Dispositivo</code>:</p>
+                <pre class="mr-ajuda" style="white-space:pre-wrap">{"dispositivo":"ESP32-MR-88CDA7",
+ "armazenamentos":[{"codigo":"SILO-01","distancia_cm":182.5,"peso_kg":12000,"temperatura":24.1,"umidade_graos":13.2}]}</pre>
+                <p class="mr-ajuda">Sensor ultrassônico (HC-SR04 / JSN-SR04T) no topo mede a distância até o produto; célula de carga (HX711) mede o peso. O nível, o volume e o peso estimado são calculados pela altura útil e pela capacidade.</p>
+            </details>
+        </section>
+
+        <!-- ═══════════ RELATÓRIOS ═══════════ -->
+        <section class="mr-painel" id="aba-relatorios" role="tabpanel" hidden>
+            <div class="mr-barra"><h2>Relatórios automáticos</h2></div>
+            <div class="mr-contexto">
+                <div class="campo"><label for="relSafra">Safra</label><select id="relSafra"><option value="">Todas</option></select></div>
+                <div class="campo"><label for="relDe">De</label><input type="date" id="relDe"></div>
+                <div class="campo"><label for="relAte">Até</label><input type="date" id="relAte"></div>
+            </div>
+            <div class="mr-grid-3" id="listaRelatorios"></div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════ MODAIS ═══════════ -->
+
+    <div class="modal" id="modalFazenda">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloFazenda">
+            <div class="modal-header"><h2 id="tituloFazenda">Propriedade</h2><button type="button" data-fechar="modalFazenda" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/fazendas.php" data-modal="modalFazenda">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo largo"><label>Nome da propriedade *</label><input name="nome" required maxlength="150"></div>
+                    <div class="campo largo"><label>Localização (cidade/UF ou endereço)</label><input name="localizacao" maxlength="255"></div>
+                    <div class="campo"><label>Área total (ha) *</label><input name="area_total" type="number" step="0.01" min="0.01" required></div>
+                    <div class="campo"><label>Inscrição estadual / CAR</label><input name="cadastro_estadual" maxlength="50"></div>
+                    <div class="campo"><label>Latitude da sede</label><input name="latitude" type="number" step="0.0000001" min="-90" max="90"></div>
+                    <div class="campo"><label>Longitude da sede</label><input name="longitude" type="number" step="0.0000001" min="-180" max="180"></div>
+                    <p class="mr-ajuda largo"><button type="button" class="btn-sec" id="btnMinhaLocalizacao"><i class="bi bi-geo-alt"></i> Usar minha localização</button></p>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalFazenda">Cancelar</button><button type="submit">Salvar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalTalhao">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloTalhao" style="width:min(820px,100%)">
+            <div class="modal-header"><h2 id="tituloTalhao">Talhão</h2><button type="button" data-fechar="modalTalhao" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/talhoes.php" data-modal="modalTalhao">
+                <input type="hidden" name="id">
+                <input type="hidden" name="coordenadas">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Nome do talhão *</label><input name="nome" required maxlength="100" placeholder="Ex.: Talhão 1 - Baixada"></div>
+                    <div class="campo"><label>Área (ha) *</label><input name="area_ha" type="number" step="0.01" min="0.01" required></div>
+                    <div class="campo"><label>Cultura atual</label><select name="cultura_atual" data-lista="culturas" data-vazio="Sem cultura"></select></div>
+                    <div class="campo"><label>Tipo de solo</label><input name="tipo_solo" maxlength="60" placeholder="Ex.: Latossolo vermelho"></div>
+                    <div class="campo"><label>Observações</label><input name="observacoes" maxlength="500"></div>
+                    <div class="largo">
+                        <div class="mr-mapa" id="mapaDesenho" style="height:320px"></div>
+                        <p class="mr-mapa-dica">Clique no mapa para marcar os cantos do talhão. <span id="areaDesenho"></span>
+                            <button type="button" class="btn-sec" id="btnLimparDesenho"><i class="bi bi-eraser"></i> Limpar desenho</button>
+                            <button type="button" class="btn-sec" id="btnUsarArea"><i class="bi bi-rulers"></i> Usar área desenhada</button></p>
+                    </div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalTalhao">Cancelar</button><button type="submit">Salvar talhão</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalHistoricoTalhao">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloHistorico" style="width:min(900px,100%)">
+            <div class="modal-header"><h2 id="tituloHistorico">Histórico do talhão</h2><button type="button" data-fechar="modalHistoricoTalhao" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <div id="conteudoHistorico"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalSafra">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloSafra">
+            <div class="modal-header"><h2 id="tituloSafra">Safra</h2><button type="button" data-fechar="modalSafra" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/safras.php" data-modal="modalSafra">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Ano / período *</label><input name="ano_periodo" required maxlength="50" placeholder="2025/2026"></div>
+                    <div class="campo largo"><label>Nome</label><input name="nome" maxlength="100" placeholder="Ex.: Safra verão 25/26"></div>
+                    <div class="campo"><label>Início *</label><input name="data_inicio" type="date" required></div>
+                    <div class="campo"><label>Encerramento</label><input name="data_encerramento" type="date"></div>
+                    <div class="campo"><label>Situação</label><select name="status"><option value="em_andamento">Em andamento</option><option value="concluida">Concluída</option><option value="cancelada">Cancelada</option></select></div>
+                    <div class="campo"><label>Observações</label><input name="observacoes" maxlength="500"></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalSafra">Cancelar</button><button type="submit">Salvar safra</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalCultura">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloCultura" style="width:min(720px,100%)">
+            <div class="modal-header"><h2 id="tituloCultura">Cultura na safra</h2><button type="button" data-fechar="modalCultura" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/safras.php" data-modal="modalCultura" data-acao="salvar_cultura">
+                <input type="hidden" name="id">
+                <input type="hidden" name="safra_id">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Talhão *</label><select name="talhao_id" required></select></div>
+                    <div class="campo"><label>Cultura *</label><select name="cultura" required data-lista="culturas"></select></div>
+                    <div class="campo"><label>Variedade / cultivar</label><input name="variedade" maxlength="100"></div>
+                    <div class="campo"><label>Situação</label><select name="status"><option value="plantada">Plantada</option><option value="planejada">Planejada</option><option value="colhida">Colhida</option><option value="perdida">Perdida</option></select></div>
+                    <div class="campo"><label>Área plantada (ha) *</label><input name="area_plantada_ha" type="number" step="0.01" min="0.01" required></div>
+                    <div class="campo"><label>Área colhida (ha)</label><input name="area_colhida_ha" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Unidade de produção</label><select name="unidade_producao"><option value="saca">Saca (60 kg)</option><option value="tonelada">Tonelada</option><option value="kg">Kg</option><option value="caixa">Caixa</option><option value="litro">Litro</option></select></div>
+                    <div class="campo"><label>Produção estimada</label><input name="producao_estimada" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Produção total (colhida)</label><input name="producao_total" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Preço de venda por unidade (R$)</label><input name="preco_venda_unitario" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Data do plantio</label><input name="data_plantio" type="date"></div>
+                    <div class="campo"><label>Data da colheita</label><input name="data_colheita" type="date"></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalCultura">Cancelar</button><button type="submit">Salvar cultura</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalOperacao">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloOperacao" style="width:min(720px,100%)">
+            <div class="modal-header"><h2 id="tituloOperacao">Registrar operação</h2><button type="button" data-fechar="modalOperacao" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form id="formOperacao">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Data *</label><input name="data_operacao" type="date" required></div>
+                    <div class="campo"><label>Operação *</label><select name="tipo" required data-lista="tiposOperacao"></select></div>
+                    <div class="campo"><label>Talhão *</label><select name="talhao_id" required data-lista="talhoes"></select></div>
+                    <div class="campo"><label>Safra *</label><select name="safra_id" required data-lista="safras"></select></div>
+                    <div class="campo largo"><label>Produto / insumo utilizado</label><input name="produto" maxlength="150" placeholder="Ex.: Glifosato 480, Ureia, Semente BRS 1010"></div>
+                    <div class="campo"><label>Dosagem</label><input name="dosagem" maxlength="50" list="dosagensComuns" placeholder="Ex.: 0,3 L/ha · 300 kg/ha · 12 mm"></div>
+                    <div class="campo"><label>Área aplicada (ha)</label><input name="area_aplicada_ha" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Responsável</label><input name="responsavel" maxlength="120"></div>
+                    <div class="campo"><label>Custo (R$)</label><input name="custo" type="number" step="0.01" min="0"><small class="mr-ajuda">Gera a despesa no financeiro automaticamente.</small></div>
+                    <div class="campo largo"><label>Observações</label><textarea name="observacoes" rows="2" maxlength="1000"></textarea></div>
+                </div>
+                <datalist id="dosagensComuns"><option value="1 L/ha"><option value="0,5 L/ha"><option value="200 kg/ha"><option value="300 kg/ha"><option value="10 mm"><option value="14 sementes/m"></datalist>
+                <div class="modal-actions"><button type="button" data-fechar="modalOperacao">Cancelar</button><button type="submit">Salvar no diário</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalEvento">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloEvento">
+            <div class="modal-header"><h2 id="tituloEvento">Compromisso</h2><button type="button" data-fechar="modalEvento" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/agenda.php" data-modal="modalEvento">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo largo"><label>Título *</label><input name="titulo" required maxlength="150" placeholder="Ex.: Aplicar fungicida / Renovar licença ambiental"></div>
+                    <div class="campo"><label>Tipo</label><select name="tipo" data-lista="tiposAgenda"></select></div>
+                    <div class="campo"><label>Data / vencimento *</label><input name="data_evento" type="date" required></div>
+                    <div class="campo"><label>Hora</label><input name="hora_evento" type="time"></div>
+                    <div class="campo"><label>Lembrar com antecedência (dias)</label><input name="lembrar_dias_antes" type="number" min="0" max="365" value="1"></div>
+                    <div class="campo"><label>Propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Talhão</label><select name="talhao_id" data-lista="talhoes" data-vazio="Nenhum"></select></div>
+                    <div class="campo largo"><label>Descrição</label><textarea name="descricao" rows="2" maxlength="1000"></textarea></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalEvento">Cancelar</button><button type="submit">Salvar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalLancamento">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloLancamento">
+            <div class="modal-header"><h2 id="tituloLancamento">Lançamento</h2><button type="button" data-fechar="modalLancamento" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/financeiro.php" data-modal="modalLancamento">
+                <input type="hidden" name="id">
+                <input type="hidden" name="tipo">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Categoria *</label><select name="categoria" required></select></div>
+                    <div class="campo"><label>Valor (R$) *</label><input name="valor" type="number" step="0.01" min="0.01" required></div>
+                    <div class="campo largo"><label>Descrição *</label><input name="descricao" required maxlength="255"></div>
+                    <div class="campo"><label>Data *</label><input name="data_lancamento" type="date" required></div>
+                    <div class="campo"><label>Propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Talhão</label><select name="talhao_id" data-lista="talhoes" data-vazio="Geral da propriedade"></select></div>
+                    <div class="campo"><label>Safra</label><select name="safra_id" data-lista="safras" data-vazio="Sem safra"></select></div>
+                    <div class="campo"><label>Quantidade</label><input name="quantidade" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Unidade</label><input name="unidade" maxlength="20" placeholder="sacas, L, kg, h"></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalLancamento">Cancelar</button><button type="submit">Salvar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalDocumento">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloDocumento">
+            <div class="modal-header"><h2 id="tituloDocumento">Enviar documento</h2><button type="button" data-fechar="modalDocumento" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form id="formDocumento">
+                <div class="mr-form-grade">
+                    <div class="campo largo"><label>Arquivo * (PDF, imagem, planilha ou Word, até 10 MB)</label><input type="file" name="arquivo" required accept=".pdf,.jpg,.jpeg,.png,.webp,.xlsx,.xls,.docx,.doc,.txt,.csv"></div>
+                    <div class="campo largo"><label>Título</label><input name="titulo" maxlength="150" placeholder="Usa o nome do arquivo se ficar em branco"></div>
+                    <div class="campo"><label>Tipo</label><select name="tipo" data-lista="tiposDocumento"></select></div>
+                    <div class="campo"><label>Validade</label><input name="data_validade" type="date"></div>
+                    <div class="campo"><label>Pasta: propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Pasta: talhão</label><select name="talhao_id" data-lista="talhoes" data-vazio="Nenhum"></select></div>
+                    <div class="campo"><label>Pasta: safra</label><select name="safra_id" data-lista="safras" data-vazio="Nenhuma"></select></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalDocumento">Cancelar</button><button type="submit">Enviar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalSilo">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloSilo">
+            <div class="modal-header"><h2 id="tituloSilo">Armazenamento</h2><button type="button" data-fechar="modalSilo" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/armazenamentos.php" data-modal="modalSilo">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Código *</label><input name="codigo" required maxlength="40" placeholder="SILO-01"></div>
+                    <div class="campo"><label>Nome *</label><input name="nome" required maxlength="100"></div>
+                    <div class="campo"><label>Tipo</label><select name="tipo"><option value="silo">Silo</option><option value="bag">Silo bag</option><option value="graneleiro">Graneleiro</option><option value="reservatorio">Reservatório</option></select></div>
+                    <div class="campo"><label>Propriedade *</label><select name="fazenda_id" required data-lista="fazendas"></select></div>
+                    <div class="campo"><label>Produto armazenado</label><input name="produto" maxlength="60" placeholder="Soja, milho, água, diesel"></div>
+                    <div class="campo"><label>Capacidade *</label><input name="capacidade" type="number" step="0.01" min="0.01" required></div>
+                    <div class="campo"><label>Unidade</label><select name="unidade_capacidade"><option value="tonelada">Toneladas</option><option value="saca">Sacas</option><option value="m3">m³</option><option value="litro">Litros</option></select></div>
+                    <div class="campo"><label>Altura útil (cm)</label><input name="altura_util_cm" type="number" step="0.1" min="1"><small class="mr-ajuda">Do sensor ultrassônico até o fundo.</small></div>
+                    <div class="campo"><label>Alerta nível mínimo (%)</label><input name="alerta_minimo_pct" type="number" step="0.1" min="0" max="100" value="15"></div>
+                    <div class="campo"><label>Alerta nível máximo (%)</label><input name="alerta_maximo_pct" type="number" step="0.1" min="0" max="100" value="95"></div>
+                    <div class="campo largo"><label>Código da placa ESP32 (opcional)</label><input name="dispositivo_codigo" maxlength="40" placeholder="ESP32-MR-88CDA7"></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalSilo">Cancelar</button><button type="submit">Salvar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modalLeitura">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="tituloLeitura" style="width:min(480px,100%)">
+            <div class="modal-header"><h2 id="tituloLeitura">Leitura manual</h2><button type="button" data-fechar="modalLeitura" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form data-endpoint="gestao/armazenamentos.php" data-modal="modalLeitura" data-acao="leitura">
+                <input type="hidden" name="id">
+                <div class="mr-form-grade">
+                    <div class="campo"><label>Distância até o produto (cm)</label><input name="distancia_cm" type="number" step="0.1" min="0"></div>
+                    <div class="campo"><label>Peso (kg)</label><input name="peso_kg" type="number" step="0.01" min="0"></div>
+                    <div class="campo"><label>Temperatura (°C)</label><input name="temperatura" type="number" step="0.1"></div>
+                    <div class="campo"><label>Umidade dos grãos (%)</label><input name="umidade_graos" type="number" step="0.1" min="0" max="100"></div>
+                </div>
+                <div class="modal-actions"><button type="button" data-fechar="modalLeitura">Cancelar</button><button type="submit">Registrar</button></div>
+            </form>
+        </div>
+    </div>
+
+    <button type="button" id="temaBtn" aria-label="Alternar tema"><i class="bi bi-moon-stars-fill"></i></button>
+
+    <script src="../js/tema-transicao.js?v=20261125"></script>
+    <script src="../js/menu.js?v=20261125"></script>
+    <script src="../js/notificacoes.js?v=1"></script>
+    <script src="../js/modulos.js?v=2"></script>
+    <script src="../js/exportar.js?v=1"></script>
+    <script src="../js/gestao-rural.js?v=2"></script>
+</body>
+
+</html>

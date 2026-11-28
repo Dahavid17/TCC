@@ -16,6 +16,8 @@ Para voltar atrás, veja **COMO-PUBLICAR.md → "Voltar uma versão"**.
 
 | Data | Tag | Commit | O que mudou | Backup no servidor |
 |---|---|---|---|---|
+| 27/11 | — (sem commit: a pasta local não é repositório git) | — | **Páginas de erro:** nova pasta `erros/` com 400, 401, 403, 404, 405, 408, 413, 429, 500, 502, 503, 504 e 505 + `erros.css`, com o mascote Bento (uma pose e uma fala por erro); `assets/img/mascote/bento.svg` enviado (só o arquivo; o onboarding com o Bento continua **não** publicado); `.htaccess` ganhou as linhas `ErrorDocument`. Conferido: arquivos idênticos aos locais (SHA-256) e endereço inexistente responde 404 com a página nova. | `backup-erros-2026-11-27` (só o `.htaccess` antigo; os demais arquivos eram novos) |
+| 27/11 | — (sem commit: a pasta local não é repositório git) | — | **Legal e acessibilidade:** páginas Privacidade (LGPD), Termos de Uso, Política de Cookies e Acessibilidade; aviso de cookies (`aviso-cookies.js`, opcionais só com aceite); caixa de aceite obrigatória no cadastro (front e `backend/auth/cadastro.php`); links legais nos rodapés; nomes acessíveis nos botões só com ícone; contraste do `--text-mute` no tema claro da Home; botão "Solicitar orçamento" abre e-mail. Migração `011_aceite_termos.sql` aplicada antes dos arquivos. A troca do mascote Broto→Bento que estava na pasta local **não** foi publicada. | `backup-legal-2026-11-27` |
 | 23/11 | `publicado-2026-11-23-cache` | `9d3b431` | `.htaccess`: páginas, CSS e JS vão com "Cache-Control: no-cache" (ninguém fica com versão antiga depois de publicar, sem Ctrl+F5) | `backup-cache-2026-11-23` |
 | 23/11 | `publicado-2026-11-23-perfil` | `1280e22` | Perfil: cidade vem preenchida (usa o endereço do cadastro), foto não some ao salvar, nome completo no Início e na aba Produtos | `backup-perfil-2026-11-23` |
 | 23/11 | `publicado-2026-11-23-seo` | `661a409` | SEO: nome "Buzz Codex" no Google, `robots.txt`, `sitemap.xml` (publicado por outra sessão) | `backup-seo-2026-11-23` |
@@ -38,6 +40,7 @@ Para voltar atrás, veja **COMO-PUBLICAR.md → "Voltar uma versão"**.
 
 **Banco de dados** (`buzzcode_marketplace_rural`, pelo phpMyAdmin do cPanel):
 - `banco/migracoes/009_verificacao_email.sql`: criada sozinha pelo PHP no primeiro uso (coluna `email_verificado`, tabela `codigos_email`).
+- `banco/migracoes/011_aceite_termos.sql`: aplicada em 27/11, antes de publicar o `cadastro.php` (colunas `termos_aceitos_em` e `termos_versao` em `usuarios`). Para desfazer: `ALTER TABLE usuarios DROP COLUMN termos_aceitos_em, DROP COLUMN termos_versao;`
 - `banco/migracoes/010_destaques_promocoes.sql`: aplicada à mão em 22/11, **antes** de publicar os arquivos (colunas `destaque` e `preco_promocional`; 6 destaques e 3 promoções de exemplo).
 
 **DNS** (cPanel → Zone Editor):

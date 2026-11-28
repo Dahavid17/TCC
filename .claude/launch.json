@@ -12,6 +12,25 @@
       "runtimeExecutable": "C:/xampp/php/php.exe",
       "runtimeArgs": ["-S", "127.0.0.1:8080", "-t", "C:/Users/11981735640/Desktop/TCC/TCC", "C:/Users/11981735640/Desktop/TCC/TCC/dev/router.php"],
       "port": 8080
+    },
+    {
+      "name": "catalogo-web",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server", "C:/Users/davia/OneDrive/Desktop/TCC/TCC/catalogo", "-p", "8111", "-c-1"],
+      "port": 8111
+    },
+    {
+      "name": "marketplace-php-davia",
+      "runtimeExecutable": "C:/Users/davia/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe/php.exe",
+      "runtimeArgs": ["-S", "127.0.0.1:8080", "-t", "C:/Users/davia/OneDrive/Desktop/TCC/TCC", "C:/Users/davia/OneDrive/Desktop/TCC/TCC/dev/router.php"],
+      "port": 8080
+    },
+    {
+      "name": "marketplace-php-erros",
+      "runtimeExecutable": "C:/Users/davia/AppData/Local/Microsoft/WinGet/Packages/PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe/php.exe",
+      "runtimeArgs": ["-S", "127.0.0.1:8085", "-t", "C:/Users/davia/OneDrive/Desktop/TCC/TCC", "C:/Users/davia/OneDrive/Desktop/TCC/TCC/dev/router.php"],
+      "port": 8085,
+      "autoPort": false
     }
   ]
 }

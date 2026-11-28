@@ -1,621 +1,1182 @@
 /* =============================================================
-   CADASTRO.CSS
-   MarketPlace Rural — Página de Cadastro
+   CADASTRO.CSS — Criar conta no MarketPlace Rural
+   Mesma linguagem visual da página de apresentação
+   (marketplace.css): paleta de tokens.css, raios orgânicos,
+   Lora + Inter, sombras suaves e animações discretas.
+   O tema escuro é controlado por body.dark (cadastro.js).
    ============================================================= */
 
+/* ── Variáveis da página ─────────────────────────────────── */
+:root {
+  --mp-fundo:        var(--off-white);
+  --mp-fundo-alt:    var(--bege);
+  --mp-superficie:   #ffffff;
+  --mp-texto:        #1d261c;
+  --mp-suave:        #566152;
+  --mp-titulo:       var(--verde-escuro);
+  --mp-destaque:     var(--verde-medio);
+  --mp-terra:        var(--terra);
+  --mp-linha:        #e6dccb;
+  --mp-linha-forte:  #cdbfa6;
+  --mp-nevoa:        var(--verde-nevoa);
+  --mp-campo:        #fffdf9;
+  --mp-erro:         #b3261e;
+  --mp-erro-fundo:   rgba(179, 38, 30, 0.07);
+
+  --mp-sombra:       0 30px 60px -30px rgba(31, 58, 29, 0.35);
+  --mp-sombra-sm:    0 14px 30px -18px rgba(31, 58, 29, 0.32);
+
+  --ease:            cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --grao: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .32  0 0 0 0 .24  0 0 0 0 .14  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+body.dark {
+  --mp-fundo:        #111710;
+  --mp-fundo-alt:    #161e14;
+  --mp-superficie:   #1b2519;
+  --mp-texto:        #e6eadc;
+  --mp-suave:        #a9b39f;
+  --mp-titulo:       #f4efe3;
+  --mp-destaque:     #a7c777;
+  --mp-terra:        #d8ae80;
+  --mp-linha:        #2b3727;
+  --mp-linha-forte:  #3d4b38;
+  --mp-nevoa:        rgba(144, 169, 85, 0.14);
+  --mp-campo:        #151d13;
+  --mp-erro:         #f08a80;
+  --mp-erro-fundo:   rgba(240, 138, 128, 0.1);
+
+  --mp-sombra:       0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  --mp-sombra-sm:    0 14px 30px -18px rgba(0, 0, 0, 0.6);
+
+  color-scheme: dark;
+}
+
+/* ── Base ────────────────────────────────────────────────── */
 body {
-    min-height: 100vh;
-
-    background:
-        linear-gradient(
-            rgba(245, 240, 230, 0.92),
-            rgba(245, 240, 230, 0.92)
-        ),
-        url("https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=1400&q=80");
-
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-
-    font-family: var(--fonte-corpo);
-
-    overflow-x: hidden;
+  min-height: 100vh;
+  background:
+    var(--grao),
+    radial-gradient(50% 40% at 100% 0%, rgba(144, 169, 85, .16), transparent 70%),
+    radial-gradient(40% 40% at 60% 100%, rgba(196, 154, 108, .14), transparent 70%),
+    var(--mp-fundo);
+  background-attachment: fixed;
+  color: var(--mp-texto);
+  font-family: var(--fonte-corpo);
+  line-height: 1.6;
+  transition: background-color .35s ease, color .35s ease;
 }
 
+img {
+  display: block;
+  max-width: 100%;
+}
 
-/* =============================================================
-   CONTAINER PRINCIPAL
-   ============================================================= */
+ul {
+  list-style: none;
+}
 
+/* ── Estrutura ───────────────────────────────────────────── */
 .cadastro-wrapper {
-    min-height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 40px 20px;
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
 }
 
-
-/* =============================================================
-   CARD
-   ============================================================= */
-
-.cadastro-box {
-    width: 100%;
-    max-width: 1100px;
-
-    min-height: 650px;
-
-    background: var(--branco);
-
-    border: 1px solid var(--borda);
-    border-radius: var(--radius-xl);
-
-    box-shadow: var(--sombra);
-
-    display: grid;
-
-    grid-template-columns: 0.85fr 1.45fr;
-
-    overflow: hidden;
-}
-
-
-/* =============================================================
-   PAINEL VERDE
-   ============================================================= */
-
+/* ── Painel de apresentação ──────────────────────────────── */
 .cadastro-intro {
-    background: var(--verde);
-
-    padding: 50px 40px;
-
-    display: flex;
-    flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
+  position: sticky;
+  top: 16px;
+  height: calc(100vh - 32px);
+  min-height: 560px;
+  margin: 16px 0 16px 16px;
+  border-radius: 32px 200px 32px 32px;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--off-white);
+  background: var(--verde-escuro);
+  box-shadow: var(--mp-sombra);
 }
 
-
-/* =============================================================
-   CABEÇALHO
-   ============================================================= */
-
-.cadastro-header {
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    text-align: center;
+.intro-foto {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: aproximar 2.4s var(--ease) both;
 }
 
+.cadastro-intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(20, 38, 19, .5) 0%, rgba(20, 38, 19, .22) 28%, rgba(20, 38, 19, .82) 70%, rgba(20, 38, 19, .95) 100%),
+    radial-gradient(70% 60% at 0% 100%, rgba(122, 82, 48, .45), transparent 70%);
+}
 
-.cadastro-header .logo {
-  width: fit-content;
+.intro-curvas {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: -1;
+  width: 100%;
+  height: 70%;
+  fill: none;
+  stroke: rgba(250, 247, 241, .1);
+  stroke-width: 1.2;
+  pointer-events: none;
+}
+
+.intro-conteudo {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 32px;
+  padding: clamp(28px, 3.5vw, 48px);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  color: var(--off-white);
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.logo strong {
+  font-weight: 800;
+  color: #c4da97;
+}
+
+.logo-marca {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px 4px 14px 4px;
+  background: rgba(250, 247, 241, .14);
+  border: 1px solid rgba(250, 247, 241, .25);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--trigo);
+  font-size: 20px;
+  transition: border-radius .4s var(--ease), transform .4s var(--ease);
+}
+
+.logo:hover .logo-marca {
+  border-radius: 4px 14px 4px 14px;
+  transform: rotate(-6deg);
+}
+
+.intro-tag,
+.secao-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--trigo);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.intro-tag::before,
+.secao-tag::before {
+  content: "";
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+.secao-tag {
+  color: var(--mp-terra);
+}
+
+.intro-titulo {
+  max-width: 16ch;
+  font-family: var(--fonte-display);
+  font-size: clamp(2rem, 1.1rem + 2.1vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.intro-titulo em {
+  font-style: italic;
+  color: #cfe0a6;
+}
+
+.intro-lead {
+  margin-top: 14px;
+  max-width: 40ch;
+  color: rgba(243, 236, 224, .86);
+  font-size: 1.05rem;
+}
+
+.intro-perfis {
+  margin-top: 26px;
+}
+
+.intro-lista {
+  display: grid;
+  gap: 10px;
+  max-width: 440px;
+}
+
+.intro-lista[hidden] {
+  display: none;
+}
+
+.intro-lista.trocando li {
+  animation: subir .5s var(--ease) both;
+}
+
+.intro-lista.trocando li:nth-child(2) { animation-delay: .06s; }
+.intro-lista.trocando li:nth-child(3) { animation-delay: .12s; }
+
+.intro-lista li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(250, 247, 241, .08);
+  border: 1px solid rgba(250, 247, 241, .14);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.intro-lista i {
+  color: var(--trigo);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.intro-seguranca {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: 800;
-  font-family: var(--fonte-corpo);
+  color: rgba(243, 236, 224, .82);
+  font-size: 14px;
 }
 
-
-.cadastro-header h1 {
-    color: white;
-
-    font-family: var(--fonte-display);
-
-    font-size: 34px;
-    font-weight: 700;
-
-    margin-bottom: 10px;
+.intro-seguranca i {
+  color: var(--trigo);
+  font-size: 18px;
 }
 
-
-.cadastro-header p {
-    color: rgba(255, 255, 255, 0.82);
-
-    font-size: 15px;
-
-    line-height: 1.5;
+/* ── Área do formulário ──────────────────────────────────── */
+.cadastro-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(20px, 3vw, 36px) clamp(16px, 5vw, 72px) clamp(40px, 5vw, 64px);
 }
 
-
-/* =============================================================
-   ESCOLHA DO TIPO DE CONTA
-   ============================================================= */
-
-.tipo-conta {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 12px;
-
-    margin-top: 35px;
+.area-topo {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  justify-content: flex-end;
 }
-
-
-.tipo-btn {
-    min-height: 95px;
-
-    border: 1px solid rgba(255, 255, 255, 0.35);
-
-    background: rgba(255, 255, 255, 0.08);
-
-    color: white;
-
-    border-radius: var(--radius-md);
-
-    padding: 14px 10px;
-
-    font-family: var(--fonte-corpo);
-
-    font-size: 14px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        background 0.25s,
-        border-color 0.25s,
-        color 0.25s,
-        transform 0.25s;
-}
-
-
-.tipo-btn i {
-    display: block;
-
-    font-size: 25px;
-
-    margin-bottom: 8px;
-}
-
-
-.tipo-btn:hover {
-    transform: translateY(-2px);
-
-    background: rgba(255, 255, 255, 0.15);
-}
-
-
-.tipo-btn.ativo {
-    background: white;
-
-    border-color: white;
-
-    color: var(--verde);
-}
-
-
-/* =============================================================
-   FORMULÁRIO
-   ============================================================= */
-
-.cadastro-form {
-    padding: 45px 55px;
-
-    display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    column-gap: 18px;
-    row-gap: 2px;
-
-    align-content: center;
-}
-
-
-/* =============================================================
-   CAMPOS
-   ============================================================= */
-
-.form-group {
-    margin-bottom: 15px;
-
-    min-width: 0;
-}
-
-
-.form-group.campo-full {
-    grid-column: 1 / -1;
-}
-
-
-.form-group label {
-    display: block;
-
-    color: var(--texto);
-
-    font-size: 14px;
-    font-weight: 700;
-
-    margin-bottom: 7px;
-}
-
-
-.form-group p {
-    min-height: 16px;
-}
-
-
-/* =============================================================
-   INPUTS
-   ============================================================= */
-
-.input-box {
-    width: 100%;
-}
-
-
-/* =============================================================
-   BOTÃO CADASTRAR
-   ============================================================= */
-
-#cadastrar {
-    grid-column: 1 / -1;
-
-    width: 100%;
-    height: 52px;
-
-    margin-top: 8px;
-
-    border: none;
-    border-radius: var(--radius-md);
-
-    background: var(--verde);
-
-    color: white;
-
-    font-family: var(--fonte-corpo);
-
-    font-size: 15px;
-    font-weight: 800;
-
-    cursor: pointer;
-
-    box-shadow: var(--sombra-sm);
-
-    transition:
-        background 0.25s,
-        transform 0.25s;
-}
-
-
-#cadastrar:hover:not(:disabled) {
-    background: var(--verde-medio);
-
-    transform: translateY(-2px);
-}
-
-
-#cadastrar:disabled {
-    opacity: 0.65;
-
-    cursor: not-allowed;
-}
-
-
-/* =============================================================
-   MENSAGEM DO CADASTRO
-   ============================================================= */
-
-#mensagemCadastrar {
-    grid-column: 1 / -1;
-
-    text-align: center;
-
-    font-weight: 700;
-
-    margin-top: 10px;
-
-    min-height: 20px;
-}
-
-
-/* =============================================================
-   LINKS
-   ============================================================= */
-
-.links {
-    grid-column: 1 / -1;
-
-    width: 100%;
-
-    margin-top: 12px;
-
-    padding-top: 18px;
-
-    border-top: 1px solid var(--borda);
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 15px;
-}
-
-
-.links a {
-    color: var(--verde);
-
-    text-decoration: none;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    transition: color 0.2s;
-}
-
-
-.links a:hover {
-    color: var(--verde-medio);
-}
-
-
-.links a:last-child {
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-}
-
-
-/* =============================================================
-   BOTÃO DE TEMA
-   ============================================================= */
 
 #temaBtn {
-    position: fixed;
-
-    right: 24px;
-    bottom: 24px;
-
-    z-index: 9999;
-
-    width: 52px;
-    height: 52px;
-
-    border: none;
-    border-radius: 50%;
-
-    background: var(--verde);
-
-    color: white;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    box-shadow: var(--sombra);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition:
-        transform 0.3s,
-        background 0.3s;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--mp-linha);
+  border-radius: 50%;
+  background: var(--mp-superficie);
+  color: var(--mp-titulo);
+  font-size: 17px;
+  cursor: pointer;
+  transition: border-color .25s, background-color .25s;
 }
 
+#temaBtn i {
+  transition: transform .4s var(--ease);
+}
 
 #temaBtn:hover {
-    transform: translateY(-3px);
-
-    background: var(--verde-medio);
+  border-color: var(--mp-destaque);
 }
 
-
-/* =============================================================
-   MODO ESCURO
-   ============================================================= */
-
-body.dark {
-    background:
-        linear-gradient(
-            rgba(16, 20, 17, 0.94),
-            rgba(16, 20, 17, 0.94)
-        ),
-        url("https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=1400&q=80");
-
-    color: white;
+#temaBtn:hover i {
+  transform: rotate(-18deg);
 }
 
-
-body.dark .cadastro-box {
-    background: #18201a;
-
-    border-color: #2a382c;
+.cadastro-box {
+  width: 100%;
+  max-width: 600px;
+  margin-block: auto;
+  padding-top: clamp(8px, 2vw, 20px);
 }
 
-
-body.dark .form-group label {
-    color: white;
+.cadastro-header h1 {
+  color: var(--mp-titulo);
+  font-family: var(--fonte-display);
+  font-size: clamp(2.2rem, 1.6rem + 1.6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
-
-body.dark .links {
-    border-color: #2a382c;
+.cadastro-header p {
+  margin-top: 10px;
+  color: var(--mp-suave);
+  font-size: 1.02rem;
 }
 
-
-body.dark .links a {
-    color: var(--verde-claro);
+/* Progresso */
+.progresso {
+  margin-top: 26px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--mp-superficie);
+  border: 1px solid var(--mp-linha);
 }
 
-
-body.dark .tipo-btn {
-    background: #101411;
-
-    border-color: #2a382c;
-
-    color: #f5f5f5;
+.progresso-texto {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: var(--mp-suave);
+  font-size: 13px;
+  font-weight: 500;
 }
 
-
-body.dark .tipo-btn.ativo,
-body.dark .tipo-btn:hover {
-    background: rgba(144, 169, 85, 0.12);
-
-    color: var(--verde-claro);
-
-    border-color: var(--verde-claro);
+#progressoContagem {
+  color: var(--mp-titulo);
+  font-weight: 700;
 }
 
-
-body.dark #temaBtn {
-    background: var(--branco);
-
-    color: var(--verde);
+.progresso-barra {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--mp-linha);
+  overflow: hidden;
 }
 
-
-/* =============================================================
-   RESPONSIVIDADE
-   ============================================================= */
-
-@media (max-width: 850px) {
-
-    .cadastro-box {
-        grid-template-columns: 1fr;
-
-        max-width: 600px;
-    }
-
-
-    .cadastro-intro {
-        padding: 40px 35px;
-    }
-
-
-    .cadastro-header .logo {
-        margin-bottom: 25px;
-    }
-
-
-    .tipo-conta {
-        max-width: 400px;
-    }
-
-
-    .cadastro-form {
-        padding: 40px 35px;
-    }
-
+.progresso-preenchido {
+  display: block;
+  width: var(--progresso, 0%);
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--verde-medio), var(--verde-claro));
+  transition: width .5s var(--ease);
 }
 
-
-@media (max-width: 600px) {
-
-    .cadastro-wrapper {
-        padding: 25px 14px 90px;
-
-        align-items: flex-start;
-    }
-
-
-    .cadastro-box {
-        border-radius: var(--radius-lg);
-    }
-
-
-    .cadastro-intro {
-        padding: 35px 25px;
-    }
-
-
-    .cadastro-header h1 {
-        font-size: 28px;
-    }
-
-
-    .cadastro-header .logo {
-        font-size: 20px;
-    }
-
-
-    .tipo-conta {
-        grid-template-columns: 1fr;
-
-        max-width: 280px;
-    }
-
-
-    .cadastro-form {
-        padding: 35px 22px;
-
-        grid-template-columns: 1fr;
-
-        row-gap: 0;
-    }
-
-
-    .form-group.campo-full {
-        grid-column: auto;
-    }
-
-
-    #cadastrar,
-    #mensagemCadastrar,
-    .links {
-        grid-column: auto;
-    }
-
-
-    .links {
-        flex-direction: column;
-
-        text-align: center;
-    }
-
-
-    #temaBtn {
-        width: 46px;
-        height: 46px;
-
-        right: 16px;
-        bottom: 16px;
-
-        font-size: 18px;
-    }
-
+/* Grupos (etapas) */
+.cadastro-form {
+  margin-top: 8px;
 }
 
+.grupo {
+  margin-top: 28px;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+  transition: opacity .3s ease;
+}
 
-@media (max-width: 380px) {
+.grupo-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 0;
+  color: var(--mp-titulo);
+  font-size: 15.5px;
+  font-weight: 700;
+}
 
-    .cadastro-intro {
-        padding: 30px 18px;
-    }
+.grupo-numero {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 10px 3px 10px 3px;
+  background: var(--verde-escuro);
+  color: var(--trigo);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color .35s ease;
+}
 
+.grupo-numero > * {
+  grid-area: 1 / 1;
+  transition: opacity .3s ease, transform .4s var(--ease);
+}
 
-    .cadastro-form {
-        padding: 30px 16px;
-    }
+.grupo-numero i {
+  opacity: 0;
+  transform: scale(.4);
+  font-size: 15px;
+}
 
+.grupo.completo .grupo-numero {
+  background: var(--verde-medio);
+  color: #fff;
+}
 
-    .cadastro-header h1 {
-        font-size: 25px;
-    }
+.grupo.completo .grupo-numero span {
+  opacity: 0;
+  transform: scale(.4);
+}
 
+.grupo.completo .grupo-numero i {
+  opacity: 1;
+  transform: none;
+}
 
-    .logo {
-        font-size: 18px;
-    }
+body.dark .grupo-numero {
+  background: var(--verde-medio);
+  color: var(--off-white);
+}
 
+body.dark .grupo.completo .grupo-numero {
+  background: #6f9a45;
+}
+
+.grupo-campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 14px;
+}
+
+.campo-full {
+  grid-column: 1 / -1;
+}
+
+/* Tipo de conta */
+.tipo-conta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.tipo-btn {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  align-items: center;
+  column-gap: 14px;
+  min-height: 86px;
+  padding: 16px 44px 16px 16px;
+  border: 1.5px solid var(--mp-linha);
+  border-radius: 20px;
+  background: var(--mp-superficie);
+  color: var(--mp-titulo);
+  font: 700 16px/1.25 var(--fonte-corpo);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color .25s ease,
+    background-color .25s ease,
+    box-shadow .3s ease,
+    transform .3s var(--ease);
+}
+
+.tipo-btn i {
+  grid-row: 1 / span 2;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px 4px 14px 4px;
+  background: var(--mp-nevoa);
+  color: var(--mp-destaque);
+  font-size: 21px;
+  transition: background-color .3s, color .3s, border-radius .4s var(--ease);
+}
+
+/* Descrição vem de data-descricao para não alterar o texto
+   do botão, que o cadastro.js usa como tipo de conta. */
+.tipo-btn::after {
+  content: attr(data-descricao);
+  grid-column: 2;
+  margin-top: 2px;
+  color: var(--mp-suave);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* Indicador de seleção */
+.tipo-btn::before {
+  content: "";
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--mp-linha-forte);
+  background: var(--mp-superficie);
+  transition: border-width .25s var(--ease), border-color .25s;
+}
+
+.tipo-btn:hover {
+  border-color: var(--mp-linha-forte);
+  transform: translateY(-2px);
+  box-shadow: var(--mp-sombra-sm);
+}
+
+.tipo-btn:hover i {
+  border-radius: 4px 14px 4px 14px;
+}
+
+.tipo-btn:active {
+  transform: scale(.985);
+}
+
+.tipo-btn.ativo {
+  border-color: var(--mp-destaque);
+  background: linear-gradient(160deg, var(--mp-nevoa), var(--mp-superficie) 75%);
+  box-shadow: 0 0 0 4px rgba(79, 119, 45, .1);
+}
+
+.tipo-btn.ativo::before {
+  border: 6px solid var(--mp-destaque);
+}
+
+.tipo-btn.ativo i {
+  background: var(--verde-escuro);
+  color: var(--trigo);
+}
+
+body.dark .tipo-btn.ativo i {
+  background: var(--verde-medio);
+  color: var(--off-white);
+}
+
+/* Campos */
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--mp-titulo);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.cadastro-form .form-group .input-box {
+  height: 54px;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1.5px solid var(--mp-linha);
+  border-radius: 14px;
+  background: var(--mp-campo);
+  transition: border-color .25s ease, box-shadow .25s ease, background-color .25s ease;
+}
+
+.cadastro-form .form-group .input-box:hover {
+  border-color: var(--mp-linha-forte);
+}
+
+.cadastro-form .form-group .input-box:focus-within {
+  border-color: var(--mp-destaque);
+  background: var(--mp-superficie);
+  box-shadow: 0 0 0 4px rgba(79, 119, 45, .14);
+}
+
+.cadastro-form .input-box > i {
+  color: var(--mp-suave);
+  font-size: 18px;
+  transition: color .25s ease, transform .35s var(--ease);
+}
+
+.cadastro-form .input-box:focus-within > i {
+  color: var(--mp-destaque);
+  transform: scale(1.08);
+}
+
+.cadastro-form .input-box input {
+  color: var(--mp-texto);
+  font-size: 15.5px;
+}
+
+.cadastro-form .input-box input::placeholder {
+  color: #9ba597;
+}
+
+body.dark .cadastro-form .input-box input::placeholder {
+  color: #6d7868;
+}
+
+.show-pass {
+  width: 36px;
+  height: 36px;
+  justify-content: center;
+  margin-right: -6px;
+  border-radius: 10px;
+  color: var(--mp-suave);
+  transition: background-color .2s, color .2s;
+}
+
+/* tokens.css pinta todo ".input-box i" de verde fixo */
+.cadastro-form .show-pass i,
+.cadastro-form .campo-status i {
+  color: inherit;
+}
+
+.show-pass:hover {
+  background: var(--mp-nevoa);
+  color: var(--mp-destaque);
+}
+
+.campo-status {
+  width: 20px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--mp-destaque);
+  font-size: 17px;
+  opacity: 0;
+  transform: scale(.4);
+  transition: opacity .25s ease, transform .35s var(--ease);
+}
+
+/* Estado: preenchido corretamente */
+.form-group[data-estado="ok"] .input-box {
+  border-color: rgba(79, 119, 45, .55);
+}
+
+body.dark .form-group[data-estado="ok"] .input-box {
+  border-color: rgba(167, 199, 119, .45);
+}
+
+.form-group[data-estado="ok"] .campo-status {
+  opacity: 1;
+  transform: none;
+}
+
+.form-group[data-estado="ok"] .input-box > i {
+  color: var(--mp-destaque);
+}
+
+/* Estado: erro */
+.cadastro-form .form-group[data-estado="erro"] .input-box {
+  border-color: var(--mp-erro);
+  background: var(--mp-erro-fundo);
+}
+
+.cadastro-form .form-group[data-estado="erro"] .input-box:focus-within {
+  box-shadow: 0 0 0 4px rgba(179, 38, 30, .12);
+}
+
+.form-group[data-estado="erro"] .input-box > i,
+.form-group[data-estado="erro"] label {
+  color: var(--mp-erro);
+}
+
+.form-group.tremer .input-box {
+  animation: tremer .35s ease;
+}
+
+/* Mensagens do cadastro.js (classes msg-erro / msg-sucesso) */
+.form-group > p[role="alert"]:empty {
+  display: none;
+}
+
+.form-group > p[role="alert"] {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-height: 0;
+  margin-top: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  animation: subir .3s var(--ease) both;
+}
+
+.form-group > p.msg-erro {
+  color: var(--mp-erro);
+}
+
+.form-group > p.msg-sucesso {
+  color: var(--mp-destaque);
+}
+
+.form-group > p.msg-erro::before,
+.form-group > p.msg-sucesso::before,
+#mensagemCadastrar.msg-erro::before,
+#mensagemCadastrar.msg-sucesso::before {
+  font-family: "bootstrap-icons";
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+.form-group > p.msg-erro::before,
+#mensagemCadastrar.msg-erro::before {
+  content: "\f332";
+}
+
+.form-group > p.msg-sucesso::before,
+#mensagemCadastrar.msg-sucesso::before {
+  content: "\f26a";
+}
+
+/* Requisitos de senha */
+.requisitos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--mp-fundo-alt);
+  color: var(--mp-suave);
+  font-size: 13px;
+}
+
+.requisitos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: color .25s ease;
+}
+
+.requisitos i {
+  font-size: 14px;
+  transition: transform .35s var(--ease);
+}
+
+.requisitos li.cumprido {
+  color: var(--mp-destaque);
+  font-weight: 600;
+}
+
+.requisitos li.cumprido i {
+  transform: scale(1.1);
+}
+
+/* Envio */
+.envio {
+  margin-top: 30px;
+}
+
+#cadastrar {
+  width: 100%;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--verde);
+  color: #fff;
+  font: 700 16px/1.2 var(--fonte-corpo);
+  cursor: pointer;
+  transition:
+    background-color .25s ease,
+    box-shadow .3s ease,
+    transform .25s var(--ease);
+}
+
+/* Seta via pseudo-elemento: o cadastro.js troca o texto do botão */
+#cadastrar::after {
+  content: "\f138";
+  font-family: "bootstrap-icons";
+  font-weight: normal;
+  font-size: 1.05em;
+  transition: transform .3s var(--ease);
+}
+
+#cadastrar:hover:not(:disabled) {
+  background: var(--verde-escuro);
+  box-shadow: 0 14px 28px -12px rgba(31, 58, 29, .6);
+  transform: translateY(-2px);
+}
+
+#cadastrar:hover:not(:disabled)::after {
+  transform: translateX(4px);
+}
+
+#cadastrar:active:not(:disabled) {
+  transform: scale(.98);
+}
+
+#cadastrar:disabled {
+  background: var(--verde-medio);
+  cursor: progress;
+}
+
+/* Indicador de carregamento enquanto envia */
+#cadastrar:disabled::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .35);
+  border-top-color: #fff;
+  animation: girar .8s linear infinite;
+}
+
+body.dark #cadastrar {
+  background: var(--verde-medio);
+}
+
+body.dark #cadastrar:hover:not(:disabled) {
+  background: #5d8a35;
+  box-shadow: 0 14px 28px -12px rgba(0, 0, 0, .7);
+}
+
+.cadastro-form.enviando .grupo {
+  opacity: .6;
+  pointer-events: none;
+}
+
+#mensagemCadastrar:empty {
+  display: none;
+}
+
+#mensagemCadastrar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  min-height: 0;
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  animation: subir .35s var(--ease) both;
+}
+
+#mensagemCadastrar.msg-erro {
+  background: var(--mp-erro-fundo);
+  border: 1px solid rgba(179, 38, 30, .25);
+  color: var(--mp-erro);
+}
+
+#mensagemCadastrar.msg-sucesso {
+  background: var(--mp-nevoa);
+  border: 1px solid rgba(79, 119, 45, .3);
+  color: var(--mp-destaque);
+}
+
+/* Links */
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--mp-linha);
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--mp-suave);
+  font-size: 14.5px;
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.links a strong {
+  color: var(--mp-destaque);
+  font-weight: 700;
+}
+
+.links a:hover {
+  color: var(--mp-titulo);
+}
+
+.links a:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.links a i {
+  transition: transform .3s var(--ease);
+}
+
+.links a:hover i {
+  transform: translateX(-4px);
+}
+
+:focus-visible {
+  outline-color: var(--mp-destaque);
+}
+
+.cadastro-intro :focus-visible {
+  outline-color: var(--trigo);
+}
+
+/* ── Animações ───────────────────────────────────────────── */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes aproximar {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes tremer {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-4px); }
+  50%      { transform: translateX(3px); }
+  75%      { transform: translateX(-2px); }
+}
+
+.entrada {
+  animation: subir .8s var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 100ms);
+}
+
+/* ── Responsivo ──────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .cadastro-wrapper {
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  }
+
+  .cadastro-area {
+    padding-inline: clamp(16px, 4vw, 48px);
+  }
+}
+
+/* Tablet e celular: apresentação vira faixa no topo */
+@media (max-width: 900px) {
+  .cadastro-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-intro {
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 0;
+    margin: 12px 12px 0;
+    border-radius: 28px 28px 120px 28px;
+  }
+
+  .intro-conteudo {
+    padding: 24px 24px 30px;
+    gap: 40px;
+  }
+
+  .intro-titulo {
+    max-width: 20ch;
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.4rem);
+  }
+
+  .intro-lista {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+  }
+
+  .intro-lista li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  .intro-seguranca {
+    display: none;
+  }
+
+  /* Botão de tema sobre a faixa, no canto superior direito */
+  .area-topo {
+    position: absolute;
+    top: 28px;
+    right: 28px;
+    width: auto;
+    z-index: 2;
+  }
+
+  #temaBtn {
+    background: rgba(250, 247, 241, .14);
+    border-color: rgba(250, 247, 241, .3);
+    color: var(--off-white);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .cadastro-area {
+    padding-top: 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .intro-perfis,
+  .intro-lead {
+    display: none;
+  }
+
+  .intro-conteudo {
+    gap: 28px;
+    padding: 20px 20px 26px;
+  }
+
+  .cadastro-intro {
+    border-radius: 24px 24px 90px 24px;
+  }
+
+  .area-topo {
+    top: 24px;
+    right: 24px;
+  }
+
+  .grupo-campos {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-header h1 {
+    font-size: 2rem;
+  }
+
+  .links {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tipo-btn {
+    grid-template-columns: 1fr;
+    align-content: start;
+    row-gap: 10px;
+    min-height: 0;
+    padding: 14px 14px 16px;
+    font-size: 15.5px;
+  }
+
+  .tipo-btn i {
+    grid-row: auto;
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+  }
+
+  .tipo-btn::after {
+    grid-column: 1;
+    margin-top: -6px;
+    font-size: 12.5px;
+  }
+
+  .tipo-btn::before {
+    top: 14px;
+    right: 14px;
+  }
+
+  .progresso-texto {
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logo-texto {
+    font-size: 16px;
+  }
+
+  .tipo-conta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  /* O indicador de envio continua girando, mais devagar */
+  #cadastrar:disabled::after {
+    animation-duration: 1.4s !important;
+    animation-iteration-count: infinite !important;
+  }
+
+  .intro-foto {
+    transform: none;
+  }
+}
+
+/* ── Consentimento (LGPD) ─────────────────────────────────── */
+.consentimento {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .25rem .75rem;
+  align-items: start;
+  margin: .5rem 0 1.25rem;
+  color: var(--mp-texto);
+  font-size: .95rem;
+  line-height: 1.5;
+}
+.consentimento input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  margin-top: .1rem;
+  accent-color: var(--verde-medio);
+  cursor: pointer;
+}
+.consentimento label { cursor: pointer; }
+.consentimento a {
+  color: var(--mp-destaque);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.consentimento input:focus-visible,
+.consentimento a:focus-visible {
+  outline: 3px solid var(--alerta);
+  outline-offset: 3px;
+}
+.consentimento p { grid-column: 1 / -1; margin: 0; }
+.consentimento p:empty { display: none; }
+.consentimento p.msg-erro { color: var(--mp-erro); font-weight: 600; font-size: 13px; }
+
+/* Desempenho no celular: desfoque de fundo (backdrop-filter) é o efeito que mais trava
+   a rolagem em aparelhos simples. Abaixo de 900px ele sai e o fundo fica sólido. */
+@media (max-width: 900px), (hover: none) {
+  *, *::before, *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
 }

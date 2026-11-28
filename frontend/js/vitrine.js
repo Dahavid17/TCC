@@ -31,13 +31,13 @@
     // Promoção: preço normal riscado de vermelho e o preço novo em destaque ao lado.
     function precoHtml(produto) {
         if (!produto.em_promocao) {
-            return `<strong class="preco-atual">${dinheiro(produto.preco)}</strong>`;
+            return `<strong class="preco-atual produto-preco">${dinheiro(produto.preco)}</strong>`;
         }
 
         return `
             <div class="precos">
                 <s class="preco-antigo" aria-label="Preço normal">${dinheiro(produto.preco_base)}</s>
-                <strong class="preco-atual preco-promocao" aria-label="Preço na promoção">${dinheiro(produto.preco)}</strong>
+                <strong class="preco-atual produto-preco preco-promocao" aria-label="Preço na promoção">${dinheiro(produto.preco)}</strong>
             </div>`;
     }
 
@@ -59,33 +59,42 @@
         const meu = produto.vendedor_id === usuarioId;
         const favorito = favoritosIds.has(produto.id);
 
+        // Visual dos cartões: dashboard.css (vitrine do Início e aba Produtos).
+        let acao;
+        if (meu) {
+            acao = `<button type="button" class="btn-ver" data-ir="meus-produtos.html">Seu produto</button>`;
+        } else if (produto.estoque === 0) {
+            acao = `<button type="button" class="btn-ver" disabled>Esgotado</button>`;
+        } else {
+            acao = `<button type="button" class="btn-ver" data-comprar="${produto.id}">Fazer pedido</button>`;
+        }
+
         return `
-            <article class="produto-card${produto.em_promocao ? " em-promocao" : ""}">
-                ${seloHtml(produto)}
-                <button type="button" class="btn-favorito" data-favoritar="${produto.id}"
-                        aria-label="${favorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}">
-                    <i class="bi ${favorito ? "bi-heart-fill" : "bi-heart"}"></i>
-                </button>
-                <img src="${escapeHtml(imagem)}" alt="${escapeHtml(produto.nome)}">
+            <article class="produto-card${produto.em_promocao ? " em-promocao" : ""}" data-produto-id="${produto.id}">
+                <div class="produto-imagem">
+                    ${seloHtml(produto)}
+                    <img src="${escapeHtml(imagem)}" alt="${escapeHtml(produto.nome)}" loading="lazy" data-fallback="produto">
+                    <button type="button" class="btn-favorito${favorito ? " ativo" : ""}" data-favoritar="${produto.id}"
+                            aria-label="${favorito ? "Remover dos favoritos" : "Adicionar aos favoritos"}" aria-pressed="${favorito}">
+                        <i class="bi ${favorito ? "bi-heart-fill" : "bi-heart"}"></i>
+                    </button>
+                </div>
                 <div class="produto-info">
+                    <span class="produto-categoria">${escapeHtml(NOMES_CATEGORIA[produto.categoria] || produto.categoria)}</span>
                     <h3>${escapeHtml(produto.nome)}</h3>
-                    <p>${escapeHtml(NOMES_CATEGORIA[produto.categoria] || produto.categoria)} · ${escapeHtml(produto.vendedor_nome)}</p>
-                    ${precoHtml(produto)}
+                    <span class="produto-produtor">${escapeHtml(produto.vendedor_nome)}</span>
+                    <span class="produto-local"><i class="bi bi-box-seam"></i> ${produto.estoque} em estoque</span>
                     ${meu
-                        ? `<div class="produto-acoes">
-                               <button class="btn-comprar" data-ir="meus-produtos.html">Seu produto</button>
-                               <button class="btn-negociar" data-proprio="${produto.id}">
-                                   <i class="bi bi-chat-dots"></i> Negociar
-                               </button>
-                           </div>`
-                        : `<div class="produto-acoes">
-                               ${produto.estoque === 0
-                                   ? `<button class="btn-comprar" disabled>Esgotado</button>`
-                                   : `<button class="btn-comprar" data-comprar="${produto.id}">Fazer pedido</button>`}
-                               <button class="btn-negociar" data-ir="negociacoes.html?anuncio=${produto.id}">
-                                   <i class="bi bi-chat-dots"></i> Negociar
-                               </button>
-                           </div>`}
+                        ? `<button type="button" class="produto-negociar" data-proprio="${produto.id}">
+                               <i class="bi bi-chat-dots"></i> Negociar
+                           </button>`
+                        : `<a href="negociacoes.html?anuncio=${produto.id}" class="produto-negociar">
+                               <i class="bi bi-chat-dots"></i> Negociar com o produtor
+                           </a>`}
+                    <div class="produto-rodape">
+                        ${precoHtml(produto)}
+                        ${acao}
+                    </div>
                 </div>
             </article>`;
     }
@@ -150,8 +159,12 @@
 
         inputQuantidade.addEventListener("input", atualizarTotal);
         document.getElementById("compraCancelar").addEventListener("click", fechar);
+        document.getElementById("compraFechar")?.addEventListener("click", fechar);
         modalCompra.addEventListener("click", e => {
             if (e.target === modalCompra) fechar();
+        });
+        document.addEventListener("keydown", e => {
+            if (e.key === "Escape" && modalCompra.classList.contains("ativo")) fechar();
         });
 
         btnConfirmar.addEventListener("click", async () => {

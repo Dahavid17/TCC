@@ -2,10 +2,19 @@
 declare(strict_types=1);
 
 // Funções compartilhadas pelos endpoints JSON do marketplace.
+// Base: versão do servidor de 22/11/2026 (promoções, destaque e vendidos).
+// Acrescentado em 25/11/2026 (migração 009): cultura, unidade, localização, total de fotos,
+// reputação do vendedor (avaliacoes) e validação da galeria de fotos.
 
 const CATEGORIAS_PRODUTO = ['hortalicas', 'frutas', 'graos', 'laticinios', 'carnes', 'flores'];
 const PASTA_FOTOS_PRODUTO = 'uploads/produtos/';
 const TAMANHO_MAX_FOTO = 3 * 1024 * 1024;
+const MAX_FOTOS_PRODUTO = 8;
+
+const CULTURAS_ANUNCIO = [
+    'soja', 'milho', 'cafe', 'feijao', 'trigo', 'arroz', 'cana', 'algodao', 'sorgo',
+    'mandioca', 'laranja', 'banana', 'tomate', 'batata', 'hortalicas', 'pastagem', 'eucalipto', 'outra',
+];
 
 // Promoção: vale quando preco_promocional existe e é menor que o preço base.
 const SQL_PRECO_VENDA = 'CASE WHEN a.preco_promocional IS NOT NULL AND a.preco_promocional < a.preco
@@ -14,11 +23,15 @@ const SQL_PRECO_VENDA = 'CASE WHEN a.preco_promocional IS NOT NULL AND a.preco_p
 const SQL_PRODUTO = "SELECT a.id, a.titulo AS nome, a.categoria, a.preco, a.preco_promocional,
         a.destaque, a.quantidade_estoque AS estoque, a.descricao, a.status,
         a.vendedor_id, u.nome AS vendedor_nome,
+        a.cultura, NULL AS unidade, a.localizacao, a.data_criacao,
         (SELECT f.url_imagem FROM anuncios_fotos f
           WHERE f.anuncio_id = a.id ORDER BY f.ordem, f.id LIMIT 1) AS imagem,
+        (SELECT COUNT(*) FROM anuncios_fotos f2 WHERE f2.anuncio_id = a.id) AS total_fotos,
         (SELECT COALESCE(SUM(i.quantidade), 0) FROM pedido_itens i
            JOIN pedidos p ON p.id = i.pedido_id
-          WHERE i.anuncio_id = a.id AND p.status <> 'cancelado') AS vendidos
+          WHERE i.anuncio_id = a.id AND p.status <> 'cancelado') AS vendidos,
+        (SELECT AVG(av.nota) FROM avaliacoes av WHERE av.avaliado_id = a.vendedor_id) AS vendedor_nota,
+        (SELECT COUNT(*) FROM avaliacoes av2 WHERE av2.avaliado_id = a.vendedor_id) AS vendedor_avaliacoes
     FROM anuncios a
     JOIN usuarios u ON u.id = a.vendedor_id";
 
@@ -77,6 +90,12 @@ function normalizar_produto(array $linha): array
         'imagem'        => $linha['imagem'],
         'vendedor_id'   => (int) $linha['vendedor_id'],
         'vendedor_nome' => $linha['vendedor_nome'],
+        'cultura'       => $linha['cultura'] ?? null,
+        'unidade'       => $linha['unidade'] ?? null,
+        'localizacao'   => $linha['localizacao'] ?? null,
+        'total_fotos'   => (int) ($linha['total_fotos'] ?? 0),
+        'vendedor_nota' => isset($linha['vendedor_nota']) ? round((float) $linha['vendedor_nota'], 1) : null,
+        'vendedor_avaliacoes' => (int) ($linha['vendedor_avaliacoes'] ?? 0),
     ];
 }
 
@@ -130,6 +149,30 @@ function validar_dados_produto(): array
     ];
 }
 
+// Preço cobrado de fato (com promoção) a partir dos dados validados.
+function preco_efetivo(array $dados): float
+{
+    $promo = $dados['preco_promocional'];
+
+    return $promo !== null && (float) $promo < (float) $dados['preco'] ? (float) $promo : (float) $dados['preco'];
+}
+
+// Campo opcional "cultura" do anúncio (filtro por cultura no catálogo).
+function validar_cultura_produto(): ?string
+{
+    $cultura = trim((string) ($_POST['cultura'] ?? ''));
+
+    if ($cultura === '') {
+        return null;
+    }
+
+    if (!in_array($cultura, CULTURAS_ANUNCIO, true)) {
+        responder(422, ['sucesso' => false, 'mensagem' => 'Cultura inválida.']);
+    }
+
+    return $cultura;
+}
+
 // Valida a imagem enviada (campo "imagem"). Devolve null se nenhuma foi enviada.
 function validar_imagem_produto(): ?array
 {
@@ -155,6 +198,43 @@ function validar_imagem_produto(): ?array
     }
 
     return ['tmp' => $arquivo['tmp_name'], 'ext' => $extensoes[$mime]];
+}
+
+// Valida as fotos da galeria (campo "imagens[]"), no máximo $limite. Devolve a lista validada.
+function validar_imagens_produto(int $limite): array
+{
+    $arquivos = $_FILES['imagens'] ?? null;
+
+    if (!$arquivos || !is_array($arquivos['name'] ?? null)) {
+        return [];
+    }
+
+    $validas = [];
+    $extensoes = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+
+    foreach ($arquivos['name'] as $i => $nome) {
+        if ($arquivos['error'][$i] === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+        if ($arquivos['error'][$i] !== UPLOAD_ERR_OK || !is_uploaded_file($arquivos['tmp_name'][$i])) {
+            responder(422, ['sucesso' => false, 'mensagem' => 'Não foi possível receber uma das imagens.']);
+        }
+        if ($arquivos['size'][$i] > TAMANHO_MAX_FOTO) {
+            responder(422, ['sucesso' => false, 'mensagem' => 'Cada imagem deve ter no máximo 3 MB.']);
+        }
+        $mime = $finfo->file($arquivos['tmp_name'][$i]);
+        if (!isset($extensoes[$mime]) || @getimagesize($arquivos['tmp_name'][$i]) === false) {
+            responder(422, ['sucesso' => false, 'mensagem' => 'Envie imagens JPG, PNG ou WEBP.']);
+        }
+        $validas[] = ['tmp' => $arquivos['tmp_name'][$i], 'ext' => $extensoes[$mime]];
+    }
+
+    if (count($validas) > $limite) {
+        responder(422, ['sucesso' => false, 'mensagem' => 'Cada produto pode ter no máximo ' . MAX_FOTOS_PRODUTO . ' fotos.']);
+    }
+
+    return $validas;
 }
 
 // Move a imagem validada para uploads/produtos/ e devolve o caminho relativo à raiz do site.

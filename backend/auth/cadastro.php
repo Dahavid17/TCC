@@ -40,6 +40,11 @@ if ($nome === '' || !$email || $senha === '') {
     responder(422, ['sucesso' => false, 'mensagem' => 'Preencha todos os campos obrigatórios.']);
 }
 
+// LGPD: a conta só é criada com o aceite dos Termos de Uso e da Política de Privacidade.
+if (($_POST['aceiteTermos'] ?? '') !== '1') {
+    responder(422, ['sucesso' => false, 'mensagem' => 'Para criar a conta, é preciso concordar com os Termos de Uso e a Política de Privacidade.']);
+}
+
 if ($senha !== $confirmarSenha) {
     responder(422, ['sucesso' => false, 'mensagem' => 'As senhas não coincidem.']);
 }
@@ -77,6 +82,16 @@ try {
 
     // Conta criada, mas ainda sem acesso: fica aguardando o código.
     $usuarioId = (int) $pdo->lastInsertId();
+
+    // Prova do consentimento (data/hora e versão dos termos). Se a migração 011 ainda não
+    // foi aplicada, o cadastro continua funcionando normalmente.
+    try {
+        $pdo->prepare('UPDATE usuarios SET termos_aceitos_em = NOW(), termos_versao = :versao WHERE id = :id')
+            ->execute([':versao' => '2026-11-27', ':id' => $usuarioId]);
+    } catch (PDOException $semColuna) {
+        error_log('[MARKETPLACE_CADASTRO] aceite dos termos não registrado: ' . $semColuna->getMessage());
+    }
+
     session_regenerate_id(true);
     $_SESSION['verificar_usuario_id'] = $usuarioId;
 

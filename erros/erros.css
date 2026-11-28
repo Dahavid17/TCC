@@ -1,0 +1,274 @@
+/* =============================================================
+   ERROS.CSS — Páginas de erro (400, 401, 403, 404, 500, 503, 505...)
+   Usa os tokens de /frontend/css/tokens.css.
+   Todos os caminhos nas páginas de erro são ABSOLUTOS (começam com /),
+   porque o servidor mostra a página de erro no endereço que deu erro
+   (ex.: /pasta/qualquer/coisa) e caminhos relativos quebrariam.
+   ============================================================= */
+
+body.erro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(circle at 15% 10%, var(--verde-nevoa) 0, transparent 45%),
+    radial-gradient(circle at 90% 90%, var(--trigo) 0, transparent 40%),
+    var(--off-white);
+  color: var(--texto);
+  line-height: 1.6;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+.erro-topo {
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+.erro-logo {
+  color: var(--verde-escuro);
+  font-weight: 800;
+  font-size: 1.125rem;
+  text-decoration: none;
+}
+
+.erro-conteudo {
+  flex: 1;
+  max-width: 1080px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  align-items: center;
+  gap: 2rem 4rem;
+}
+
+/* ── Mascote + código ─────────────────────────────────────── */
+.erro-ilustracao {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.erro-codigo {
+  font-family: var(--fonte-display);
+  font-weight: 700;
+  font-size: clamp(6rem, 18vw, 11rem);
+  line-height: 1;
+  color: var(--verde-nevoa);
+  -webkit-text-stroke: 2px var(--verde-claro);
+  letter-spacing: -.02em;
+  user-select: none;
+}
+/* ── Bento, o mascote (SVG em /assets/img/mascote/bento.svg) ──
+   O SVG tem várias poses escondidas; a classe pose-* mostra uma delas
+   (mesma ideia do onboarding.css). */
+.erro-ben {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-top: -2rem;
+}
+.erro-mascote {
+  width: clamp(120px, 15vw, 165px);
+  flex-shrink: 0;
+}
+.erro-mascote svg,
+.erro-mascote img { display: block; width: 100%; height: auto; }
+
+.erro-fala {
+  position: relative;
+  max-width: 200px;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: var(--radius-md);
+  padding: .7rem .9rem;
+  font-size: .9rem;
+  line-height: 1.45;
+  box-shadow: var(--sombra-sm);
+}
+.erro-fala::before {           /* rabinho do balão apontando para o Bento */
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 14px; height: 14px;
+  background: inherit;
+  border-left: 1px solid var(--borda);
+  border-bottom: 1px solid var(--borda);
+  transform: translateY(-50%) rotate(45deg);
+}
+.erro-fala strong { color: var(--verde); }
+
+/* Sempre: pisca, abana o rabo e inclina a cabeça */
+.erro-mascote .mascote-olhos   { transform-box: fill-box; transform-origin: center; animation: ben-piscar 4s infinite; }
+.erro-mascote .mascote-cabeca  { transform-box: fill-box; transform-origin: 50% 90%; animation: ben-inclinar 5s ease-in-out infinite; }
+.erro-mascote .mascote-rabo    { transform-box: fill-box; transform-origin: 0% 100%; animation: ben-abanar .9s ease-in-out infinite; }
+
+/* Braços/objetos de cada pose */
+.erro-mascote .mascote-braco { display: none; }
+.erro-mascote .braco-direito { display: inline; }
+.erro-mascote.pose-acenando .mascote-braco { display: inline; transform-box: fill-box; transform-origin: 0% 100%; animation: ben-acenar 1.2s ease-in-out infinite; }
+.erro-mascote.pose-acenando .braco-direito { display: none; }
+
+.erro-mascote.pose-apontando .apontar-dir { display: inline; }
+.erro-mascote.pose-apontando .braco-direito { display: none; }
+.erro-mascote.pose-apontando .apontar-cutucar { animation: ben-cutucar .8s ease-in-out infinite; }
+.erro-mascote.pose-apontando .mascote-pupilas { transform: translate(2px, 0); }
+
+.erro-mascote.pose-anotando .prop-caderneta,
+.erro-mascote.pose-digitando .prop-notebook { display: inline; }
+.erro-mascote.pose-anotando :is(.braco-esquerdo, .braco-direito),
+.erro-mascote.pose-digitando :is(.braco-esquerdo, .braco-direito) { display: none; }
+.erro-mascote:is(.pose-anotando, .pose-digitando) .mascote-pupilas { transform: translate(0, 3px); }
+.erro-mascote:is(.pose-anotando, .pose-digitando) .mascote-cabeca { animation: ben-concentrar 3s ease-in-out infinite; }
+.erro-mascote .caderneta-lapis { animation: ben-escrever .5s ease-in-out infinite; }
+.erro-mascote .caderneta-escrita { stroke-dasharray: 26; animation: ben-tracar 2.4s ease-in-out infinite; }
+.erro-mascote .notebook-pata-esq,
+.erro-mascote .notebook-pata-dir { animation: ben-digitar .3s ease-in-out infinite alternate; }
+.erro-mascote .notebook-pata-dir { animation-delay: .15s; }
+
+.erro-mascote.pose-olhando .mascote-cabeca { animation: ben-olhar 3s ease-in-out infinite; }
+.erro-mascote.pose-olhando .mascote-pupilas { transform: translate(-2px, -2px); }
+
+@keyframes ben-piscar    { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+@keyframes ben-inclinar  { 0%, 60%, 100% { transform: rotate(0); } 70%, 85% { transform: rotate(-6deg); } }
+@keyframes ben-abanar    { 0%, 100% { transform: rotate(-10deg); } 50% { transform: rotate(14deg); } }
+@keyframes ben-acenar    { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-18deg); } 75% { transform: rotate(14deg); } }
+@keyframes ben-cutucar   { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(3px); } }
+@keyframes ben-concentrar { 0%, 100% { transform: rotate(3deg); } 50% { transform: rotate(5deg); } }
+@keyframes ben-escrever  { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(-2px, 1px); } 66% { transform: translate(2px, -.5px); } }
+@keyframes ben-tracar    { 0% { stroke-dashoffset: 26; } 70%, 100% { stroke-dashoffset: 0; } }
+@keyframes ben-digitar   { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+@keyframes ben-olhar     { 0%, 100% { transform: rotate(0); } 40%, 70% { transform: rotate(-10deg); } }
+
+/* ── Texto ────────────────────────────────────────────────── */
+.erro-selo {
+  display: inline-block;
+  background: var(--verde-nevoa);
+  color: var(--verde-escuro);
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .35rem .85rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+}
+.erro-texto h1 {
+  font-family: var(--fonte-display);
+  color: var(--verde-escuro);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  margin-bottom: .75rem;
+}
+.erro-texto p {
+  color: var(--suave);
+  font-size: 1.0625rem;
+  max-width: 52ch;
+}
+.erro-dica {
+  margin-top: 1rem;
+  padding: .85rem 1rem;
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-left: 4px solid var(--verde-claro);
+  border-radius: var(--radius-sm);
+  font-size: .95rem;
+}
+
+.erro-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 1.75rem;
+}
+.erro-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .8rem 1.4rem;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid var(--verde);
+  transition: background .2s, color .2s, transform .2s;
+}
+.erro-btn:hover { transform: translateY(-2px); }
+.erro-btn-primario { background: var(--verde); color: #fff; }
+.erro-btn-primario:hover { background: var(--verde-escuro); border-color: var(--verde-escuro); }
+.erro-btn-secundario { background: transparent; color: var(--verde); }
+.erro-btn-secundario:hover { background: var(--verde-nevoa); }
+
+.erro-detalhe {
+  margin-top: 1.5rem;
+  font-size: .85rem;
+  color: var(--suave);
+}
+.erro-detalhe code {
+  background: var(--bege);
+  padding: .1rem .4rem;
+  border-radius: 6px;
+  word-break: break-all;
+}
+
+.erro-rodape {
+  text-align: center;
+  padding: 1.25rem;
+  font-size: .875rem;
+  color: var(--suave);
+}
+.erro-rodape a { color: var(--verde); }
+
+/* ── Celular ──────────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .erro-conteudo {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: .5rem;
+  }
+  .erro-texto p { margin-inline: auto; }
+  .erro-dica { text-align: left; }
+  .erro-acoes { justify-content: center; }
+  .erro-codigo { font-size: 5.5rem; }
+  .erro-ben { margin-top: -1.25rem; }
+  .erro-mascote { width: 105px; }
+  .erro-fala { text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erro-mascote * { animation: none !important; }
+  .erro-btn { transition: none; }
+  .erro-btn:hover { transform: none; }
+}
+
+/* ── Tema escuro (mesma chave do resto do site) ───────────── */
+html.tema-escuro body.erro {
+  background:
+    radial-gradient(circle at 15% 10%, #1f2a1d 0, transparent 45%),
+    #121712;
+  color: #e8ece6;
+}
+html.tema-escuro .erro-logo,
+html.tema-escuro .erro-texto h1 { color: #cfe3b5; }
+html.tema-escuro .erro-texto p,
+html.tema-escuro .erro-detalhe,
+html.tema-escuro .erro-rodape { color: #b5bdb2; }
+html.tema-escuro .erro-codigo { color: #1f2a1d; -webkit-text-stroke-color: #90a955; }
+html.tema-escuro .erro-selo { background: #1f2a1d; color: #cfe3b5; }
+html.tema-escuro .erro-dica { background: #1a2218; border-color: #34432f; border-left-color: #90a955; }
+html.tema-escuro .erro-detalhe code { background: #1f2a1d; }
+html.tema-escuro .erro-btn-secundario { color: #b9d98a; border-color: #90a955; }
+html.tema-escuro .erro-btn-secundario:hover { background: #1f2a1d; }
+html.tema-escuro .erro-rodape a { color: #b9d98a; }
+html.tema-escuro .erro-fala { background: #1a2218; border-color: #34432f; color: #e8ece6; }
+html.tema-escuro .erro-fala strong { color: #b9d98a; }

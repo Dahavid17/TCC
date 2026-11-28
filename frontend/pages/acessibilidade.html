@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acessibilidade — MarketPlace Rural | Buzz Codex</title>
+  <meta name="description" content="Compromisso de acessibilidade do MarketPlace Rural: navegação pelo teclado, contraste, textos alternativos e como relatar problemas.">
+  <link rel="canonical" href="https://buzzcodex.com.br/frontend/pages/acessibilidade.html">
+  <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/legal.css?v=1">
+  <script>try { if (localStorage.getItem("marketplace:tema") === "dark") document.documentElement.classList.add("tema-escuro"); } catch (e) {}</script>
+</head>
+<body class="legal">
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="legal-topo">
+    <div class="legal-topo-inner">
+      <a class="legal-logo" href="marketplace.html">MarketPlace Rural</a>
+      <nav class="legal-nav" aria-label="Documentos legais">
+        <a href="privacidade.html">Privacidade</a>
+        <a href="termos.html">Termos de Uso</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="acessibilidade.html" aria-current="page">Acessibilidade</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" class="legal-conteudo">
+    <h1>Acessibilidade</h1>
+    <p class="legal-atualizado">Última atualização: 27 de novembro de 2026</p>
+
+    <div class="legal-resumo">
+      <p>Queremos que qualquer pessoa do campo ou da cidade consiga usar o MarketPlace Rural, inclusive pessoas com deficiência,
+        pessoas idosas e quem acessa pelo celular com internet fraca. Seguimos a Lei Brasileira de Inclusão (Lei nº 13.146/2015, art. 63)
+        e usamos como referência as diretrizes WCAG 2.1, nível AA.</p>
+    </div>
+
+    <h2 id="recursos">1. O que já fizemos</h2>
+    <ul>
+      <li><strong>Teclado:</strong> todos os menus, formulários e botões funcionam com Tab, Shift+Tab, Enter e Espaço. O item em foco fica destacado com um contorno.</li>
+      <li><strong>Pular para o conteúdo:</strong> nas páginas principais, ao apertar Tab no início aparece o atalho “Pular para o conteúdo”.</li>
+      <li><strong>Textos alternativos:</strong> imagens com informação têm descrição (atributo <code>alt</code>); imagens apenas decorativas são ignoradas pelos leitores de tela.</li>
+      <li><strong>Contraste:</strong> cores de texto e botões escolhidas para atingir pelo menos 4,5:1 de contraste. Há também o tema escuro.</li>
+      <li><strong>Formulários:</strong> todo campo tem rótulo visível, os erros são escritos em texto (não só em cor) e são anunciados por leitores de tela.</li>
+      <li><strong>Botões claros:</strong> botões dizem o que fazem (“Cadastrar”, “Aceitar opcionais”), e botões só com ícone têm nome para leitores de tela.</li>
+      <li><strong>Celular:</strong> o site se adapta a telas pequenas e permite aumentar o zoom.</li>
+      <li><strong>Menos movimento:</strong> se o seu sistema estiver configurado para reduzir animações, o site respeita essa escolha.</li>
+    </ul>
+
+    <h2 id="limitacoes">2. Limitações conhecidas</h2>
+    <ul>
+      <li>O mapa de satélite e a fazenda em 3D da gestão são recursos visuais e ainda não têm uma versão totalmente compatível com leitores de tela.</li>
+      <li>Alguns gráficos podem ser difíceis de ler com leitor de tela; estamos trabalhando para mostrar os valores também em texto.</li>
+      <li>Ainda não temos tradução para Libras.</li>
+    </ul>
+
+    <h2 id="contato">3. Encontrou uma barreira?</h2>
+    <p>Conte para nós o que aconteceu, em qual página e qual recurso você usa (leitor de tela, ampliação etc.). Escreva para
+      <a href="mailto:avisos@buzzcodex.com.br">avisos@buzzcodex.com.br</a>. Vamos corrigir o mais rápido possível.</p>
+  </main>
+
+  <footer class="legal-rodape">
+    <nav aria-label="Links do rodapé">
+      <a href="marketplace.html">MarketPlace Rural</a>
+      <a href="privacidade.html">Política de Privacidade</a>
+      <a href="termos.html">Termos de Uso</a>
+      <a href="cookies.html">Política de Cookies</a>
+      <a href="#" data-abrir-cookies>Preferências de cookies</a>
+    </nav>
+    <p>&copy; 2026 Buzz Codex — projeto acadêmico SESI/SENAI.</p>
+  </footer>
+
+  <script src="../js/aviso-cookies.js?v=1"></script>
+</body>
+</html>

@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Acesse sua conta no MarketPlace Rural — plataforma que conecta produtores rurais e compradores.">
+  <meta name="theme-color" content="#1f3a1d">
   <title>Login — MarketPlace Rural</title>
 
   <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
-  <link rel="stylesheet" href="../css/tokens.css">
-  <link rel="stylesheet" href="../css/login.css">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+  <link rel="stylesheet" href="../css/login.css?v=20261125">
   <link rel="stylesheet" href="../css/verificacao-email.css?v=2">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -17,74 +19,118 @@
 
   <main class="login-page">
 
-    <section class="login-visual">
+    <!-- ═══════════ PAINEL DE APRESENTAÇÃO ═══════════ -->
+    <section class="login-visual" aria-label="Sobre o MarketPlace Rural">
+      <img class="visual-foto"
+        src="https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=1400&q=75"
+        alt="" width="1400" height="1600" fetchpriority="high">
 
-      <a href="marketplace.html" class="brand">
-        <i class="bi bi-flower1"></i>
-        <span>MarketPlace Rural</span>
-      </a>
+      <svg class="visual-curvas" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+        <path d="M-20 520 C 120 460, 220 580, 360 530 S 560 470, 640 520" />
+        <path d="M-20 570 C 120 510, 220 630, 360 580 S 560 520, 640 570" />
+        <path d="M-20 620 C 120 560, 220 680, 360 630 S 560 570, 640 620" />
+        <path d="M-20 670 C 120 610, 220 730, 360 680 S 560 620, 640 670" />
+      </svg>
 
-      <div class="visual-content">
-        <span class="tag">Marketplace Rural</span>
+      <div class="visual-inner">
+        <a href="marketplace.html" class="brand entrada" style="--i:0">
+          <span class="brand-marca"><i class="bi bi-flower1" aria-hidden="true"></i></span>
+          <span>MarketPlace <strong>Rural</strong></span>
+        </a>
 
-        <h1>Conectando produtores e compradores em uma plataforma moderna.</h1>
+        <div class="visual-content">
+          <span class="tag entrada" style="--i:1">Marketplace Rural</span>
 
-        <p>
-          Venda, compre e negocie produtos do campo com mais organização e praticidade.
+          <p class="visual-titulo entrada" style="--i:2">
+            Conectando produtores e compradores em uma <em>plataforma moderna.</em>
+          </p>
+
+          <p class="visual-lead entrada" style="--i:3">
+            Venda, compre e negocie produtos do campo com mais organização e praticidade.
+          </p>
+
+          <!-- Acompanha o perfil escolhido no formulário -->
+          <div class="visual-perfis entrada" style="--i:4">
+            <ul class="visual-lista" data-perfil="Produtor" aria-label="No painel do produtor">
+              <li><i class="bi bi-basket" aria-hidden="true"></i> Seus produtos e o estoque</li>
+              <li><i class="bi bi-receipt" aria-hidden="true"></i> Pedidos recebidos</li>
+              <li><i class="bi bi-chat-dots" aria-hidden="true"></i> Negociações com compradores</li>
+            </ul>
+            <ul class="visual-lista" data-perfil="Comprador" aria-label="No painel do comprador" hidden>
+              <li><i class="bi bi-search" aria-hidden="true"></i> Produtos por categoria e região</li>
+              <li><i class="bi bi-heart" aria-hidden="true"></i> Seus favoritos e o carrinho</li>
+              <li><i class="bi bi-truck" aria-hidden="true"></i> Andamento dos seus pedidos</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="visual-rodape entrada" style="--i:5">
+          <i class="bi bi-shield-lock" aria-hidden="true"></i>
+          Acesso protegido por e-mail e senha.
         </p>
       </div>
-
     </section>
 
-    <section class="login-area">
+    <!-- ═══════════ ÁREA DE LOGIN ═══════════ -->
+    <section class="login-area" aria-labelledby="login-titulo">
+
+      <div class="area-topo entrada" style="--i:0">
+        <button id="temaBtn" type="button" aria-label="Alternar tema claro/escuro">
+          <i class="bi bi-moon-stars-fill"></i>
+        </button>
+      </div>
 
       <div class="login-box">
 
-        <div class="login-header">
-          <span class="icon-box">
+        <div class="login-header entrada" style="--i:1">
+          <span class="icon-box" aria-hidden="true">
             <i class="bi bi-person-circle"></i>
           </span>
 
-          <h2>Acesse sua conta</h2>
+          <span class="secao-tag">Entrar</span>
+          <h1 id="login-titulo">Acesse sua conta</h1>
           <p>Entre para continuar no painel do MarketPlace Rural.</p>
         </div>
 
-        <div class="perfil-selector">
-          <button class="perfil-btn ativo" type="button">
-            <i class="bi bi-person-badge"></i>
+        <div class="perfil-selector entrada" style="--i:2" role="group" aria-label="Perfil">
+          <button class="perfil-btn ativo" type="button" aria-pressed="true">
+            <i class="bi bi-person-badge" aria-hidden="true"></i>
             Produtor
           </button>
 
-          <button class="perfil-btn" type="button">
-            <i class="bi bi-shop"></i>
+          <button class="perfil-btn" type="button" aria-pressed="false">
+            <i class="bi bi-shop" aria-hidden="true"></i>
             Comprador
           </button>
         </div>
 
-        <!-- FORMULÁRIO CORRIGIDO -->
-        <form id="formLogin" action="../../backend/auth/login.php" method="POST" novalidate>
+        <form id="formLogin" class="entrada" style="--i:3" action="../../backend/auth/login.php" method="POST" novalidate>
 
           <div class="form-group">
             <label for="email">E-mail</label>
 
             <div class="input-box">
-              <i class="bi bi-envelope"></i>
+              <i class="bi bi-envelope" aria-hidden="true"></i>
 
               <input
                 type="email"
                 id="email"
                 name="email"
-                placeholder="seu@email.com"
+                placeholder="nome@email.com"
                 autocomplete="email"
+                aria-describedby="msg-email"
                 required>
             </div>
+
+            <!-- Usado pelo login.js (ele cria este elemento se não existir) -->
+            <p id="msg-email" role="alert"></p>
           </div>
 
           <div class="form-group">
             <label for="senha">Senha</label>
 
             <div class="input-box">
-              <i class="bi bi-lock"></i>
+              <i class="bi bi-lock" aria-hidden="true"></i>
 
               <input
                 type="password"
@@ -92,6 +138,7 @@
                 name="senha"
                 placeholder="Digite sua senha"
                 autocomplete="current-password"
+                aria-describedby="msg-senha"
                 required>
 
               <button
@@ -104,58 +151,55 @@
 
               </button>
             </div>
+
+            <p id="msg-senha" role="alert"></p>
           </div>
 
           <div class="form-options">
 
             <label class="remember">
               <input type="checkbox" id="lembrar">
+              <span class="remember-caixa" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
               <span>Lembrar acesso</span>
             </label>
 
-            <button
-              type="button"
-              class="link-btn"
-              onclick="alert('Funcionalidade disponível em breve.')">
+            <a href="recuperar-senha.html" class="link-btn">
 
               Esqueci minha senha
 
-            </button>
+            </a>
 
           </div>
 
-          <button class="btn-login" type="submit">
-            Entrar na plataforma
-          </button>
+          <button class="btn-login" type="submit">Entrar na plataforma</button>
+
+          <p id="msg-login" role="alert"></p>
 
         </form>
 
-        <div class="divider">
+        <div class="divider entrada" style="--i:4">
           <span>ou</span>
         </div>
 
-        <a href="cadastro.html" class="btn-cadastro">
+        <a href="cadastro.html" class="btn-cadastro entrada" style="--i:5">
+          <i class="bi bi-person-plus" aria-hidden="true"></i>
           Criar conta gratuita
         </a>
 
-        <p class="terms">
+        <p class="terms entrada" style="--i:6">
           Ao continuar, você concorda com os
 
-          <a href="javascript:void(0)" onclick="alert('Termos disponíveis em breve.')">
-            Termos de Uso
-          </a>
+          <a href="javascript:void(0)" onclick="alert('Termos disponíveis em breve.')">Termos de Uso</a>
 
           e a
 
-          <a href="javascript:void(0)" onclick="alert('Política disponível em breve.')">
-            Política de Privacidade
-          </a>.
+          <a href="javascript:void(0)" onclick="alert('Política disponível em breve.')">Política de Privacidade</a>.
         </p>
 
       </div>
 
-      <a href="marketplace.html" class="back-link">
-        <i class="bi bi-arrow-left"></i>
+      <a href="marketplace.html" class="back-link entrada" style="--i:7">
+        <i class="bi bi-arrow-left" aria-hidden="true"></i>
         Voltar para o projeto
       </a>
 
@@ -163,12 +207,11 @@
 
   </main>
 
-  <button id="temaBtn" aria-label="Alternar tema claro/escuro">
-    <i class="bi bi-moon-stars-fill"></i>
-  </button>
-
+  <script src="../js/tema-transicao.js?v=20261125"></script>
   <script src="../js/verificacao-email.js?v=2"></script>
-  <script src="../js/login.js?v=3"></script>
+  <script src="../js/login.js?v=20261125"></script>
+  <script src="../js/login-visual.js?v=20261125"></script>
 
+  <script src="../js/aviso-cookies.js?v=1"></script>
 </body>
 </html>

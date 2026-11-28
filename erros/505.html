@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erro 505 — Versão HTTP não suportada | MarketPlace Rural</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" href="/assets/img/favicon/faviconMarketPlace.png">
+  <link rel="stylesheet" href="/frontend/css/tokens.css">
+  <link rel="stylesheet" href="/erros/erros.css?v=1">
+  <script>try { if (localStorage.getItem("marketplace:tema") === "dark") document.documentElement.classList.add("tema-escuro"); } catch (e) {}</script>
+</head>
+<body class="erro">
+  <header class="erro-topo">
+    <a class="erro-logo" href="/frontend/pages/marketplace.html">MarketPlace Rural</a>
+  </header>
+
+  <main class="erro-conteudo">
+    <div class="erro-ilustracao" aria-hidden="true">
+      <span class="erro-codigo">505</span>
+      <div class="erro-ben">
+        <div class="erro-mascote pose-digitando" data-mascote>
+          <img src="/assets/img/mascote/bento.svg" alt="" width="200" height="220">
+        </div>
+        <p class="erro-fala"><strong>Bento:</strong> Seu navegador fala uma língua que eu não entendo!</p>
+      </div>
+    </div>
+
+    <div class="erro-texto">
+      <span class="erro-selo">Erro do servidor · Protocolo incompatível</span>
+      <h1><span class="sr-only">Erro 505: </span>Versão HTTP não suportada</h1>
+      <p>O seu navegador fez o pedido usando uma versão do protocolo HTTP que este servidor não aceita.</p>
+      <p class="erro-dica">Atualize o navegador ou tente acessar por outro (Chrome, Edge, Firefox).</p>
+
+      <div class="erro-acoes">
+        <a class="erro-btn erro-btn-primario" href="/frontend/pages/marketplace.html">Ir para o marketplace</a>
+        <button type="button" class="erro-btn erro-btn-secundario" onclick="location.reload()">Tentar de novo</button>
+        <a class="erro-btn erro-btn-secundario" href="/">Página inicial</a>
+      </div>
+
+      <p class="erro-detalhe">Código <strong>505</strong> · endereço: <code data-endereco></code></p>
+    </div>
+  </main>
+
+  <footer class="erro-rodape">
+    <p>Precisa de ajuda? Escreva para <a href="mailto:avisos@buzzcodex.com.br">avisos@buzzcodex.com.br</a> informando o código 505.</p>
+    <p>&copy; 2026 Buzz Codex — projeto acadêmico SESI/SENAI.</p>
+  </footer>
+
+  <script>
+    // Coloca o SVG do Bento direto na página para as poses e animações funcionarem
+    // (se não carregar, fica a imagem normal dele acenando).
+    fetch("/assets/img/mascote/bento.svg").then(function (r) { return r.ok ? r.text() : Promise.reject(); })
+      .then(function (svg) { document.querySelector("[data-mascote]").innerHTML = svg; }).catch(function () {});
+    document.querySelectorAll("[data-endereco]").forEach(function (el) { el.textContent = location.pathname; });
+    document.querySelectorAll("[data-voltar]").forEach(function (b) {
+      b.addEventListener("click", function () { if (history.length > 1) history.back(); else location.href = "/"; });
+    });
+  </script>
+</body>
+</html>

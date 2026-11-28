@@ -10,16 +10,16 @@
 
     <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
 
-    <link rel="stylesheet" href="../css/tokens.css">
-    <link rel="stylesheet" href="../css/negociacoes.css?v=3">
+    <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+    <link rel="stylesheet" href="../css/painel.css?v=20261125">
+    <link rel="stylesheet" href="../css/negociacoes.css?v=20261125">
 
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <link rel="stylesheet" href="../css/responsivo.css?v=3">
+    <script src="../js/painel.js?v=20261125"></script>
     <link rel="stylesheet" href="../css/aviso-proprio-produto.css?v=1">
     <link rel="stylesheet" href="../css/notificacoes.css?v=1">
-    <link rel="stylesheet" href="../css/tema-escuro.css?v=2">
 </head>
 
 <body>
@@ -54,12 +54,12 @@
 
         <div class="top-actions">
 
-            <button type="button" class="icon-btn" id="btnNotificacoes">
-                <i class="bi bi-bell"></i>
+            <button type="button" class="icon-btn" id="btnNotificacoes" aria-label="Notificações">
+                <i class="bi bi-bell" aria-hidden="true"></i>
             </button>
 
-            <button type="button" class="icon-btn ativo" id="btnMensagens">
-                <i class="bi bi-chat-dots"></i>
+            <button type="button" class="icon-btn ativo" id="btnMensagens" aria-label="Mensagens das negociações">
+                <i class="bi bi-chat-dots" aria-hidden="true"></i>
             </button>
 
             <div class="perfil">
@@ -304,9 +304,9 @@
 
                 <h2>Enviar proposta</h2>
 
-                <button type="button" id="fecharModalProposta">
+                <button type="button" id="fecharModalProposta" aria-label="Fechar janela">
 
-                    <i class="bi bi-x-lg"></i>
+                    <i class="bi bi-x-lg" aria-hidden="true"></i>
 
                 </button>
 
@@ -373,7 +373,8 @@
 
     </button>
 
-    <script src="../js/menu.js?v=3"></script>
+    <script src="../js/tema-transicao.js?v=20261125"></script>
+    <script src="../js/menu.js?v=20261125"></script>
     <script src="../js/notificacoes.js?v=1"></script>
     <script src="../js/aviso-proprio-produto.js?v=1"></script>
     <script src="../js/negociacoes.js?v=4"></script>

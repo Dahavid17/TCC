@@ -1,66 +1,8 @@
 // Comportamento compartilhado do menu lateral das páginas internas:
-//  1. gaveta (botão hambúrguer) nas telas pequenas;
+//  1. a gaveta (botão hambúrguer) nas telas pequenas fica com o painel.js;
 //  2. "Gestão da Fazenda" no menu, acima de Configurações, só para produtores/administradores;
 //  3. foto de perfil no avatar do topo e modo escuro automático (Configurações).
 // A autorização real fica no backend (backend/gestao/resumo.php); aqui é apenas navegação.
-
-(function iniciarGaveta() {
-
-    const topo = document.querySelector(".topbar");
-    const menu = document.querySelector(".sidebar");
-
-    if (!topo || !menu) return;
-
-    const PONTO_DESKTOP = 900;
-
-    const botao = document.createElement("button");
-    botao.type = "button";
-    botao.className = "btn-menu";
-    botao.setAttribute("aria-label", "Abrir menu");
-    botao.setAttribute("aria-expanded", "false");
-    botao.innerHTML = '<i class="bi bi-list"></i>';
-    topo.prepend(botao);
-
-    const fundo = document.createElement("div");
-    fundo.className = "menu-overlay";
-    document.body.append(fundo);
-
-    function definirAberto(aberto) {
-        document.body.classList.toggle("menu-aberto", aberto);
-        botao.setAttribute("aria-expanded", String(aberto));
-        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
-        botao.firstElementChild.className = aberto ? "bi bi-x-lg" : "bi bi-list";
-    }
-
-    botao.addEventListener("click", () => {
-        definirAberto(!document.body.classList.contains("menu-aberto"));
-    });
-
-    fundo.addEventListener("click", () => definirAberto(false));
-
-    menu.addEventListener("click", (e) => {
-        if (e.target.closest("a")) definirAberto(false);
-    });
-
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") definirAberto(false);
-    });
-
-    // A altura do topo muda quando a barra de pesquisa quebra de linha: o conteúdo e a gaveta acompanham.
-    function medirTopo() {
-        document.documentElement.style.setProperty("--topo-h", topo.offsetHeight + "px");
-
-        if (window.innerWidth >= PONTO_DESKTOP) definirAberto(false);
-    }
-
-    medirTopo();
-    window.addEventListener("resize", medirTopo);
-
-    if ("ResizeObserver" in window) {
-        new ResizeObserver(medirTopo).observe(topo);
-    }
-
-})();
 
 // Modo escuro automático (Configurações > Preferências): segue o tema do aparelho.
 // Roda antes dos scripts das páginas, que leem "marketplace:tema" ao carregar.
@@ -141,3 +83,30 @@ window.aplicarFotoPerfil = function (caminho) {
     }
 
 })();
+
+// Atalhos do topo: Mensagens abre as negociações e o perfil abre as configurações da conta.
+(function iniciarAtalhosTopo() {
+
+    const atalhos = { btnMensagens: "negociacoes.html", btnPerfil: "configuracoes.html" };
+
+    Object.entries(atalhos).forEach(([id, destino]) => {
+        document.getElementById(id)?.addEventListener("click", () => {
+            if (!location.pathname.endsWith("/" + destino)) window.location.href = destino;
+        });
+    });
+
+})();
+
+// Módulos novos (Catálogo, Histórico, Mercado, Notificações e, para produtores, Gestão Rural):
+// links no menu lateral e lembretes automáticos, via modulos.js em modo "só menu".
+// As páginas novas já carregam o modulos.js completo; nelas este bloco não faz nada.
+document.addEventListener("DOMContentLoaded", () => {
+
+    if (document.querySelector('script[src*="modulos.js"]')) return;
+
+    const script = document.createElement("script");
+    script.src = "../js/modulos.js?v=2";
+    script.dataset.modo = "menu";
+    document.body.appendChild(script);
+
+});

@@ -11,7 +11,7 @@
 
     const MASCOTE = "../../assets/img/mascote/broto.svg";
     const CELULAR = 600;
-    const DESKTOP = 900;
+    const DESKTOP = 1025; // mesmo ponto em que o painel.css transforma o menu em gaveta
     const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Chave antiga (só no navegador), mantida para quem já viu o tour não revê-lo.
@@ -128,7 +128,7 @@
             },
             {
                 alvo: () => window.innerWidth < DESKTOP
-                    ? [document.querySelector(".btn-menu")]
+                    ? [document.querySelector(".menu-toggle, .btn-menu")]
                     : [
                         document.querySelector('.sidebar a[href="pedidos.html"]'),
                         document.querySelector('.sidebar a[href="negociacoes.html"]')
@@ -142,7 +142,7 @@
             vende && {
                 // O link é incluído pelo menu.js depois de checar o perfil.
                 alvo: () => window.innerWidth < DESKTOP
-                    ? [document.querySelector(".btn-menu")]
+                    ? [document.querySelector(".menu-toggle, .btn-menu")]
                     : [document.querySelector('.sidebar a[href="gestao-fazenda.html"]')],
                 fixo: true,
                 titulo: "Gestão da Fazenda",

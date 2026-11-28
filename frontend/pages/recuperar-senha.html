@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar senha | MarketPlace Rural</title>
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
+    <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+    <link rel="stylesheet" href="../css/painel.css?v=20261125">
+    <link rel="stylesheet" href="../css/modulos.css?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="../js/painel.js?v=20261125"></script>
+</head>
+
+<body>
+    <main class="mr-auth">
+        <section class="mr-auth-card">
+            <a href="login-marketplace.html" class="logo"><i class="bi bi-flower1"></i><span>MarketPlace Rural</span></a>
+            <h1>Esqueceu a senha?</h1>
+            <p>Informe o e-mail da sua conta. Enviaremos um link para você criar uma nova senha (vale por 1 hora).</p>
+            <form id="formRecuperar" novalidate>
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" required autocomplete="email" placeholder="voce@exemplo.com">
+                </div>
+                <div class="mr-msg hidden" id="mensagem" role="status"></div>
+                <button type="submit" class="btn-principal"><i class="bi bi-envelope"></i> Enviar link</button>
+            </form>
+            <a class="mr-voltar" href="login-marketplace.html"><i class="bi bi-arrow-left"></i> Voltar para o login</a>
+        </section>
+    </main>
+
+    <script>
+    (() => {
+        try { if (localStorage.getItem("marketplace:tema") === "dark") document.body.classList.add("dark"); } catch (e) { /* ignora */ }
+        const form = document.getElementById("formRecuperar");
+        const msg = document.getElementById("mensagem");
+        const mostrar = (texto, tipo) => { msg.textContent = texto; msg.className = "mr-msg " + tipo; };
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            if (!form.email.checkValidity()) return mostrar("Informe um e-mail válido.", "erro");
+            const botao = form.querySelector("button");
+            botao.disabled = true;
+            try {
+                const r = await fetch("../../backend/auth/recuperar_senha.php", { method: "POST", body: new FormData(form) });
+                const d = await r.json();
+                mostrar(d.mensagem, d.sucesso ? "ok" : "erro");
+                // Ambiente local (sem e-mail): o backend devolve o link para testar.
+                if (d.link_dev) msg.innerHTML += `<br><br><strong>Ambiente local:</strong> <a href="${d.link_dev.replace(/"/g, "")}">abrir o link de redefinição</a>`;
+            } catch (erro) {
+                mostrar("Não foi possível conectar. Tente novamente.", "erro");
+            } finally {
+                botao.disabled = false;
+            }
+        });
+    })();
+    </script>
+  <script src="../js/aviso-cookies.js?v=1"></script>
+</body>
+
+</html>

@@ -13,8 +13,14 @@ declare(strict_types=1);
 //    respeitando a preferência "E-mails".
 //  - Agrupa mensagens: várias mensagens não lidas da mesma conversa viram UM aviso atualizado.
 // Tabela: banco/migracoes/008_notificacoes.sql (criada aqui se ainda não existir).
+//
+// 25/11/2026 (migração 009): novos tipos para Agenda, documentos, alertas de preço, silos e
+// avaliações. Os lembretes automáticos ficam em backend/lib/lembretes.php.
 
-const TIPOS_NOTIFICACAO = ['pedido_novo', 'pedido_status', 'mensagem', 'proposta', 'sistema'];
+const TIPOS_NOTIFICACAO = [
+    'pedido_novo', 'pedido_status', 'mensagem', 'proposta', 'sistema',
+    'agenda', 'vencimento', 'documento', 'alerta_preco', 'silo', 'avaliacao',
+];
 
 function garantir_tabela_notificacoes(PDO $pdo): void
 {

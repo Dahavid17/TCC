@@ -19,6 +19,19 @@
   --suave:        #667064;
   --borda:        #e3dac8;
 
+  /* Paleta estendida — tons de confiança, terra e leveza.
+     Apenas acréscimos: os valores acima continuam iguais para
+     não alterar as páginas internas que já os utilizam. */
+  --verde-escuro:   #1f3a1d;
+  --verde-profundo: #142613;
+  --verde-nevoa:    #e7eddc;
+  --terra:          #7a5230;
+  --terra-escura:   #4e3420;
+  --terra-clara:    #c49a6c;
+  --trigo:          #ead9b6;
+  --bege:           #f3ece0;
+  --off-white:      #faf7f1;
+
   /* Feedback */
   --erro:         #c0392b;
   --sucesso:      #2e7d32;

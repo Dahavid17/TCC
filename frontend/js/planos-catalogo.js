@@ -8,6 +8,9 @@
 //   dashboard   painel completo com gráficos grandes em tempo real e alertas
 //   maquinario  telemetria do trator (GPS, combustível, motor, carga)
 //   suporte     instalação e manutenção grátis pela equipe
+//   gestao      propriedades/talhões, safras, diário de campo, agenda e financeiro (gestao-rural.html)
+//   gestao_pro  dashboard da gestão, documentos, silos e relatórios PDF/Excel
+//               (o backend confere o plano: backend/lib/gestao.php, RECURSOS_POR_PLANO)
 // grupos3d: grupos de sensores mostrados na fazenda 3D (ver fazenda-3d/src/fazenda/dados/sensores.js)
 
 window.PLANOS_FAZENDA = {
@@ -20,13 +23,15 @@ window.PLANOS_FAZENDA = {
         periodo: "por mês",
         chamada: "Sensores e automação para cuidar da sua plantação e da estufa.",
         grupos3d: ["plantacao", "estufa"],
-        recursos: { sensores: true, automacao: true, dashboard: false, maquinario: false, suporte: false },
+        recursos: { sensores: true, automacao: true, dashboard: false, maquinario: false, suporte: false, gestao: true, gestao_pro: false },
         itens: [
             { icone: "bi-cpu", texto: "Conexão de placas ESP32 com sensores" },
             { icone: "bi-moisture", texto: "Umidade do solo, temperatura, umidade do ar e luz" },
             { icone: "bi-droplet-half", texto: "Irrigação automática quando a terra secar" },
             { icone: "bi-fan", texto: "Ventilação e iluminação automáticas da estufa" },
-            { icone: "bi-bell", texto: "Aviso na tela quando algo sair do normal" }
+            { icone: "bi-bell", texto: "Aviso na tela quando algo sair do normal" },
+            { icone: "bi-map", texto: "Propriedades, talhões no mapa, safras e diário de campo" },
+            { icone: "bi-calendar-check", texto: "Agenda com lembretes e controle financeiro" }
         ],
         passos: [
             { icone: "bi-box-seam", titulo: "Você recebe o kit", texto: "Uma placa ESP32 com sensores de solo, temperatura, umidade do ar e luz." },
@@ -46,13 +51,15 @@ window.PLANOS_FAZENDA = {
         chamada: "Tudo do Essencial, com painel completo em tempo real e equipe técnica na sua fazenda.",
         destaque: "Mais completo",
         grupos3d: ["plantacao", "estufa", "maquinario"],
-        recursos: { sensores: true, automacao: true, dashboard: true, maquinario: true, suporte: true },
+        recursos: { sensores: true, automacao: true, dashboard: true, maquinario: true, suporte: true, gestao: true, gestao_pro: true },
         itens: [
             { icone: "bi-check2-all", texto: "Tudo o que vem no Plano Essencial" },
             { icone: "bi-graph-up-arrow", texto: "Painel completo com gráficos grandes em tempo real" },
             { icone: "bi-exclamation-triangle", texto: "Histórico de alertas e médias do dia" },
             { icone: "bi-truck", texto: "Acompanhamento do trator: GPS, combustível e motor" },
-            { icone: "bi-tools", texto: "Instalação e manutenção GRÁTIS pela nossa equipe" }
+            { icone: "bi-tools", texto: "Instalação e manutenção GRÁTIS pela nossa equipe" },
+            { icone: "bi-speedometer2", texto: "Dashboard da gestão, documentos e silos" },
+            { icone: "bi-file-earmark-bar-graph", texto: "Relatórios em PDF e Excel com um clique" }
         ],
         passos: [
             { icone: "bi-person-gear", titulo: "Nossa equipe vai até você", texto: "Os técnicos instalam as placas e os sensores na sua fazenda, sem custo." },

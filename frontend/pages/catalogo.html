@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo | MarketPlace Rural</title>
+    <link rel="icon" type="image/png" href="../../assets/img/favicon/faviconMarketPlace.png">
+    <link rel="stylesheet" href="../css/tokens.css?v=20261125">
+    <link rel="stylesheet" href="../css/painel.css?v=20261125">
+    <link rel="stylesheet" href="../css/modulos.css?v=2">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="../js/painel.js?v=20261125"></script>
+    <link rel="stylesheet" href="../css/notificacoes.css?v=1">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <a href="inicio.html" class="logo"><i class="bi bi-flower1"></i><span>MarketPlace Rural</span></a>
+        <div class="top-actions">
+            <button type="button" class="icon-btn" id="btnNotificacoes" aria-label="Notificações"><i class="bi bi-bell"></i></button>
+            <button type="button" class="icon-btn" id="btnMensagens" aria-label="Negociações"><i class="bi bi-chat-dots"></i></button>
+            <div class="perfil">
+                <button type="button" id="btnPerfil" aria-label="Abrir configurações da conta">
+                    <div class="avatar" id="avatarUsuario">U</div>
+                    <div><span id="nomeUsuario">Usuário</span><small id="tipoUsuario"></small></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <aside class="sidebar">
+        <nav>
+            <a href="inicio.html"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="meus-produtos.html"><i class="bi bi-box-seam"></i><span>Meus Produtos</span></a>
+            <a href="pedidos.html"><i class="bi bi-cart-check"></i><span>Pedidos</span></a>
+            <a href="negociacoes.html"><i class="bi bi-chat-left-text"></i><span>Negociações</span></a>
+            <a href="estoque.html"><i class="bi bi-clipboard-data"></i><span>Estoque</span></a>
+            <a href="favoritos.html"><i class="bi bi-heart"></i><span>Favoritos</span></a>
+            <a href="configuracoes.html"><i class="bi bi-gear"></i><span>Configurações</span></a>
+            <a href="../../backend/auth/logout.php"><i class="bi bi-box-arrow-right"></i><span>Sair</span></a>
+        </nav>
+    </aside>
+
+    <main class="conteudo">
+
+        <section class="page-header">
+            <div>
+                <h1>Catálogo de produtos</h1>
+                <p>Encontre produtos por categoria, cultura, região e faixa de preço. Crie alertas para ser avisado quando o preço mudar.</p>
+            </div>
+            <button type="button" id="btnMeusAlertas"><i class="bi bi-bell"></i> Meus alertas</button>
+        </section>
+
+        <form class="mr-filtros-catalogo" id="formFiltros" role="search">
+            <input class="busca" type="search" name="busca" placeholder="Buscar produto (ex.: soja, alface, mel)" aria-label="Buscar produto">
+            <select name="categoria" aria-label="Categoria">
+                <option value="">Todas as categorias</option>
+                <option value="hortalicas">Hortaliças</option><option value="frutas">Frutas</option><option value="graos">Grãos</option>
+                <option value="laticinios">Laticínios</option><option value="carnes">Carnes</option><option value="flores">Flores</option>
+            </select>
+            <select name="cultura" aria-label="Cultura" id="filtroCultura"><option value="">Todas as culturas</option></select>
+            <input name="localizacao" placeholder="Cidade / região" aria-label="Localização" list="listaRegioes">
+            <input name="preco_min" type="number" min="0" step="0.01" placeholder="Preço mín." aria-label="Preço mínimo">
+            <input name="preco_max" type="number" min="0" step="0.01" placeholder="Preço máx." aria-label="Preço máximo">
+            <select name="ordenar" aria-label="Ordenar">
+                <option value="">Mais recentes</option>
+                <option value="menor_preco">Menor preço</option>
+                <option value="maior_preco">Maior preço</option>
+                <option value="reputacao">Melhor avaliados</option>
+            </select>
+            <datalist id="listaRegioes"></datalist>
+        </form>
+
+        <div class="mr-barra">
+            <p class="mr-ajuda" id="resumoBusca">Carregando…</p>
+            <button type="button" class="btn-sec" id="btnLimparFiltros"><i class="bi bi-x-circle"></i> Limpar filtros</button>
+        </div>
+
+        <section class="grid-produtos" id="listaCatalogo"></section>
+
+    </main>
+
+    <!-- Detalhe do produto -->
+    <div class="modal" id="modalProduto">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="detalheNome">
+            <div class="modal-header"><h2 id="detalheTitulo">Produto</h2><button type="button" data-fechar="modalProduto" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <div id="conteudoProduto"></div>
+        </div>
+    </div>
+
+    <!-- Meus alertas de preço (para todos; a página Mercado é só de produtores) -->
+    <div class="modal" id="modalMeusAlertas">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="meusAlertasTitulo" style="width:min(620px,100%)">
+            <div class="modal-header"><h2 id="meusAlertasTitulo">Meus alertas de preço</h2><button type="button" data-fechar="modalMeusAlertas" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <p class="mr-ajuda" style="margin-bottom:12px">Crie alertas abrindo um produto e clicando em "Alerta de preço". O aviso chega no sino quando o vendedor mudar o preço.</p>
+            <ul class="mr-lista" id="listaMeusAlertas"></ul>
+        </div>
+    </div>
+
+    <!-- Pedido -->
+    <div class="modal" id="modalPedido">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="pedidoNome" style="width:min(440px,100%)">
+            <div class="modal-header"><h2 id="pedidoNome">Fazer pedido</h2><button type="button" data-fechar="modalPedido" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form id="formPedido">
+                <input type="hidden" name="anuncio_id">
+                <p id="pedidoInfo" class="mr-ajuda"></p>
+                <div class="campo"><label for="pedidoQtd">Quantidade</label><input id="pedidoQtd" name="quantidade" type="number" min="1" value="1" required></div>
+                <p>Total: <strong id="pedidoTotal">R$ 0,00</strong></p>
+                <div class="modal-actions"><button type="button" data-fechar="modalPedido">Cancelar</button><button type="submit">Confirmar pedido</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alerta de preço -->
+    <div class="modal" id="modalAlerta">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="alertaTitulo" style="width:min(480px,100%)">
+            <div class="modal-header"><h2 id="alertaTitulo">Alerta de preço</h2><button type="button" data-fechar="modalAlerta" aria-label="Fechar"><i class="bi bi-x-lg"></i></button></div>
+            <form id="formAlerta">
+                <input type="hidden" name="anuncio_id">
+                <p class="mr-ajuda" id="alertaInfo"></p>
+                <div class="campo" id="campoTermo"><label>Produto ou cultura</label><input name="termo" maxlength="100" placeholder="Ex.: soja, café, tomate"></div>
+                <div class="campo"><label>Avisar quando</label>
+                    <select name="condicao">
+                        <option value="abaixo">o preço ficar igual ou abaixo de</option>
+                        <option value="acima">o preço ficar igual ou acima de</option>
+                        <option value="variacao">o preço variar (subir ou cair) pelo menos</option>
+                    </select></div>
+                <div class="campo" id="campoAlvo"><label>Preço-alvo (R$)</label><input name="preco_alvo" type="number" min="0.01" step="0.01"></div>
+                <div class="campo hidden" id="campoVariacao"><label>Variação (%)</label><input name="variacao_percentual" type="number" min="1" max="100" step="0.5" value="5"></div>
+                <div class="modal-actions"><button type="button" data-fechar="modalAlerta">Cancelar</button><button type="submit">Criar alerta</button></div>
+            </form>
+        </div>
+    </div>
+
+    <button type="button" id="temaBtn" aria-label="Alternar tema"><i class="bi bi-moon-stars-fill"></i></button>
+
+    <script src="../js/tema-transicao.js?v=20261125"></script>
+    <script src="../js/menu.js?v=20261125"></script>
+    <script src="../js/notificacoes.js?v=1"></script>
+    <script src="../js/modulos.js?v=2"></script>
+    <script src="../js/catalogo-filtros.js?v=2"></script>
+  <script src="../js/aviso-cookies.js?v=1"></script>
+</body>
+
+</html>
